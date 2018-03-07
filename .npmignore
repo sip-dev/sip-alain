@@ -1,0 +1,7 @@
+.github
+_screenshot
+node_modules
+
+dist
+tmp
+package-lock.json

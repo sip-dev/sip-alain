@@ -1,0 +1,61 @@
+{
+  "name": "sip-alain",
+  "version": "0.1.1",
+  "description": "ng-zorro-antd admin panel front-end framework",
+  "author": "sip",
+  "homepage": "https://github.com/winpzs/sip-alain/",
+  "bugs": {
+    "url": "https://github.com/winpzs/sip-alain/issues"
+  },
+  "engines": {
+    "node": ">= 4.2.1",
+    "npm": ">= 3"
+  },
+  "license": "MIT",
+  "scripts": {
+    "test": "ng test -sr -sm=false",
+    "build": "ng-packagr -p package.json",
+    "npmpublish": "npm run build && npm pu ./dist",
+    "totest":"npm run build && gulp totest"
+  },
+  "ngPackage": {
+    "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
+    "lib": {
+      "entryFile": "public_api.ts",
+      "languageLevel": [
+        "dom",
+        "es2017"
+      ],
+      "comments": "none"
+    }
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@angular/common": "^5.0.0",
+    "@angular/compiler": "^5.0.0",
+    "@angular/compiler-cli": "^5.0.0",
+    "@angular/core": "^5.0.0",
+    "@angular/forms": "^5.0.0",
+    "@angular/http": "^5.0.0",
+    "@angular/router": "^5.0.0",
+    "@delon/abc": "^0.6.5",
+    "@delon/acl": "^0.6.5",
+    "@delon/auth": "^0.6.5",
+    "@delon/cache": "^0.6.5",
+    "@delon/mock": "^0.6.5",
+    "@delon/theme": "^0.6.5",
+    "@ngx-translate/core": "^9.0.0",
+    "@ngx-translate/http-loader": "^2.0.0",
+    "@types/node": "~6.0.60",
+    "core-js": "^2.5.1",
+    "gulp": "^3.9.1",
+    "ng-packagr": "^2.1.0",
+    "ng-zorro-antd": "^0.6.15",
+    "ng-zorro-antd-extra": "^1.1.7",
+    "ngx-countdown": "^2.0.4",
+    "rxjs": "^5.5.5",
+    "sip-lib": "^0.0.1",
+    "typescript": "~2.6.0",
+    "zone.js": "^0.8.18"
+  }
+}
