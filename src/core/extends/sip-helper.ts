@@ -1,4 +1,4 @@
-import { ViewContainerRef, Injector, Type, ComponentRef, ComponentFactoryResolver, TemplateRef, ViewRef, forwardRef, EventEmitter } from "@angular/core";
+import { ViewContainerRef, Injector, Type, ComponentRef, ComponentFactoryResolver, TemplateRef, ViewRef, forwardRef, EventEmitter, OnInit, OnDestroy, AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, OnChanges, DoCheck } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from "@angular/router";
 import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
@@ -937,7 +937,16 @@ export class SipParent {
 }
 
 /**Sip UI 基础类 */
-export class SipUiBase extends SipParent {
+export class SipUiBase extends SipParent implements OnInit, OnDestroy, OnChanges, DoCheck, AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit {
+
+    ngOnChanges() { }
+    ngOnInit() { }
+    ngDoCheck() { }
+    ngAfterContentInit() { }
+    ngAfterContentChecked() { }
+    ngAfterViewInit() { }
+    ngAfterViewChecked() { }
+    ngOnDestroy() { }
 
     /**@SipWatch占用 */
     private _$sipWatch: any;

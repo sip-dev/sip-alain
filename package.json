@@ -1,11 +1,11 @@
 {
   "name": "sip-alain",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "ng-zorro-antd admin panel front-end framework",
   "author": "sip",
-  "homepage": "https://github.com/winpzs/sip-alain/",
+  "homepage": "https://github.com/sip-dev/sip-alain/",
   "bugs": {
-    "url": "https://github.com/winpzs/sip-alain/issues"
+    "url": "https://github.com/sip-dev/sip-alain/issues"
   },
   "engines": {
     "node": ">= 4.2.1",

@@ -1,5 +1,8 @@
 
 # 更新
 
+## 0.1.2 (none)
+* fix ng event
+
 ## 0.1.1
 * update ng-alain 0.7.0
