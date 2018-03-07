@@ -17,10 +17,11 @@ import { PageComponent } from './page.component';
             <ng-container [ngTemplateOutlet]="desc"></ng-container>
             </ng-template>
         </small>
-        <a (click)="close()" *ngIf="opener" >X</a>
+        <a (click)="close()" *ngIf="opener" class="sip-page-close" ><i class="icon-arrow-left-circle"></i></a>
         </h1>
     </div>`,
-    styles: []
+	styles: []
+	
 })
 export class PageHeaderComponent implements OnInit {
 
