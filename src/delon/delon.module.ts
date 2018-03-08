@@ -133,7 +133,8 @@ import {
     AdUtilsModule,
     AdFullContentModule,
     AdXlsxModule,
-    AdZipModule
+    AdZipModule,
+    AdNumberToChineseModule
 } from '@delon/abc';
 export const ABCMODULES = [
     AdSimpleTableModule,
@@ -160,14 +161,14 @@ export const ABCMODULES = [
     AdUtilsModule,
     AdFullContentModule,
     AdXlsxModule,
-    AdZipModule
+    AdZipModule,
+    AdNumberToChineseModule
 ];
 // endregion
 
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { NgZorroAntdExtraModule } from 'ng-zorro-antd-extra';
 import { AlainThemeModule } from '@delon/theme';
-import { AlainABCModule } from '@delon/abc';
 import { AlainAuthModule } from '@delon/auth';
 import { AlainACLModule } from '@delon/acl';
 import { DelonCacheModule } from '@delon/cache';
