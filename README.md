@@ -34,4 +34,4 @@ npm run totest
 ```
 
 ## ng-alain version
-    ng-alain 0.7.0
+    ng-alain 0.7.1
