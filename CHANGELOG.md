@@ -1,7 +1,7 @@
 
 # 更新
 
-## 0.1.4 (none)
+## 0.1.4
 
 * Add Config: authOptions? :AuthOptions
 * Add Config: mockOptions? :MockOptions
