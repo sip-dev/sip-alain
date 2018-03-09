@@ -8,6 +8,7 @@ import { ACLService } from '@delon/acl';
 import { I18NService } from '../i18n/i18n.service';
 import { SipAlainConfig } from '../../core/extends/sip-alain-config';
 import { SipRestService } from '../../core/services/sip-rest.service';
+import { ReuseTabService } from '@delon/abc';
 
 /**
  * 用于应用启动时
@@ -27,7 +28,11 @@ export class StartupService {
 
     }
 
-    load(config:SipAlainConfig): Promise<any> {
+    load(config: SipAlainConfig): Promise<any> {
+        if (config.reuseTab) {
+            let reuseTabSrv: ReuseTabService = this.injector.get(ReuseTabService);
+            reuseTabSrv.mode = config.reuseTab.mode;
+        }
         // only works with promises
         // https://github.com/angular/angular/issues/15088
         return new Promise((resolve, reject) => {
