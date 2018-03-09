@@ -1,6 +1,8 @@
 import { Lib } from 'sip-lib';
 import { Type, Injector } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpClient } from '@angular/common/http';
+import { AuthOptions } from '@delon/auth';
+import { MockOptions } from '@delon/mock';
 
 export interface IConfigResetMapRet {
     /**版本号 */
@@ -24,15 +26,17 @@ export abstract class SipAlainConfig {
     i18n: {
         prefix: string;
         suffix: string;
-        default:string;
-        langs:{ code: string; text: string; }[];
+        default: string;
+        langs: { code: string; text: string; }[];
     };
-    i18nLoader: (http: HttpClient)=> any;
+    i18nLoader: (http: HttpClient) => any;
     appDataPath: string;
-    startup:()=>Promise<any>;
-    intercept:(req: HttpRequest<any>, next: HttpHandler)=>any;
+    startup: () => Promise<any>;
+    intercept: (req: HttpRequest<any>, next: HttpHandler) => any;
 
-    
+    authOptions?: AuthOptions;
+    mockOptions?: MockOptions;
+
     site: {
         loginUrl: string;
         logoutUrl: string;
@@ -49,7 +53,7 @@ export abstract class SipAlainConfig {
         /**
          * rest url 改造路径
          */
-        mapPath: (path:string) => string;
+        mapPath: (path: string) => string;
         /**
          * 提交类型form | body
          */
@@ -112,6 +116,6 @@ export function SetSipAlainConfig(config: Type<SipAlainConfig>) {
     _sipAlainConfig = config;
 };
 
-export function GetSipAlainConfig():Type<SipAlainConfig> {
+export function GetSipAlainConfig(): Type<SipAlainConfig> {
     return _sipAlainConfig
 };

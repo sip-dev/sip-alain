@@ -10,13 +10,14 @@ registerLocaleData(localeZhHans);
 // i18n
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { ALAIN_I18N_TOKEN } from '@delon/theme';
+import { MockOptions, DM_OPTIONS_TOKEN, DEFAULT as MockDefault } from '@delon/mock';
 import { I18NService } from './delon/i18n/i18n.service';
 
 export function HttpLoaderFactory(http: HttpClient, config: SipAlainConfig) {
     return config.i18nLoader(http);
 }
 
-import { SimpleInterceptor } from '@delon/auth';
+import { SimpleInterceptor, DA_OPTIONS_TOKEN, AuthOptions, DEFAULT as AuthDefault } from '@delon/auth';
 import { DefaultInterceptor } from './delon/net/default.interceptor';
 
 import { DelonModule } from './delon/delon.module';
@@ -27,6 +28,19 @@ import { SipAlainCoreModule } from './core/sip-alain-core.module';
 export function StartupServiceFactory(startupService: StartupService, config: SipAlainConfig): Function {
     let a;
     return () => startupService.load(config).then(function () { return config.startup(); });
+}
+
+export function authOptionsFactory(config: SipAlainConfig) {
+    let options: AuthOptions = config.authOptions;
+    if (options && options.ignores) {
+        options.ignores = options.ignores.map(v => new RegExp(v));
+    }
+    return Object.assign(AuthDefault, options);
+}
+
+export function mockOptionsFactory(config: SipAlainConfig) {
+    let options = config.mockOptions;
+    return Object.assign(MockDefault, options);
 }
 
 @NgModule({
@@ -69,6 +83,8 @@ export class SipAlainModule {
                 { provide: HTTP_INTERCEPTORS, useClass: SimpleInterceptor, multi: true },
                 { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true },
                 { provide: ALAIN_I18N_TOKEN, useClass: I18NService, multi: false },
+                { provide: DA_OPTIONS_TOKEN, useFactory: authOptionsFactory, deps: [SipAlainConfig] },
+                { provide: DM_OPTIONS_TOKEN, useFactory: mockOptionsFactory, deps: [config] },
                 StartupService,
                 {
                     provide: APP_INITIALIZER,

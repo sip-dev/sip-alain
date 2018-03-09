@@ -1,6 +1,11 @@
 
 # 更新
 
+## 0.1.4 (none)
+
+* Add Config: authOptions? :AuthOptions
+* Add Config: mockOptions? :MockOptions
+
 ## 0.1.3
 
 * update ng-alain 0.7.1
