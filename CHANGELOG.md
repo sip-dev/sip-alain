@@ -5,6 +5,7 @@
 
 * Add Config: authOptions? :AuthOptions
 * Add Config: mockOptions? :MockOptions
+* ADD: IMinitableManager restFun
 
 ## 0.1.3
 

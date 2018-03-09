@@ -6,6 +6,7 @@ import { ContextmenuComponent, IContextMenu } from '../menu/contextmenu.componen
 import { Lib } from 'sip-lib';
 import { SipComponent, SipNgDestroy, SipNgInit } from '../../../core/extends/sip-helper';
 import { SipRestSqlRet } from '../../../core/services/sip-rest.service';
+import { SipSqlParam } from '../../../../public_api';
 
 export interface MiniTableRow<T=any> {
     /**是否选择 */
@@ -37,6 +38,7 @@ export interface IMinitableManager<T=any> {
     connstr?: string;
     sqlId?: string;
     url?: string;
+    restFun?: (params: SipSqlParam) => Observable<any>;
     pageSize?: number;
     multiSelect?: boolean;
     pageIndex?: number;
@@ -280,7 +282,7 @@ export class MinitableManager<T=any> implements IMinitableManager<T> {
 
 @Component({
     selector: 'sip-minitable',
-    templateUrl:'./minitable.component.html',
+    templateUrl: './minitable.component.html',
     providers: [],
     styles: []
 })
@@ -366,6 +368,8 @@ export class MinitableComponent extends SipComponent {
     @Output() onLoaded = new EventEmitter<Observable<SipRestSqlRet>>();
     @Output() onCompleted = new EventEmitter();
 
+    restFun?: Function;
+
     //endregion 事件
 
     //#region datas and rows
@@ -431,7 +435,7 @@ export class MinitableComponent extends SipComponent {
         this.onSearch.emit(searchParams);
         Lib.extend(searchParams, this._searchParams);
 
-        let rest = this.$httpSrv.sql({
+        let sqlParams: SipSqlParam = {
             url: this.url,
             connstr: this.connstr,
             sqlId: this.sqlId,
@@ -441,7 +445,9 @@ export class MinitableComponent extends SipComponent {
             sortOrder: '',
             searchparam: searchParams,
             owner: this
-        });
+        };
+
+        let rest = this.restFun ? this.restFun(sqlParams) : this.$httpSrv.sql(sqlParams);
         this.onLoaded.emit(rest);
         rest.subscribe((rs) => {
             this.datas = rs.datas || [];
