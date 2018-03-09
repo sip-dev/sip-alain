@@ -3,6 +3,7 @@ import { Type, Injector } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpClient } from '@angular/common/http';
 import { AuthOptions } from '@delon/auth';
 import { MockOptions } from '@delon/mock';
+import { ReuseTabMatchMode } from '@delon/abc';
 
 export interface IConfigResetMapRet {
     /**版本号 */
@@ -21,7 +22,14 @@ export interface IConfigResetMapRet {
 
 export abstract class SipAlainConfig {
 
-    // constructor(private injector: Injector) { }
+    environment?: {
+        chore: boolean;
+        SERVER_URL: string;
+        production: boolean;
+        hmr: boolean;
+        useHash: boolean;
+        mock:boolean;
+    };
 
     i18n: {
         prefix: string;
@@ -36,6 +44,9 @@ export abstract class SipAlainConfig {
 
     authOptions?: AuthOptions;
     mockOptions?: MockOptions;
+    reuseTab?:{
+        mode:ReuseTabMatchMode;
+    };
 
     site: {
         loginUrl: string;

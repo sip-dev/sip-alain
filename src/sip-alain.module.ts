@@ -40,7 +40,7 @@ export function authOptionsFactory(config: SipAlainConfig) {
 
 export function mockOptionsFactory(config: SipAlainConfig) {
     let options = config.mockOptions;
-    return Object.assign(MockDefault, options);
+    return Object.assign({}, MockDefault, options);
 }
 
 @NgModule({
@@ -57,7 +57,7 @@ export function mockOptionsFactory(config: SipAlainConfig) {
             }
         }),
         HttpClientModule,
-        DelonMockModule.forRoot({ data: [] })
+        DelonMockModule.forRoot({ data: null })
     ],
     providers: [
 
