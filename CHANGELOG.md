@@ -1,6 +1,10 @@
 
 # 更新
 
+## 0.2.1
+
+* Fix SimpleInterceptor
+
 ## 0.2.0
 
 * Remove Mock Module
