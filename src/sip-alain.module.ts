@@ -10,7 +10,6 @@ registerLocaleData(localeZhHans);
 // i18n
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { ALAIN_I18N_TOKEN } from '@delon/theme';
-import { MockOptions, DM_OPTIONS_TOKEN, DEFAULT as MockDefault, DelonMockModule } from '@delon/mock';
 import { I18NService } from './delon/i18n/i18n.service';
 
 export function HttpLoaderFactory(http: HttpClient, config: SipAlainConfig) {

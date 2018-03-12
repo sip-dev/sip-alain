@@ -42,7 +42,6 @@
     "@delon/acl": "^0.7.1",
     "@delon/auth": "^0.7.1",
     "@delon/cache": "^0.7.1",
-    "@delon/mock": "^0.7.1",
     "@delon/theme": "^0.7.1",
     "@ngx-translate/core": "^9.0.0",
     "@ngx-translate/http-loader": "^2.0.0",

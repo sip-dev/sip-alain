@@ -2,7 +2,6 @@ import { Lib } from 'sip-lib';
 import { Type, Injector } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpClient } from '@angular/common/http';
 import { AuthOptions } from '@delon/auth';
-import { MockOptions } from '@delon/mock';
 import { ReuseTabMatchMode } from '@delon/abc';
 
 export interface IConfigResetMapRet {
