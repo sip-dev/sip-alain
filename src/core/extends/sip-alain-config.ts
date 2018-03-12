@@ -28,7 +28,7 @@ export abstract class SipAlainConfig {
         production: boolean;
         hmr: boolean;
         useHash: boolean;
-        mock: boolean;
+        [key:string]:any;
     };
 
     i18n: {
@@ -45,7 +45,7 @@ export abstract class SipAlainConfig {
     authOptions?: AuthOptions;
 
     reuseTab?: {
-        use: boolean;
+        use:boolean;
         mode: ReuseTabMatchMode;
     };
 
