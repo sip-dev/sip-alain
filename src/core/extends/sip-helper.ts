@@ -566,7 +566,7 @@ export function SipRestDef<T=any>(params: ISipRestDefParams<T>) {
             configurable: false,
             get: function () {
                 return function (p?: any, options?: any): any {
-                    let tempParams: ISipRestDefParams<T> = Lib.extend({ owner: this }, params, options);
+                    let tempParams: ISipRestDefParams<T> = Lib.extend({ }, params, options);
                     let tmplP = Lib.extend({}, params.params, p);
                     tempParams.params = tmplP;
                     let httpSrv: SipRestService = this.$httpSrv;
@@ -621,7 +621,7 @@ export function SipRestSqlDef<T=any>(params: ISipRestSqlDefParams<T>) {
             configurable: false,
             get: function () {
                 return function (p?: any, options?: any): any {
-                    let tempParams: ISipRestSqlDefParams<T> = Lib.extend({ pageSize: 10, owner: this }, params, options);
+                    let tempParams: ISipRestSqlDefParams<T> = Lib.extend({ pageSize: 10 }, params, options);
                     tempParams.searchparam = Lib.extend({}, tempParams.searchparam, p);
                     let httpSrv: SipRestService = this.$httpSrv;
                     let url = tempParams.url;
@@ -674,7 +674,7 @@ export function SipRestDictDef<T=any>(params: ISipRestDictDefParams) {
             configurable: false,
             get: function () {
                 return function (options?: any): any {
-                    let tempParams: ISipRestDictDefParams = Lib.extend({ cache: true, owner: this }, params, options);
+                    let tempParams: ISipRestDictDefParams = Lib.extend({ }, params, options);
                     let tempCode: string = tempParams.code || params.code;
                     let tempConStr: string = tempParams.code || params.conStr;
 
