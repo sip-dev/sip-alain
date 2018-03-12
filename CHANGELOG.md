@@ -1,7 +1,7 @@
 
 # 更新
 
-## 0.2.0 (none)
+## 0.2.0
 
 * Remove Mock Module
 * Change SimpleInterceptor To JWTInterceptor
