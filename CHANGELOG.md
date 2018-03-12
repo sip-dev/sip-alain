@@ -1,6 +1,10 @@
 
 # 更新
 
+## 0.2.0 (none)
+
+* Remove Mock Module
+
 ## 0.1.4
 
 * Add Config: authOptions? :AuthOptions

@@ -28,7 +28,7 @@ export abstract class SipAlainConfig {
         production: boolean;
         hmr: boolean;
         useHash: boolean;
-        mock:boolean;
+        mock: boolean;
     };
 
     i18n: {
@@ -43,9 +43,10 @@ export abstract class SipAlainConfig {
     intercept: (req: HttpRequest<any>, next: HttpHandler) => any;
 
     authOptions?: AuthOptions;
-    mockOptions?: MockOptions;
-    reuseTab?:{
-        mode:ReuseTabMatchMode;
+
+    reuseTab?: {
+        use: boolean;
+        mode: ReuseTabMatchMode;
     };
 
     site: {

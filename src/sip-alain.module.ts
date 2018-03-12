@@ -38,11 +38,6 @@ export function authOptionsFactory(config: SipAlainConfig) {
     return Object.assign(AuthDefault, options);
 }
 
-export function mockOptionsFactory(config: SipAlainConfig) {
-    let options = config.mockOptions;
-    return Object.assign({}, MockDefault, options);
-}
-
 @NgModule({
     imports: [
         CommonModule,
@@ -56,8 +51,7 @@ export function mockOptionsFactory(config: SipAlainConfig) {
                 deps: [HttpClient, SipAlainConfig]
             }
         }),
-        HttpClientModule,
-        DelonMockModule.forRoot({ data: null })
+        HttpClientModule
     ],
     providers: [
 
@@ -85,7 +79,6 @@ export class SipAlainModule {
                 { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true },
                 { provide: ALAIN_I18N_TOKEN, useClass: I18NService, multi: false },
                 { provide: DA_OPTIONS_TOKEN, useFactory: authOptionsFactory, deps: [SipAlainConfig] },
-                { provide: DM_OPTIONS_TOKEN, useFactory: mockOptionsFactory, deps: [config] },
                 StartupService,
                 {
                     provide: APP_INITIALIZER,
