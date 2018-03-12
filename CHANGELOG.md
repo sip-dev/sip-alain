@@ -5,6 +5,7 @@
 
 * Remove Mock Module
 * Change SimpleInterceptor To JWTInterceptor
+* OPT: SipRestSqlDef cache default value
 
 ## 0.1.4
 
