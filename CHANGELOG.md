@@ -4,6 +4,7 @@
 ## 0.2.0 (none)
 
 * Remove Mock Module
+* Change SimpleInterceptor To JWTInterceptor
 
 ## 0.1.4
 

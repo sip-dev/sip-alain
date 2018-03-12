@@ -17,7 +17,7 @@ export function HttpLoaderFactory(http: HttpClient, config: SipAlainConfig) {
     return config.i18nLoader(http);
 }
 
-import { SimpleInterceptor, DA_OPTIONS_TOKEN, AuthOptions, DEFAULT as AuthDefault } from '@delon/auth';
+import { DA_OPTIONS_TOKEN, AuthOptions, DEFAULT as AuthDefault, JWTInterceptor } from '@delon/auth';
 import { DefaultInterceptor } from './delon/net/default.interceptor';
 
 import { DelonModule } from './delon/delon.module';
@@ -75,7 +75,7 @@ export class SipAlainModule {
                 I18NService,
                 { provide: SipAlainConfig, useClass: config },
                 { provide: LOCALE_ID, useValue: 'zh-Hans' },
-                { provide: HTTP_INTERCEPTORS, useClass: SimpleInterceptor, multi: true },
+                { provide: HTTP_INTERCEPTORS, useClass: JWTInterceptor, multi: true },
                 { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true },
                 { provide: ALAIN_I18N_TOKEN, useClass: I18NService, multi: false },
                 { provide: DA_OPTIONS_TOKEN, useFactory: authOptionsFactory, deps: [SipAlainConfig] },
