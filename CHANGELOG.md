@@ -1,7 +1,7 @@
 
 # 更新
 
-## 0.2.2 (none)
+## 0.2.2
 
 * OPT SipFormGroup
 
