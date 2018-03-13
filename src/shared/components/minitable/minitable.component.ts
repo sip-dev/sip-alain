@@ -417,7 +417,7 @@ export class MinitableComponent extends SipComponent {
         this._loading = true;
         this._allSelected = false;
         this._indeterminate = false;
-        let restFun = this._manager.restFun;
+        let restFun = this._manager ? this._manager.restFun : null;
         if (!this.sqlId && !this.url && !restFun) {
             setTimeout(() => {
                 this._loading = false;
