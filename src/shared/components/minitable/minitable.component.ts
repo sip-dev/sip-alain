@@ -38,7 +38,7 @@ export interface IMinitableManager<T=any> {
     connstr?: string;
     sqlId?: string;
     url?: string;
-    restFun?: (params: SipSqlParam) => Observable<any>;
+    restFun?: (this: MinitableManager<T>, params: SipSqlParam) => Observable<any>;
     pageSize?: number;
     multiSelect?: boolean;
     pageIndex?: number;
@@ -94,6 +94,8 @@ export class MinitableManager<T=any> implements IMinitableManager<T> {
     get $table(): MinitableComponent {
         return this._table;
     }
+
+    restFun: (this: MinitableManager<T>, params: SipSqlParam) => Observable<any> = null;
 
     onInit() { };
 
@@ -368,8 +370,6 @@ export class MinitableComponent extends SipComponent {
     @Output() onLoaded = new EventEmitter<Observable<SipRestSqlRet>>();
     @Output() onCompleted = new EventEmitter();
 
-    restFun?: Function;
-
     //endregion 事件
 
     //#region datas and rows
@@ -417,7 +417,8 @@ export class MinitableComponent extends SipComponent {
         this._loading = true;
         this._allSelected = false;
         this._indeterminate = false;
-        if (!this.sqlId && !this.url && !this.restFun) {
+        let restFun = this._manager.restFun;
+        if (!this.sqlId && !this.url && !restFun) {
             setTimeout(() => {
                 this._loading = false;
                 this.total = this.datas ? this.datas.length : 0;
@@ -447,7 +448,7 @@ export class MinitableComponent extends SipComponent {
             owner: this
         };
 
-        let rest = this.restFun ? this.restFun(sqlParams) : this.$httpSrv.sql(sqlParams);
+        let rest = restFun ? restFun.call(this._manager, sqlParams) : this.$httpSrv.sql(sqlParams);
         this.onLoaded.emit(rest);
         rest.subscribe((rs) => {
             this.datas = rs.datas || [];
