@@ -726,15 +726,17 @@ export interface ISipFormGroup<T=any> extends FormGroup {
     [key: string]: any;
 }
 
-export function SipFormGroup(model: any, validators?: { [key: string]: any }, extra?: { [key: string]: any }) {
+export function SipFormGroup<T>(model: ((this:T)=>any) | object, validators?: { [key: string]: any } | ((this:T)=>{ [key: string]: any }), extra?: { [key: string]: any } | ((this:T)=>{ [key: string]: any })) {
     return function (target: any, propKey: string) {
 
         _pushEvent(target, 'sipOnConstructor', function () {
             let valids = {};
             let modelObj = {};
-            Lib.eachProp(model, function (item, name) {
-                if (validators[name])
-                    valids[name] = [item, validators[name]];
+            let modelThis = Lib.isFunction(model) ? (model as Function).call(this) : (model || {});
+            let validatorsTemp = Lib.isFunction(validators) ? (validators as Function).call(this) : (validators || {});
+            Lib.eachProp(modelThis, function (item, name) {
+                if (validatorsTemp[name])
+                    valids[name] = [item, validatorsTemp[name]];
                 else
                     valids[name] = [item];
                 Object.defineProperty(modelObj, name, {
@@ -749,8 +751,9 @@ export function SipFormGroup(model: any, validators?: { [key: string]: any }, ex
                     }
                 });
             }, this);
-            let formGroup: FormGroup = this.$formBuilder.group(valids, extra);
-            Lib.eachProp(model, function (item, name) {
+            let extraTemp = Lib.isFunction(extra) ? (extra as Function).call(this) : extra;
+            let formGroup: FormGroup = this.$formBuilder.group(valids, extraTemp);
+            Lib.eachProp(modelThis, function (item, name) {
                 Object.defineProperty(formGroup, '$' + name, {
                     enumerable: true, configurable: false,
                     get: function () {

@@ -1,6 +1,10 @@
 
 # 更新
 
+## 0.2.2 (none)
+
+* OPT SipFormGroup
+
 ## 0.2.1
 
 * Fix SimpleInterceptor
