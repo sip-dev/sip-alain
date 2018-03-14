@@ -772,7 +772,8 @@ export function SipFormGroup<T>(model: ((this:T)=>any) | object, validators?: { 
             });
             Object.defineProperty(formGroup, '$toJSONObject', {
                 enumerable: true, configurable: false,
-                get: function () {
+                writable:false,
+                value: function () {
                     let obj = Lib.extend({}, this.$model);
                     return obj;
                 }

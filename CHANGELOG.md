@@ -1,9 +1,10 @@
 
 # 更新
 
-## 0.2.3 (none)
+## 0.2.3
 
 * OPT: MinitTable RestFun
+* FIX: FIX: SipFormGroup $toJSONObject
 
 ## 0.2.2
 
