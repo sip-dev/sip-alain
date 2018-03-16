@@ -74,6 +74,10 @@ export abstract class SipAlainConfig {
          */
         dict: string;
         /**
+         * 字典接口的connstr, 默认为:boss
+         */
+        dictConnstr?:string;
+        /**
          * rest 数据结构改造
          */
         map: (rs) => IConfigResetMapRet;

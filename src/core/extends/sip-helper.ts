@@ -676,7 +676,7 @@ export function SipRestDictDef<T=any>(params: ISipRestDictDefParams) {
                 return function (options?: any): any {
                     let tempParams: ISipRestDictDefParams = Lib.extend({ }, params, options);
                     let tempCode: string = tempParams.code || params.code;
-                    let tempConStr: string = tempParams.code || params.conStr;
+                    let tempConStr: string = tempParams.conStr || params.conStr;
 
                     let httpSrv: SipRestService = this.$httpSrv;
                     let obs: Observable<any> = httpSrv.dict(tempCode, tempConStr, tempParams);;

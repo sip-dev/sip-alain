@@ -285,10 +285,9 @@ export class SipRestService {
             .catch(this.makeCatchData);
     }
 
-
     dict(code: string, conStr?: string, p?: SipRestParam): Observable<SipRestRet<ISipRestDict[]>> {
         p = Lib.extend({}, p);
-        p.params = { dictionaryCode: code, conStr: conStr || 'boss' };
+        p.params = { dictionaryCode: code, conStr: conStr || this.config.rest.dictConnstr || 'boss' };
         return this.get(this.config.rest.dict, p);
     }
 

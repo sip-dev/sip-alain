@@ -4,6 +4,7 @@
 ## 0.2.4 (none)
 
 * FIX: MiniTable onSelectChanged.emit
+* FIX: rest dict conStr
 
 ## 0.2.3
 
