@@ -397,7 +397,7 @@ export class MinitableComponent extends SipComponent {
         });
         this._rows = rows;
         this._datas = value;
-        setTimeout(() => this.onCompleted.emit(), 50);
+        setTimeout(() => { this._checkSelectChange(); this.onCompleted.emit(); }, 50);
     }
 
     //#endregion
@@ -518,17 +518,22 @@ export class MinitableComponent extends SipComponent {
         return row && row.data;
     }
 
-    private _select_org: string;
     _refChecked() {
         const checkedCount = this.rows.filter(w => w.selected).length;
         this._allSelected = checkedCount === this.rows.length;
         this._indeterminate = this._allSelected ? false : checkedCount > 0;
+        this._checkSelectChange();
+    }
+
+    private _select_org = '';
+    private _checkSelectChange() {
         let selectRows = this.selectRows;
         let selectIndexs = selectRows.map(item => item.index);
         if (selectIndexs.join(',') != this._select_org) {
             this._select_org = selectIndexs.join(',');
             this.onSelectChanged.emit(selectRows);
         }
+
     }
 
     //#endregion

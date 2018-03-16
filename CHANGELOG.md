@@ -1,6 +1,10 @@
 
 # 更新
 
+## 0.2.4 (none)
+
+* FIX: MiniTable onSelectChanged.emit
+
 ## 0.2.3
 
 * OPT: MinitTable RestFun
