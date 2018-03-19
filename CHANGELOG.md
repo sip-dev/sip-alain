@@ -1,9 +1,9 @@
 
 # 更新
 
-## 0.2.4 (none)
+## 0.2.4
 
-* FIX: MiniTable onSelectChanged.emit
+* FIX: MiniTable onSelectChanged
 * FIX: rest dict conStr
 * OPT: Minitable Filter
 
