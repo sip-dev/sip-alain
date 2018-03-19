@@ -14,13 +14,16 @@
                 <nz-dropdown [nzTrigger]="'click'" *ngIf="column.filterItems" >
                     <i class="anticon anticon-filter" nz-dropdown></i>
                     <ul nz-menu>
-                        <li nz-menu-item *ngFor="let filter of column.filterItems">
-                            <label nz-checkbox [(ngModel)]="filter._filtersel">
-                                <span>{{filter[column.filterText]}}</span>
+                        <li nz-menu-item *ngFor="let filter of column.filterItems"
+                            [class.ant-dropdown-menu-item-selected]="filter._filtersel">
+                            <span *ngIf="filterSingle"
+                                (click)="_filterSingleChange(column, filter)">{{filter[column.filterTextName]}}</span>
+                            <label *ngIf="!filterSingle" nz-checkbox [(ngModel)]="filter._filtersel">
+                                <span>{{filter[column.filterTextName]}}</span>
                             </label>
                         </li>
                     </ul>
-                    <div nz-table-filter class="text-center">
+                    <div nz-table-filter class="text-center" *ngIf="!filterSingle">
                         <span nz-table-filter-confirm (click)="_filter(column)">确定</span>
                         <span nz-table-filter-clear >取消</span>
                     </div>

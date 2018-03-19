@@ -5,6 +5,7 @@
 
 * FIX: MiniTable onSelectChanged.emit
 * FIX: rest dict conStr
+* OPT: Minitable Filter
 
 ## 0.2.3
 

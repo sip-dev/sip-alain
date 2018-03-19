@@ -121,6 +121,8 @@ export abstract class SipAlainConfig {
          * 选择模式，分别是操作模式(operate)和选择模式(select)
          */
         selectMode: string;
+        /**是否单过滤, 默认true */
+        filterSingle?:boolean;
     };
 
 }

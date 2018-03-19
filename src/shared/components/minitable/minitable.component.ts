@@ -44,6 +44,7 @@ export interface IMinitableManager<T=any> {
     pageIndex?: number;
     /**选择模式，操作模式(operate)或选择模式(select)，默认operate */
     selectMode?: string;
+    filterSingle?:boolean;
     /**快捷菜单定义 */
     contextmenu?: (this: MinitableManager<T>, menu: IContextMenu, row: MiniTableRow<T>[]) => void;
 
@@ -94,6 +95,31 @@ export class MinitableManager<T=any> implements IMinitableManager<T> {
     get $table(): MinitableComponent {
         return this._table;
     }
+
+    /**列的下拉过滤 */
+    filters?: {
+        [prop: string]: {
+            /**下拉数据 */
+            items?: any[],
+            /**显示字段名称 */
+            textName?: string,
+            /**值字段名称 */
+            valueName?: string,
+            /**默认值 */
+            defaultValue?: any[],
+            /**过滤处理事件 */
+            onFilter?: (this: MinitableManager<T>, p?: {
+                /**要过滤的值 */
+                values: any[];
+                /**下拉数据 */
+                items: any[];
+                /**列信息 */
+                column: MinicolumnComponent
+            }) => void;
+        }
+    };
+
+    filterSingle?:boolean;
 
     restFun: (this: MinitableManager<T>, params: SipSqlParam) => Observable<any> = null;
 
@@ -271,11 +297,18 @@ export class MinitableManager<T=any> implements IMinitableManager<T> {
             };
             Lib.eachProp(p.filters, (item, name) => {
                 let col = getCol(name);
-                col.filterItems = item.items;
-                item.defaultValue && (col.filterDefault = item.defaultValue);
-                item.valueName && (col.filterValue = item.valueName);
-                item.textName && (col.filterText = item.textName);
+
+                item.valueName || (item.valueName = 'value');
+                item.textName || (item.textName = 'text');
+
+                Lib.syncProperty(col, 'filterValueName', item, 'valueName');
+                Lib.syncProperty(col, 'filterTextName', item, 'textName');
+                Lib.syncProperty(col, 'filterDefault', item, 'defaultValue');
+
                 item.onFilter && (col.filterCallback = function () { return item.onFilter.apply(this, arguments); }.bind(this));
+
+                Lib.syncProperty(col, 'filterItems', item, 'items');
+
             });
         }
     }
@@ -326,11 +359,14 @@ export class MinitableComponent extends SipComponent {
 
         let manager: any = this._manager;
         if (manager) {
+            manager.onInit();
             manager.$pushFilters()
             this._hasContextmenu = !!manager.contextmenu;
+            this.isInit = true;
             //第一次加载数据
             manager.autoLoad && this._load();
         } else {
+            this.isInit = true;
             //第一次加载数据
             this._load();
         }
@@ -351,7 +387,6 @@ export class MinitableComponent extends SipComponent {
     @Input() url = '';
     @Input() connstr = '';
     @Input() sqlId = '';
-
     @Input() pageIndex = 1;
     @Input() pageSize = this.$config.minitable.pageSize;
     @Input() total = 0; // mock total
@@ -361,6 +396,8 @@ export class MinitableComponent extends SipComponent {
      * 选择模式，分别是操作模式(operate)和选择模式(select)，默认operate
      */
     @Input() selectMode = this.$config.minitable.selectMode;
+
+    @Input() filterSingle = this.$config.minitable.filterSingle !== false;
 
     //#endregion 参数
 
@@ -403,12 +440,9 @@ export class MinitableComponent extends SipComponent {
     //#endregion
 
     private isInit = false;
-    @SipNgInit()
-    private init() {
-        this.isInit = true;
-        if (this._manager)
-            this._manager.onInit();
-    }
+    // @SipNgInit()
+    // private init() {
+    // }
 
     _loading = false;
     _load() {
@@ -573,7 +607,7 @@ export class MinitableComponent extends SipComponent {
 
     _filter(column: MinicolumnComponent) {
         let items = column.selectFilterItems;
-        let values = items.map(item => item[column.filterValue]);
+        let values = items.map(item => item[column.filterValueName]);
         let p = {
             values: values,
             items: items,
@@ -581,6 +615,14 @@ export class MinitableComponent extends SipComponent {
         };
         column.filterCallback && column.filterCallback(p)
         this.onFilter.emit(p);
+    }
+
+    _filterSingleChange(column: MinicolumnComponent, filter: any) {
+        // if (filter._filtersel) return;
+        let  filterList = column.filterItems;
+        filterList.forEach((p) => { p._filtersel = false; });
+        filter._filtersel = true;
+        this._filter(column);
     }
 
     //#endregion

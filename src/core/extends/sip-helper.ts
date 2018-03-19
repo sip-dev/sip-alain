@@ -2,7 +2,7 @@ import { ViewContainerRef, Injector, Type, ComponentRef, ComponentFactoryResolve
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from "@angular/router";
 import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
-import { Lib } from 'sip-lib';
+import { Lib, breakOff } from 'sip-lib';
 import { SipRestService, SipHttpOptions, SipRestRet, SipRestSqlRet, ISipRestDict } from '../services/sip-rest.service';
 import { MenuService, Menu } from "@delon/theme";
 import { Subject } from "rxjs/Subject";
@@ -990,10 +990,10 @@ export class SipUiBase extends SipParent implements OnInit, OnDestroy, OnChanges
             };
         }
         this._$showPreLoad.list.push(obs);
-        return obs.breakOff(() => {
+        return obs.pipe(breakOff(() => {
             this._$checkPreLoad(obs);
             return false;
-        });
+        }));
     }
     @SipNgInit()
     private _$sip_init() {

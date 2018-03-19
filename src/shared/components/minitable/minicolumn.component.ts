@@ -54,26 +54,53 @@ export class MinicolumnComponent {
 
 	//#region filter
 
+	private _filterItems:any[];
+	public get filterItems():any[]{
+		return this._filterItems;
+	}
 	//筛选菜单, [{value:'', text:'全部'}]
-	@Input() filterItems: any[] = null;
+	@Input()
+	public set filterItems(p:any[]){
+		this._filterItems = p;
+		this.filterValues = this.filterDefault;
+	}
 	//显示字段, text
-	@Input() filterText = 'text';
+	@Input() filterTextName = 'text';
 	//取值字段, value
-	@Input() filterValue = 'value';
+	@Input() filterValueName = 'value';
+	@Input() filterDefault: any[];
 	//筛选菜单callback:function(item){}
-	@Input() filterCallback: (p:{values: any[]; items: any[]; column: MinicolumnComponent}) => void = Lib.noop;
-	//筛选菜单默认值
-	@Input() filterDefault = '';
+	@Input() filterCallback: (p: { values: any[]; items: any[]; column: MinicolumnComponent }) => void = Lib.noop;
+
+	public get filterValues(): any[] {
+		let vals = this.selectFilterItems.map((p) => { return p[this.filterValueName]; });
+		return vals;
+	}
+	@Input()
+	public set filterValues(values: any[]) {
+		if (this.filterItems) {
+			let has = !!values && values.length > 0;
+			this.filterItems.forEach((p) => {
+				p._filtersel = has && values.indexOf(p[this.filterValueName]) >= 0;
+			})
+		}
+		let p = {
+			values: values || [],
+			items: this.filterItems || [],
+			column: this
+		};
+		this.filterCallback && this.filterCallback(p)
+	}
 
 	getFilterItem(value: any) {
 		let filterItems = this.filterItems;
-		var index = filterItems ? filterItems.findIndex(item => item[this.filterValue] == value) : -1;
+		var index = filterItems ? filterItems.findIndex(item => item[this.filterValueName] == value) : -1;
 		return index >= 0 ? filterItems[index] : null;
 	}
 
 	getFilterText(value: any) {
 		let item = this.getFilterItem(value);
-		return item && item[this.filterText] || value;
+		return item && item[this.filterTextName] || value;
 	}
 
 	get selectFilterItems(): any[] {

@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
 
-import { Lib } from 'sip-lib';
+import { Lib, breakOff, cacheToObject } from 'sip-lib';
 import { HttpHeaders } from '@angular/common/http';
 import { SipAlainConfig } from '../extends/sip-alain-config';
 
@@ -189,13 +189,13 @@ export class SipRestService {
                     url: url,
                     params: p && p.params
                 };
-                http = http.cacheToObject(owner, key);
+                http = http.pipe(cacheToObject(owner, key));
             }
 
             if (('$isDestroyed' in owner) || ('isDestroyed' in owner)) {
-                http = http.breakOff(function () {
+                http = http.pipe(breakOff(function () {
                     return owner.$isDestroyed || owner.isDestroyed;
-                });
+                }));
             }
 
             if ('$showPreLoad' in owner)
