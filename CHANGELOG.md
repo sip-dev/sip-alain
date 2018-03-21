@@ -1,6 +1,10 @@
 
 # 更新
 
+## 0.2.5 (none)
+
+* ADD: column template #title
+
 ## 0.2.4
 
 * FIX: MiniTable onSelectChanged
