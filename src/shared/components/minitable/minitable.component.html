@@ -7,9 +7,10 @@
                 </label>
             </th>
             <th nz-th *ngFor="let column of columnQueryList" [nzWidth]="column.width">
-                <span>
+                <span *ngIf="!column._titleRef">
                     {{column.title || column.name}}
                 </span>
+                <ng-container *ngIf="column._titleRef" [ngTemplateOutlet]="column._titleRef" [ngTemplateOutletContext]="{column:column}"></ng-container>
                 <nz-table-sort *ngIf="column.sortable"  [(nzValue)]="column._sortOrder" (nzValueChange)="_sortIn($event)"></nz-table-sort>
                 <nz-dropdown [nzTrigger]="'click'" *ngIf="column.filterItems" >
                     <i class="anticon anticon-filter" nz-dropdown></i>

@@ -12,6 +12,7 @@ export class MinicolumnComponent {
 	@ContentChild('formatter') formatter: TemplateRef<any>;
 	//编辑用
 	@ContentChild('editor') editor: TemplateRef<any>;
+	@ContentChild('title') _titleRef: TemplateRef<any>;
 
 	//字段名称
 	@Input() name = '';
