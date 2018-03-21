@@ -6,6 +6,7 @@
 * FIX: MiniTable onSelectChanged
 * FIX: rest dict conStr
 * OPT: Minitable Filter
+* ADD: column template #title
 
 ## 0.2.3
 
