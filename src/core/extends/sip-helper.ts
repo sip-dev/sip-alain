@@ -621,7 +621,7 @@ export function SipRestSqlDef<T=any>(params: ISipRestSqlDefParams<T>) {
             configurable: false,
             get: function () {
                 return function (p?: any, options?: any): any {
-                    let tempParams: ISipRestSqlDefParams<T> = Lib.extend({ pageSize: 10 }, params, options);
+                    let tempParams: ISipRestSqlDefParams<T> = Lib.extend({}, params, options);
                     tempParams.searchparam = Lib.extend({}, tempParams.searchparam, p);
                     let httpSrv: SipRestService = this.$httpSrv;
                     let url = tempParams.url;
@@ -629,7 +629,7 @@ export function SipRestSqlDef<T=any>(params: ISipRestSqlDefParams<T>) {
                     let obs: Observable<any>;
                     switch (sqlType) {
                         case SipRestSqlType.PageList:
-                            obs = httpSrv.sql(tempParams);
+                            obs = httpSrv.sql(Lib.extend({ pageSize: 10 }, tempParams));
                             break;
                         case SipRestSqlType.Entity:
                             obs = httpSrv.sqlEntity(tempParams);
@@ -645,7 +645,7 @@ export function SipRestSqlDef<T=any>(params: ISipRestSqlDefParams<T>) {
                             break;
                         case SipRestSqlType.List:
                         default:
-                            obs = httpSrv.sqlList(tempParams);
+                            obs = httpSrv.sqlList(Lib.extend({ pageSize: 999 }, tempParams));
                             break;
                     }
                     if (tempParams.map)
