@@ -5,8 +5,7 @@ import { MinicolumnComponent } from './minicolumn.component';
 import { ContextmenuComponent, IContextMenu } from '../menu/contextmenu.component';
 import { Lib } from 'sip-lib';
 import { SipComponent, SipNgDestroy, SipNgInit } from '../../../core/extends/sip-helper';
-import { SipRestSqlRet } from '../../../core/services/sip-rest.service';
-import { SipSqlParam } from '../../../../public_api';
+import { SipRestSqlRet, SipSqlParam } from '../../../core/services/sip-rest.service';
 
 export interface MiniTableRow<T=any> {
     /**是否选择 */
@@ -44,7 +43,7 @@ export interface IMinitableManager<T=any> {
     pageIndex?: number;
     /**选择模式，操作模式(operate)或选择模式(select)，默认operate */
     selectMode?: string;
-    filterSingle?:boolean;
+    filterSingle?: boolean;
     /**快捷菜单定义 */
     contextmenu?: (this: MinitableManager<T>, menu: IContextMenu, row: MiniTableRow<T>[]) => void;
 
@@ -119,7 +118,7 @@ export class MinitableManager<T=any> implements IMinitableManager<T> {
         }
     };
 
-    filterSingle?:boolean;
+    filterSingle?: boolean;
 
     restFun: (this: MinitableManager<T>, params: SipSqlParam) => Observable<any> = null;
 
@@ -297,6 +296,7 @@ export class MinitableManager<T=any> implements IMinitableManager<T> {
             };
             Lib.eachProp(p.filters, (item, name) => {
                 let col = getCol(name);
+                if (!col) throw new Error('没有列：' + name);
 
                 item.valueName || (item.valueName = 'value');
                 item.textName || (item.textName = 'text');
@@ -471,18 +471,24 @@ export class MinitableComponent extends SipComponent {
         Lib.extend(searchParams, this._searchParams);
 
         let sqlParams: SipSqlParam = {
-            url: this.url,
-            connstr: this.connstr,
-            sqlId: this.sqlId,
             sortName: sorts.length > 0 ? sorts.join(',') : '',
             pageSize: this.pageSize,
             pageIndex: this.pageIndex,
             sortOrder: '',
-            searchparam: searchParams,
-            owner: this
+            searchparam: searchParams
         };
+        let rest;
+        if (restFun){
+            rest = restFun.call(this._manager, sqlParams);
+        } else {
+            Lib.extend(sqlParams, {
+                url: this.url,
+                connstr: this.connstr,
+                sqlId: this.sqlId,
+            });
+            rest = this.$httpSrv.sql(sqlParams);
+        }
 
-        let rest = restFun ? restFun.call(this._manager, sqlParams) : this.$httpSrv.sql(sqlParams);
         this.onLoaded.emit(rest);
         rest.subscribe((rs) => {
             this.datas = rs.datas || [];
@@ -619,7 +625,7 @@ export class MinitableComponent extends SipComponent {
 
     _filterSingleChange(column: MinicolumnComponent, filter: any) {
         // if (filter._filtersel) return;
-        let  filterList = column.filterItems;
+        let filterList = column.filterItems;
         filterList.forEach((p) => { p._filtersel = false; });
         filter._filtersel = true;
         this._filter(column);
