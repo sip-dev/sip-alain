@@ -4,8 +4,9 @@
 ## 0.2.5 (none)
 
 * ADD: column template #title
+* ADD：minitable onFilter支持默认处理
 * FIX: minitable restFun
-* 添加：onFilter支持默认处理
+* FIX：minitable 选择列点击问题
 
 ## 0.2.4
 

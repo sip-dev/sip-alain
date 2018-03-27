@@ -34,7 +34,7 @@
     </thead>
     <tbody nz-tbody>
         <tr nz-tbody-tr *ngFor="let row of nzTable.data">
-            <td nz-td [nzCheckbox]="true" *ngIf="multiSelect">
+            <td nz-td [nzCheckbox]="true" *ngIf="multiSelect" (mousedown)="_tiggerRowSelBySel(row, $event)">
                 <label nz-checkbox [(ngModel)]="row.selected" (ngModelChange)="_refChecked()">
                 </label>
             </td>

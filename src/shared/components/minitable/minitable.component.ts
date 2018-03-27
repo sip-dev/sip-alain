@@ -537,6 +537,12 @@ export class MinitableComponent extends SipComponent {
         this._refChecked();
     }
 
+    _tiggerRowSelBySel(row: MiniTableRow, event:any){
+        if (/td/i.test(event.target.tagName)){
+            row.selected = !row.selected
+        }
+    }
+
     selectIndex(indexs: number[], seleced?: boolean) {
         if (indexs.length == 0) return;
         seleced = (seleced !== false);
