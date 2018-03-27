@@ -4,6 +4,7 @@
 ## 0.2.5 (none)
 
 * ADD: column template #title
+* FIX: minitable restFun
 
 ## 0.2.4
 
