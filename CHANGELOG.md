@@ -5,6 +5,7 @@
 
 * ADD: column template #title
 * FIX: minitable restFun
+* 添加：onFilter支持默认处理
 
 ## 0.2.4
 

@@ -305,7 +305,14 @@ export class MinitableManager<T=any> implements IMinitableManager<T> {
                 Lib.syncProperty(col, 'filterTextName', item, 'textName');
                 Lib.syncProperty(col, 'filterDefault', item, 'defaultValue');
 
-                item.onFilter && (col.filterCallback = function () { return item.onFilter.apply(this, arguments); }.bind(this));
+                col.filterCallback = (p) => {
+                    if (item.onFilter)
+                        return item.onFilter.call(this, p);
+                    else {
+                        let values = p.values;
+                        this.search({ PRDT_STATUS: values.join(',') });
+                    }
+                };
 
                 Lib.syncProperty(col, 'filterItems', item, 'items');
 
