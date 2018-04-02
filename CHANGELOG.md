@@ -5,6 +5,7 @@
 
 * ADD: column template #title
 * ADD：minitable onFilter支持默认处理
+* ADD: sip-card suport #extra
 * FIX: minitable restFun
 * FIX：minitable 选择列点击问题
 * FIX: SipRestSqlType.List pageSize = 999

@@ -8,6 +8,7 @@ import { Component, ContentChild, Input } from '@angular/core';
 				<ng-template #title><ng-container [ngTemplateOutlet]="title1"></ng-container></ng-template>
 			</ng-template>
 			<ng-template #body><ng-container [ngTemplateOutlet]="body1"></ng-container></ng-template>
+			<ng-template #extra><ng-container [ngTemplateOutlet]="extra1"></ng-container></ng-template>
 		</nz-card>
 	`,
     styles:[]
@@ -15,6 +16,7 @@ import { Component, ContentChild, Input } from '@angular/core';
 export class CardComponent {
 
 	@ContentChild('body') body1:any;
+	@ContentChild('extra') extra1:any;
 	@ContentChild('title') title1:any;
 	@Input() bordered:boolean = true;
 	@Input() noHovering:boolean = false;
