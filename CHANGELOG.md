@@ -1,7 +1,7 @@
 
 # 更新
 
-## 0.2.5 (none)
+## 0.2.5
 
 * ADD: column template #title
 * ADD：minitable onFilter支持默认处理
