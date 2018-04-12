@@ -3,6 +3,9 @@
 
 ## 0.3.0 (none)
 
+* update ng-alain 1.0.0-beta.4
+* update ng-zorro-antd 0.7.0-beta.2
+
 ## 0.2.5
 
 * ADD: column template #title
