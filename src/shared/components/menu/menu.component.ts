@@ -10,8 +10,7 @@ import { IMenuItem } from './menu-item';
 		<ul nz-menu 
 			[nzMode]="mode"
 			[nzTheme]="theme"
-			[nzInlineCollapsed]="inlineCollapsed"
-			[nzClickActive]="active">
+			[nzInlineCollapsed]="inlineCollapsed">
 			<ng-template #itemtmpl let-item="item">
 				<li *ngIf="showItem(item)" nz-menu-item
 					[nzSelected]="item.selected"
@@ -54,7 +53,6 @@ export class MenuComponent implements MenuChildren {
 	@Input() theme = 'light';//	主题颜色	string: light dark		light
 	@Input() mode = 'vertical';//	菜单类型，现在支持垂直、水平、和内嵌模式三种	string: vertical horizontal inline		vertical
 	@Input() inlineCollapsed = false;//	控制内嵌菜单的缩起/展开。	Boolean		false
-	@Input() active = true;//	点击后是否选中子菜单	Boolean		true
 	@Input() width = '130px';
 
 	@Input() style: any;
