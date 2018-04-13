@@ -25,10 +25,10 @@ npm install
 # Build
 npm run build
 
-# Publish
+# Build && Publish
 npm run npmpublish
 
-# totest
+# Build && totest
 # 配置gulpfile.js里的路径
 npm run totest
 ```
