@@ -1,5 +1,4 @@
 
-export * from 'sip-lib';
 export * from './src/core/extends/sip-helper';
 export * from './src/core/extends/sip-alain-config';
 export * from './src/core/extends/sip-layout';

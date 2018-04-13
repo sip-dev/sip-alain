@@ -1,5 +1,5 @@
 import { Component, ContentChild, Input, ViewContainerRef, Optional } from '@angular/core';
-import { NzModalService, NzModalSubject } from 'ng-zorro-antd';
+import { NzModalService, NzModalRef } from 'ng-zorro-antd';
 import { ModalHeaderComponent } from './modal-header.component';
 import { ModalBodyComponent } from './modal-body.component';
 import { ModalFooterComponent } from './modal-footer.component';
@@ -25,7 +25,7 @@ export class ModalComponent extends SipComponent {
     @ContentChild(ModalBodyComponent) _body: ModalBodyComponent;
     @ContentChild(ModalFooterComponent) _footer: ModalFooterComponent;
 
-    private _nzModal: NzModalSubject;
+    private _nzModal: NzModalRef;
 
     @Input() width = 'auto';
     @Input() height = 'auto';
@@ -49,14 +49,14 @@ export class ModalComponent extends SipComponent {
         if (this._body)
             this._body.height = this.height;
         setTimeout(() => {
-            this._nzModal = this._modalSrv.open({
-                title: this._header.content as any,
-                content: this._body.content as any,
-                footer: this._footer.content as any,
-                maskClosable: false,
-                width: this.width
+            this._nzModal = this._modalSrv.create({
+                nzTitle: this._header.content as any,
+                nzContent: this._body.content as any,
+                nzFooter: this._footer.content as any,
+                nzMaskClosable: false,
+                nzWidth: this.width
             });
-            this._nzModal.on('onDestroy', () => {
+            this._nzModal.afterClose.subscribe((p)=>{
                 this._nzModal = null;
                 if (this.$isDestroyed) return;
                 this.$business.$publish('ModalComponent.onDestroy');

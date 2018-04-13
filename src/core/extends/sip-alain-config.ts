@@ -1,8 +1,7 @@
-import { Lib } from 'sip-lib';
-import { Type, Injector } from '@angular/core';
-import { HttpRequest, HttpHandler, HttpClient } from '@angular/common/http';
-import { AuthOptions } from '@delon/auth';
-import { ReuseTabMatchMode } from '@delon/abc';
+import { HttpClient, HttpHandler, HttpRequest } from '@angular/common/http';
+import { Type } from '@angular/core';
+import { AdPageHeaderConfig, ReuseTabMatchMode } from '@delon/abc';
+import { DelonAuthConfig } from '@delon/auth';
 
 export interface IConfigResetMapRet {
     /**版本号 */
@@ -22,7 +21,6 @@ export interface IConfigResetMapRet {
 export abstract class SipAlainConfig {
 
     environment?: {
-        chore: boolean;
         SERVER_URL: string;
         production: boolean;
         hmr: boolean;
@@ -41,7 +39,8 @@ export abstract class SipAlainConfig {
     startup: () => Promise<any>;
     intercept: (req: HttpRequest<any>, next: HttpHandler) => any;
 
-    authOptions?: AuthOptions;
+    authOptions?: DelonAuthConfig;
+    pageHeaderConfig?:AdPageHeaderConfig;
 
     reuseTab?: {
         use:boolean;

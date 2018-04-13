@@ -1,14 +1,13 @@
-import { Injectable, Injector } from '@angular/core';
-import { Router } from '@angular/router';
+import { Inject, Injectable, Injector } from '@angular/core';
+import { ReuseTabService } from '@delon/abc';
+import { ACLService } from '@delon/acl';
+import { ALAIN_I18N_TOKEN, MenuService, SettingsService, TitleService } from '@delon/theme';
+import { TranslateService } from '@ngx-translate/core';
 import { zip } from 'rxjs/observable/zip';
 import { catchError } from 'rxjs/operators';
-import { TranslateService } from '@ngx-translate/core';
-import { MenuService, SettingsService, TitleService } from '@delon/theme';
-import { ACLService } from '@delon/acl';
-import { I18NService } from '../i18n/i18n.service';
 import { SipAlainConfig } from '../../core/extends/sip-alain-config';
 import { SipRestService } from '../../core/services/sip-rest.service';
-import { ReuseTabService } from '@delon/abc';
+import { I18NService } from '../i18n/i18n.service';
 
 /**
  * 用于应用启动时
@@ -19,14 +18,12 @@ export class StartupService {
     constructor(
         private menuService: MenuService,
         private translate: TranslateService,
-        private i18n: I18NService,
+        @Inject(ALAIN_I18N_TOKEN) private i18n: I18NService,
         private settingService: SettingsService,
         private aclService: ACLService,
         private titleService: TitleService,
         private httpClient: SipRestService,
-        private injector: Injector) {
-
-    }
+        private injector: Injector) { }
 
     load(config: SipAlainConfig): Promise<any> {
         if (config.reuseTab) {
@@ -46,7 +43,6 @@ export class StartupService {
                     return [langData, appData];
                 })
             ).subscribe(([langData, appData]) => {
-
                 // setting language data
                 this.translate.setTranslation(this.i18n.defaultLang, langData.datas);
                 this.translate.setDefaultLang(this.i18n.defaultLang);

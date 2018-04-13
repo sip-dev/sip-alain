@@ -1,8 +1,7 @@
 import { Component, Input, forwardRef } from '@angular/core';
-
-import { NzMenuComponent, NzSubMenuComponent, NzMenuGroupComponent } from 'ng-zorro-antd';
 import { MenuChildren } from './menu-children';
 import { IMenuItem } from './menu-item';
+
 
 @Component({
 	selector: 'sip-menu',
@@ -48,8 +47,7 @@ import { IMenuItem } from './menu-item';
 	</div>
 	`,
 	styles: [],
-	providers: [NzMenuComponent, NzSubMenuComponent, NzMenuGroupComponent,
-		{ provide: MenuChildren, useExisting: forwardRef(() => MenuComponent) }],
+	providers: [{ provide: MenuChildren, useExisting: forwardRef(() => MenuComponent) }],
 })
 export class MenuComponent implements MenuChildren {
 
@@ -61,26 +59,26 @@ export class MenuComponent implements MenuChildren {
 
 	@Input() style: any;
 
-	private _menuItem:IMenuItem;
+	private _menuItem: IMenuItem;
 
-	showItem(item:IMenuItem){
+	showItem(item: IMenuItem) {
 		return !item.disabled && !item.group && !item.divider && !item.children;
 	}
 
-	showItemSub(item:IMenuItem){
+	showItemSub(item: IMenuItem) {
 		return !item.disabled && !item.group && item.children;
 	}
 
-	showItemGroup(item:IMenuItem){
+	showItemGroup(item: IMenuItem) {
 		return !item.disabled && item.group;
 	}
 
-	showItemDivider(item:IMenuItem){
+	showItemDivider(item: IMenuItem) {
 		return !item.disabled && item.divider;
 	}
 
-	@Input() datas:IMenuItem[] = [];
-	addChild(menu:IMenuItem){
+	@Input() datas: IMenuItem[] = [];
+	addChild(menu: IMenuItem) {
 		this.datas.push(menu);
 	}
 

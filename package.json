@@ -16,7 +16,8 @@
     "test": "ng test -sr -sm=false",
     "build": "ng-packagr -p package.json",
     "npmpublish": "npm run build && npm pu ./dist",
-    "totest": "npm run build && gulp totest"
+    "copytotest":"gulp totest",
+    "totest": "npm run build && npm run copytotest"
   },
   "ngPackage": {
     "$schema": "./node_modules/ng-packagr/ng-package.schema.json",

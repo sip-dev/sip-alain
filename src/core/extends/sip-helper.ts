@@ -1,19 +1,16 @@
-import { ViewContainerRef, Injector, Type, ComponentRef, ComponentFactoryResolver, TemplateRef, ViewRef, forwardRef, EventEmitter, OnInit, OnDestroy, AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, OnChanges, DoCheck } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot, Router } from "@angular/router";
-import { Observable } from "rxjs/Observable";
-import { Subscription } from "rxjs/Subscription";
-import { Lib, breakOff } from 'sip-lib';
-import { SipRestService, SipHttpOptions, SipRestRet, SipRestSqlRet, ISipRestDict } from '../services/sip-rest.service';
-import { MenuService, Menu } from "@delon/theme";
-import { Subject } from "rxjs/Subject";
-import { HttpHeaders, HttpParams } from "@angular/common/http";
-import { map } from 'rxjs/operators';
-import { ReuseTabService } from "@delon/abc";
+import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, ComponentFactoryResolver, ComponentRef, DoCheck, EventEmitter, Injector, OnChanges, OnDestroy, OnInit, TemplateRef, Type, ViewContainerRef, ViewRef } from '@angular/core';
 import { FormBuilder, FormGroup } from "@angular/forms";
-
-import { SipEventService } from '../services/sip-event.service';
+import { ActivatedRoute, ActivatedRouteSnapshot, Router } from "@angular/router";
+import { ReuseTabService } from "@delon/abc";
+import { Menu, MenuService } from "@delon/theme";
+import { Observable } from "rxjs/Observable";
+import { Subject } from "rxjs/Subject";
+import { Subscription } from "rxjs/Subscription";
+import { map } from 'rxjs/operators';
+import { Lib, breakOff } from 'sip-lib';
 import { SipAppContainerService } from '../services/sip-app-container.service';
-import { SipLayout } from "./sip-layout";
+import { SipEventService } from '../services/sip-event.service';
+import { ISipRestDict, SipHttpOptions, SipRestRet, SipRestService, SipRestSqlRet } from '../services/sip-rest.service';
 import { SipAlainConfig } from './sip-alain-config';
 
 let undef;
@@ -566,7 +563,7 @@ export function SipRestDef<T=any>(params: ISipRestDefParams<T>) {
             configurable: false,
             get: function () {
                 return function (p?: any, options?: any): any {
-                    let tempParams: ISipRestDefParams<T> = Lib.extend({ }, params, options);
+                    let tempParams: ISipRestDefParams<T> = Lib.extend({}, params, options);
                     let tmplP = Lib.extend({}, params.params, p);
                     tempParams.params = tmplP;
                     let httpSrv: SipRestService = this.$httpSrv;
@@ -674,7 +671,7 @@ export function SipRestDictDef<T=any>(params: ISipRestDictDefParams) {
             configurable: false,
             get: function () {
                 return function (options?: any): any {
-                    let tempParams: ISipRestDictDefParams = Lib.extend({ }, params, options);
+                    let tempParams: ISipRestDictDefParams = Lib.extend({}, params, options);
                     let tempCode: string = tempParams.code || params.code;
                     let tempConStr: string = tempParams.conStr || params.conStr;
 
@@ -726,7 +723,7 @@ export interface ISipFormGroup<T=any> extends FormGroup {
     [key: string]: any;
 }
 
-export function SipFormGroup<T>(model: ((this:T)=>any) | object, validators?: { [key: string]: any } | ((this:T)=>{ [key: string]: any }), extra?: { [key: string]: any } | ((this:T)=>{ [key: string]: any })) {
+export function SipFormGroup<T>(model: ((this: T) => any) | object, validators?: { [key: string]: any } | ((this: T) => { [key: string]: any }), extra?: { [key: string]: any } | ((this: T) => { [key: string]: any })) {
     return function (target: any, propKey: string) {
 
         _pushEvent(target, 'sipOnConstructor', function () {
@@ -772,7 +769,7 @@ export function SipFormGroup<T>(model: ((this:T)=>any) | object, validators?: { 
             });
             Object.defineProperty(formGroup, '$toJSONObject', {
                 enumerable: true, configurable: false,
-                writable:false,
+                writable: false,
                 value: function () {
                     let obj = Lib.extend({}, this.$model);
                     return obj;
@@ -1318,19 +1315,17 @@ export class SipPage extends SipBusinessComponent {
     $close(p?: any) {
         if (arguments.length > 0)
             this.$uiLink.publish(p);
-
-        let layout: SipLayout = this.$injector(SipLayout);
-        if (!layout || !layout.tab) return;
+        let reuseTabSrv: ReuseTabService = this.$injector(ReuseTabService);
         let url = this.$url;
-        let tab = layout.tab;
-        let index = tab._list.findIndex(function (item) { return item && item.url == url; });
-        if (index > -1) tab.remove(index);
+        reuseTabSrv.close(url);
+
     }
 
     $closeOther() {
-        let layout: SipLayout = this.$injector(SipLayout);
-        if (!layout || !layout.tab) return;
-        layout.tab.clear();
+        let reuseTabSrv: ReuseTabService = this.$injector(ReuseTabService);
+        let url = this.$url;
+        reuseTabSrv.move(url, 0);
+        reuseTabSrv.closeRight(url, true);
     }
 
     public get $isChild(): boolean {

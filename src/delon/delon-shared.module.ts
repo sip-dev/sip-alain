@@ -4,14 +4,16 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 // delon
 import { AlainThemeModule } from '@delon/theme';
-import { AlainACLModule } from '@delon/acl';
-import { ZORROMODULES, ABCMODULES } from './delon.module';
+import { DelonABCModule } from '@delon/abc';
+import { DelonACLModule } from '@delon/acl';
 // i18n
 import { TranslateModule } from '@ngx-translate/core';
 
-// region: your componets & directives
-const COMPONENTS = [];
-const DIRECTIVES = [];
+// region: third libs
+import { NgZorroAntdModule } from 'ng-zorro-antd';
+const THIRDMODULES = [
+    NgZorroAntdModule
+];
 // endregion
 
 @NgModule({
@@ -20,29 +22,26 @@ const DIRECTIVES = [];
         FormsModule,
         RouterModule,
         ReactiveFormsModule,
-        ...ZORROMODULES,
         AlainThemeModule.forChild(),
-        ...ABCMODULES,
-        AlainACLModule
+        DelonABCModule,
+        DelonACLModule,
+        // third libs
+        ...THIRDMODULES
     ],
     declarations: [
-        // your components
-        ...COMPONENTS,
-        ...DIRECTIVES
     ],
     exports: [
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
         RouterModule,
-        ...ZORROMODULES,
         AlainThemeModule,
-        ...ABCMODULES,
+        DelonABCModule,
+        DelonACLModule,
         // i18n
         TranslateModule,
-        // your components
-        ...COMPONENTS,
-        ...DIRECTIVES
+        // third libs
+        ...THIRDMODULES,
     ]
 })
 export class DelonSharedModule { }
