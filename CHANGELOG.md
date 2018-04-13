@@ -1,7 +1,7 @@
 
 # 更新
 
-## 0.3.0 (none)
+## 0.3.0-beta.1 (none)
 
 * update ng-alain 1.0.0-beta.4
 * update ng-zorro-antd 0.7.0-beta.2

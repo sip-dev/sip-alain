@@ -32,6 +32,3 @@ npm run npmpublish
 # 配置gulpfile.js里的路径
 npm run totest
 ```
-
-## ng-alain version
-    ng-alain 0.7.1
