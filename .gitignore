@@ -43,3 +43,4 @@ yarn-error.log
 Thumbs.db
 .rpt2_cache
 .ng_pkg_build
+dist.tgz
