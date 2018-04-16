@@ -1,8 +1,7 @@
-import { Component, OnInit, ViewChild, ViewContainerRef, TemplateRef, ComponentRef, Input, ViewRef, EventEmitter, Output } from '@angular/core';
-import { IMenuItem } from './menu-item';
+import { Component, EventEmitter, Input, Output, TemplateRef, ViewChild, ViewContainerRef, ViewRef } from '@angular/core';
 import { Lib } from 'sip-lib';
-import { SipAppContainerService } from '../../../core/services/sip-app-container.service';
-import { SipComponent, SipNgInit, SipNgDestroy } from '../../../core/extends/sip-helper';
+import { SipComponent, SipNgDestroy, SipNgInit } from '../../../core/extends/sip-helper';
+import { IMenuItem } from './menu-item';
 
 export interface IContextMenu {
     width?: string;
@@ -49,11 +48,13 @@ export class ContextmenuComponent extends SipComponent {
 
     @SipNgInit()
     private _init() {
-        this.pElement = this.$vcf.element.nativeElement.parentNode;
-        if (!this.pElement) return;
-        this.pElement.addEventListener('contextmenu', this._contextmenu_fn);
-        document.documentElement.addEventListener('mousedown', this._doc_mousedown);
-   }
+        setTimeout((p) => {
+            this.pElement = this.$vcf.element.nativeElement.parentNode;
+            if (!this.pElement) return;
+            this.pElement.addEventListener('contextmenu', this._contextmenu_fn);
+            document.documentElement.addEventListener('mousedown', this._doc_mousedown);
+        }, 5);
+    }
 
     private _contextmenu_fn = (e: MouseEvent) => {
         e.preventDefault();
@@ -91,7 +92,7 @@ export class ContextmenuComponent extends SipComponent {
 
     _container: ViewRef;
     show() {
-        let menu:any = {};
+        let menu: any = {};
         this.onShow.emit(menu);
         this.menu = menu;
         if (!this._container)
@@ -99,7 +100,7 @@ export class ContextmenuComponent extends SipComponent {
     }
 
     hide() {
-        if (this._container){
+        if (this._container) {
             this._container.destroy();
             this._container = null;
         }
