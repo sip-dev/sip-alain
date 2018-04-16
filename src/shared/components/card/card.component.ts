@@ -3,25 +3,25 @@ import { Component, ContentChild, Input } from '@angular/core';
 @Component({
 	selector: 'sip-card',
 	template:`
-		<nz-card [nzBordered]="bordered" [nzNoPadding]="noPadding" [nzNoHovering]="noHovering" [nzTitle]="title" [nzLoading]="loading">
-			<ng-template [ngIf]="title1">
-				<ng-template #title><ng-container [ngTemplateOutlet]="title1"></ng-container></ng-template>
-			</ng-template>
-			<ng-template #body><ng-container [ngTemplateOutlet]="body1"></ng-container></ng-template>
-			<ng-template #extra><ng-container [ngTemplateOutlet]="extra1"></ng-container></ng-template>
+		<nz-card [nzBordered]="bordered" [nzHoverable]="hoverable" [nzTitle]="_nzTitle" [nzLoading]="loading"
+			[nzExtra]="extra1">
+			<ng-template [ngTemplateOutlet]="body1"></ng-template>
 		</nz-card>
 	`,
     styles:[]
 })
 export class CardComponent {
 
+	get _nzTitle(){
+		return this.title1 || this.title;
+	}
+
 	@ContentChild('body') body1:any;
 	@ContentChild('extra') extra1:any;
 	@ContentChild('title') title1:any;
 	@Input() bordered:boolean = true;
-	@Input() noHovering:boolean = false;
+	@Input() hoverable:boolean = false;
 	@Input() title:string;
 	@Input() loading:boolean;
-	@Input() noPadding:boolean;
 
 }

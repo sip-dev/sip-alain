@@ -74,6 +74,7 @@ export class SipAlainModule {
             providers: [
                 // TIPS：@delon/abc 有大量的全局配置信息，例如设置所有 `simple-table` 的页码默认为 `20` 行
                 // { provide: SimpleTableConfig, useFactory: simpleTableConfig }
+                { provide: SipAlainConfig, useClass: config },
                 { provide: LOCALE_ID, useValue: 'zh-Hans' },
                 { provide: HTTP_INTERCEPTORS, useClass: SimpleInterceptor, multi: true },
                 { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true },
