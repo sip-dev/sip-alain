@@ -27,9 +27,6 @@ export class MinicolumnComponent {
 
 	@Input() group = ''
 
-	//是否编辑
-	@Input() isEdit = false
-
 	index: number;
 	count: number;
 

@@ -1,21 +1,19 @@
-<nz-table #nzTable [nzData]="rows" [nzSize]="'middle'" [nzShowPagination]="false" [nzLoading]="_loading" [nzTotal]="total" [(nzPageIndex)]="pageIndex"
-    (nzPageIndexChange)="_load()" [(nzPageSize)]="pageSize" (nzPageSizeChange)="_load()">
+<nz-table #nzTable [nzData]="rows" [nzSize]="'middle'" [nzShowPagination]="false" [nzLoading]="_loading" [nzTotal]="total"
+    [(nzPageIndex)]="pageIndex" (nzPageIndexChange)="_load()" [(nzPageSize)]="pageSize" (nzPageSizeChange)="_load()">
     <thead nz-thead>
         <tr>
             <th *ngIf="multiSelect" nzShowCheckbox [(nzChecked)]="_allSelected" [nzIndeterminate]="_indeterminate" (nzCheckedChange)="_tiggerRowSelAll()"></th>
-            <th *ngFor="let column of columnQueryList" [nzWidth]="column.width"
-                [nzShowSort]="column.sortable" [(nzSort)]="column._sortOrder" (nzSortChange)="_sortIn($event)">
+            <th *ngFor="let column of columnQueryList" [nzWidth]="column.width" [nzShowSort]="column.sortable" [(nzSort)]="column._sortOrder"
+                (nzSortChange)="_sortIn($event)">
                 <span *ngIf="!column._titleRef">
                     {{column.title || column.name}}
                 </span>
                 <ng-container *ngIf="column._titleRef" [ngTemplateOutlet]="column._titleRef" [ngTemplateOutletContext]="{column:column}"></ng-container>
-                <nz-dropdown [nzTrigger]="'click'" *ngIf="column.filterItems" >
+                <nz-dropdown [nzTrigger]="'click'" *ngIf="column.filterItems">
                     <i class="anticon anticon-filter" nz-dropdown></i>
                     <ul nz-menu>
-                        <li nz-menu-item *ngFor="let filter of column.filterItems"
-                            [class.ant-dropdown-menu-item-selected]="filter._filtersel">
-                            <span *ngIf="filterSingle"
-                                (click)="_filterSingleChange(column, filter)">{{filter[column.filterTextName]}}</span>
+                        <li nz-menu-item *ngFor="let filter of column.filterItems" [class.ant-dropdown-menu-item-selected]="filter._filtersel">
+                            <span *ngIf="filterSingle" (click)="_filterSingleChange(column, filter)">{{filter[column.filterTextName]}}</span>
                             <label *ngIf="!filterSingle" nz-checkbox [(ngModel)]="filter._filtersel">
                                 <span>{{filter[column.filterTextName]}}</span>
                             </label>
@@ -23,7 +21,7 @@
                     </ul>
                     <div nz-table-filter class="text-center" *ngIf="!filterSingle">
                         <span nz-table-filter-confirm (click)="_filter(column)">确定</span>
-                        <span nz-table-filter-clear >取消</span>
+                        <span nz-table-filter-clear>取消</span>
                     </div>
                 </nz-dropdown>
             </th>
@@ -31,14 +29,13 @@
     </thead>
     <tbody nz-tbody>
         <tr nz-tbody-tr *ngFor="let row of nzTable.data">
-            <td *ngIf="multiSelect" nzShowCheckbox [(nzChecked)]="row.selected" (nzCheckedChange)="_refChecked()"
-                (mousedown)="_tiggerRowSelBySel(row, $event)"></td>
+            <td *ngIf="multiSelect" nzShowCheckbox [(nzChecked)]="row.selected" (nzCheckedChange)="_refChecked()" (mousedown)="_tiggerRowSelBySel(row, $event)"></td>
             <td nz-td *ngFor="let column of columnQueryList" (mousedown)="_tiggerRowSel(row, $event)">
-                <ng-template [ngIf]="(column.isEdit && row.isEdit)">
+                <ng-template [ngIf]="_isEditCell(row, column.index)">
                     <input nz-input *ngIf="!column.editor" [(ngModel)]="row.data[column.name]">
                     <ng-container *ngIf="column.editor" [ngTemplateOutlet]="column.editor" [ngTemplateOutletContext]="{row:row, column:column, data:row.data}"></ng-container>
                 </ng-template>
-                <ng-template [ngIf]="!(column.isEdit && row.isEdit)">
+                <ng-template [ngIf]="!_isEditCell(row, column.index)">
                     <span *ngIf="!column.formatter">{{row.data[column.name]}}</span>
                     <ng-container *ngIf="column.formatter" [ngTemplateOutlet]="column.formatter" [ngTemplateOutletContext]="{row:row, column:column, data:row.data}"></ng-container>
                 </ng-template>
@@ -46,9 +43,9 @@
         </tr>
     </tbody>
     <sip-contextmenu *ngIf="_hasContextmenu" (onShow)="_showContextmenu($event)"></sip-contextmenu>
-    </nz-table>
-    <div class="mt-lg">
-        <nz-pagination [(nzPageIndex)]="pageIndex" [(nzTotal)]="total" [(nzPageSize)]="pageSize"
-            (nzPageIndexChange)="_changePageIndex()" (nzPageSizeChange)="_load()" [nzShowSizeChanger]="true">
-        </nz-pagination>		
-    </div>
+</nz-table>
+<div class="mt-lg">
+    <nz-pagination [(nzPageIndex)]="pageIndex" [(nzTotal)]="total" [(nzPageSize)]="pageSize" (nzPageIndexChange)="_changePageIndex()"
+        (nzPageSizeChange)="_load()" [nzShowSizeChanger]="true">
+    </nz-pagination>
+</div>

@@ -16,6 +16,7 @@ export interface MiniTableRow<T=any> {
     index: number;
     /**数量 */
     count: number;
+    columns: { index: number; isEdit: boolean; }[];
     /**数据 */
     data: T;
 }
@@ -223,7 +224,7 @@ export class MinitableManager<T=any> implements IMinitableManager<T> {
      * 编辑整个表格
      * @param isEdit 是否可以编辑，默认为true
      */
-    editAll(isEdit: boolean = true) {
+    editAll(isEdit?: boolean) {
         return this._table.editCell.apply(this._table, arguments);
     }
 
@@ -232,7 +233,7 @@ export class MinitableManager<T=any> implements IMinitableManager<T> {
      * @param columnIndexs 编辑列的索引, null为所有列
      * @param isEdit 是否可以编辑，默认为true
      */
-    editColumn(columnIndexs: number[], isEdit: boolean = true) {
+    editColumn(columnIndexs: number[], isEdit?: boolean) {
         return this._table.editColumn.apply(this._table, arguments);
     }
 
@@ -241,8 +242,17 @@ export class MinitableManager<T=any> implements IMinitableManager<T> {
      * @param rowIndexs 编辑行的索引, null为所有行
      * @param isEdit 是否可以编辑，默认为true
      */
-    editRow(rowIndexs: number[], isEdit: boolean = true) {
+    editRow(rowIndexs: number[], isEdit?: boolean) {
         return this._table.editRow.apply(this._table, arguments);
+    }
+
+    /**
+     * 是否编辑cell
+     * @param rowIndex 
+     * @param columnIndex 
+     */
+    isEditCell(rowIndex: number, columnIndex: number) {
+        return this._table.isEditCell(rowIndex, columnIndex);
     }
 
     /**
@@ -251,7 +261,7 @@ export class MinitableManager<T=any> implements IMinitableManager<T> {
      * @param columnIndexs 编辑列的索引, null为所有列
      * @param isEdit 是否可以编辑，默认为true
      */
-    editCell(rowIndexs: number[], columnIndexs: number[], isEdit: boolean = true) {
+    editCell(rowIndexs: number[], columnIndexs: number[], isEdit?: boolean) {
         return this._table.editCell.apply(this._table, arguments);
     }
 
@@ -357,25 +367,35 @@ export class MinitableComponent extends SipComponent {
     }
     public set columnQueryList(value: QueryList<MinicolumnComponent>) {
         this._columnQueryList = value;
-        this.columns = value.toArray();
-        let count = this.columns.length;
-        this.columns.forEach((item, index) => {
+        let columns = this.columns = value.toArray();
+        let count = columns.length;
+        columns.forEach((item, index) => {
             item.index = index
             item.count = count;
         });
 
-        let manager: any = this._manager;
-        if (manager) {
-            manager.onInit();
-            manager.$pushFilters()
-            this._hasContextmenu = !!manager.contextmenu;
+        if (!this.isInit){
             this.isInit = true;
-            //第一次加载数据
-            manager.autoLoad && this._load();
-        } else {
-            this.isInit = true;
-            //第一次加载数据
-            this._load();
+            //处理rows.columns数据， 防止没初始化
+            let rows = this.rows;
+            if (rows && rows.length > 0 && !rows[0].columns){
+                rows.forEach(function(row){
+                    row.columns = columns.map(function (item) {
+                        return { index: item.index, isEdit: false };
+                    })
+                });
+            }
+            let manager: any = this._manager;
+            if (manager) {
+                manager.onInit();
+                manager.$pushFilters()
+                this._hasContextmenu = !!manager.contextmenu;
+                //第一次加载数据
+                manager.autoLoad && this._load();
+            } else {
+                //第一次加载数据
+                this._load();
+            }
         }
     }
     public columns: MinicolumnComponent[];
@@ -430,12 +450,17 @@ export class MinitableComponent extends SipComponent {
     @Input() public set datas(value: any[]) {
         value || (value = []);
         let count = value.length;
+        let columns = this.columns;
+        let hasCol = !!columns;
         let rows: MiniTableRow[] = value.map((item, index) => {
             return {
                 selected: false,
                 isEdit: false,
                 index: index,
                 count: count,
+                columns: hasCol ? columns.map(function (item) {
+                    return { index: item.index, isEdit: false };
+                }) : null,
                 data: item
             };
         });
@@ -485,7 +510,7 @@ export class MinitableComponent extends SipComponent {
             searchparam: searchParams
         };
         let rest;
-        if (restFun){
+        if (restFun) {
             rest = restFun.call(this._manager, sqlParams);
         } else {
             Lib.extend(sqlParams, {
@@ -537,8 +562,8 @@ export class MinitableComponent extends SipComponent {
         this._refChecked();
     }
 
-    _tiggerRowSelBySel(row: MiniTableRow, event:any){
-        if (/td/i.test(event.target.tagName)){
+    _tiggerRowSelBySel(row: MiniTableRow, event: any) {
+        if (/td/i.test(event.target.tagName)) {
             row.selected = !row.selected
         }
     }
@@ -675,6 +700,19 @@ export class MinitableComponent extends SipComponent {
     }
 
     /**
+     * 是否编辑cell
+     * @param rowIndex 
+     * @param columnIndex 
+     */
+    isEditCell(rowIndex: number, columnIndex: number) {
+        return this._isEditCell(this.rows[rowIndex], columnIndex);
+    }
+
+    _isEditCell(row: MiniTableRow<any>, columnIndex: number) {
+        return row.isEdit && row.columns[columnIndex].isEdit;
+    }
+
+    /**
      * 编辑单元格
      * @param rowIndexs 编辑行的索引, null为所有行
      * @param columnIndexs 编辑列的索引, null为所有列
@@ -683,11 +721,20 @@ export class MinitableComponent extends SipComponent {
     editCell(rowIndexs: number[], columnIndexs: number[], isEdit: boolean = true) {
         let rows = this.rows;
         if (!rowIndexs)
-            rows.forEach(item => item.isEdit = isEdit);
+            rows.forEach(item => {
+                item.isEdit = isEdit;
+                this._makeEditRowColumns(item, columnIndexs, isEdit);
+            });
         else
-            rowIndexs.forEach(index => rows[index].isEdit = isEdit);
+            rowIndexs.forEach(index => {
+                let item = rows[index];
+                item.isEdit = isEdit;
+                this._makeEditRowColumns(item, columnIndexs, isEdit);
+            });
+    }
 
-        let columns = this.columns;
+    private _makeEditRowColumns(row: MiniTableRow<any>, columnIndexs: number[], isEdit: boolean) {
+        let columns = row.columns;
         if (!columnIndexs) {
             columns.forEach(item => item.isEdit = isEdit);
         } else
