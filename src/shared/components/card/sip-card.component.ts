@@ -24,7 +24,7 @@ import { SipCardGridComponent } from './sip-card-grid.component';
 		</nz-card>`,
 	styles: []
 })
-export class CardComponent {
+export class SipCardComponent {
 
 	@ContentChild(SipCardTitleComponent) title: SipCardTitleComponent;
 	@ContentChild(SipCardBodyComponent) body: SipCardBodyComponent;
