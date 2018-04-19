@@ -1,11 +1,11 @@
-import { Component, QueryList, ContentChildren, Input, EventEmitter, Output, ContentChild, ViewContainerRef, OnInit } from '@angular/core';
+import { Component, ContentChildren, EventEmitter, Input, Output, QueryList, ViewContainerRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-
-import { SipMinicolumnComponent } from './sip-minicolumn.component';
-import { SipContextmenuComponent, IContextMenu } from '../menu/sip-contextmenu.component';
 import { Lib } from 'sip-lib';
-import { SipComponent, SipNgDestroy, SipNgInit } from '../../../core/extends/sip-helper';
+import { SipComponent, SipNgDestroy } from '../../../core/extends/sip-helper';
 import { SipRestSqlRet, SipSqlParam } from '../../../core/services/sip-rest.service';
+import { IContextMenu } from '../menu/sip-contextmenu.component';
+import { SipMinicolumnComponent } from './sip-minicolumn.component';
+
 
 export interface SipMiniTableRow<T=any> {
     /**是否选择 */

@@ -22,10 +22,10 @@ export * from './src/shared/components/modal/sip-modal-body.component';
 export * from './src/shared/components/modal/sip-modal-footer.component';
 export * from './src/shared/components/modal/sip-modal-header.component';
 export * from './src/shared/components/modal/sip-modal.component';
-export * from './src/shared/components/page/page-body.component';
-export * from './src/shared/components/page/page-header.component';
-export * from './src/shared/components/page/page-toolbar.component';
-export * from './src/shared/components/page/page.component';
+export * from './src/shared/components/page/sip-page-body.component';
+export * from './src/shared/components/page/sip-page-header.component';
+export * from './src/shared/components/page/sip-page-toolbar.component';
+export * from './src/shared/components/page/sip-page.component';
 export * from './src/shared/components/searchConent.component';
 
 export * from './src/shared/components/card/sip-card.component';

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ContentChild, TemplateRef, Optional } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { ReuseTabService } from '@delon/abc';
-import { PageComponent } from './page.component';
+import { SipPageComponent } from './sip-page.component';
 
 @Component({
     selector: 'sip-page-header',
@@ -23,14 +23,14 @@ import { PageComponent } from './page.component';
 	styles: []
 	
 })
-export class PageHeaderComponent implements OnInit {
+export class SipPageHeaderComponent implements OnInit {
 
-    constructor(@Optional() private _page:PageComponent) {
+    constructor(@Optional() private _page:SipPageComponent) {
     }
     
     ngOnInit() {
         if (!this._page) return;
-        let page:PageComponent = this._page;
+        let page:SipPageComponent = this._page;
         if (page.title){
             this.navigator = page.title;
             this.menuText = page.title;

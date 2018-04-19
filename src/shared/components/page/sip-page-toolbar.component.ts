@@ -5,6 +5,6 @@ import { Component } from '@angular/core';
     template: `<div class="mb-md"><ng-content></ng-content></div>`,
     styles: []
 })
-export class PageToolbarComponent {
+export class SipPageToolbarComponent {
 
 }

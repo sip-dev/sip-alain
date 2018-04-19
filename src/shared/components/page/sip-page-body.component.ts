@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
     `,
     styles: []
 })
-export class PageBodyComponent {
+export class SipPageBodyComponent {
     showed = false;
     loading = true;
 }

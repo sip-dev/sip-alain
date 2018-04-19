@@ -14,10 +14,10 @@ import { SipModalBodyComponent } from './modal/sip-modal-body.component';
 import { SipModalFooterComponent } from './modal/sip-modal-footer.component';
 import { SipModalHeaderComponent } from './modal/sip-modal-header.component';
 import { SipModalComponent } from './modal/sip-modal.component';
-import { PageBodyComponent } from './page/page-body.component';
-import { PageHeaderComponent } from './page/page-header.component';
-import { PageToolbarComponent } from './page/page-toolbar.component';
-import { PageComponent } from './page/page.component';
+import { SipPageBodyComponent } from './page/sip-page-body.component';
+import { SipPageHeaderComponent } from './page/sip-page-header.component';
+import { SipPageToolbarComponent } from './page/sip-page-toolbar.component';
+import { SipPageComponent } from './page/sip-page.component';
 import { SipCardComponent } from './card/sip-card.component';
 import { SearchConentComponent } from './searchConent.component';
 import { DelonSharedModule } from '../../delon/delon-shared.module';
@@ -52,10 +52,10 @@ import { SipCardGridComponent } from './card/sip-card-grid.component';
         SipModalFooterComponent,
         SipModalHeaderComponent,
         SipModalComponent,
-        PageBodyComponent,
-        PageHeaderComponent,
-        PageToolbarComponent,
-        PageComponent,
+        SipPageBodyComponent,
+        SipPageHeaderComponent,
+        SipPageToolbarComponent,
+        SipPageComponent,
         SipCardComponent,
         SearchConentComponent,
         SipCardTitleComponent,
@@ -84,10 +84,10 @@ import { SipCardGridComponent } from './card/sip-card-grid.component';
         SipModalFooterComponent,
         SipModalHeaderComponent,
         SipModalComponent,
-        PageBodyComponent,
-        PageHeaderComponent,
-        PageToolbarComponent,
-        PageComponent,
+        SipPageBodyComponent,
+        SipPageHeaderComponent,
+        SipPageToolbarComponent,
+        SipPageComponent,
         SipCardComponent,
         SearchConentComponent,
         SipCardTitleComponent,

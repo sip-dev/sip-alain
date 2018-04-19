@@ -1,7 +1,7 @@
 import { Component, ViewContainerRef, Optional, ContentChild } from '@angular/core';
 
 import { ReuseTabService } from '@delon/abc';
-import { PageBodyComponent } from './page-body.component';
+import { SipPageBodyComponent } from './sip-page-body.component';
 import { SipComponent, SipInject, SipNgInit } from '../../../core/extends/sip-helper';
 
 @Component({
@@ -9,7 +9,7 @@ import { SipComponent, SipInject, SipNgInit } from '../../../core/extends/sip-he
     template: `<div><ng-content></ng-content></div>`,
     styles: []
 })
-export class PageComponent extends SipComponent {
+export class SipPageComponent extends SipComponent {
 
     constructor(vcf: ViewContainerRef) {
         super(vcf);
@@ -19,8 +19,8 @@ export class PageComponent extends SipComponent {
     @SipInject(ReuseTabService)
     private _rts: ReuseTabService
 
-    @ContentChild(PageBodyComponent)
-    private _body: PageBodyComponent;
+    @ContentChild(SipPageBodyComponent)
+    private _body: SipPageBodyComponent;
 
     @SipNgInit()
     private _init() {
