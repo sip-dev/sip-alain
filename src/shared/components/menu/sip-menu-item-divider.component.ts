@@ -1,16 +1,16 @@
 import { Component, Optional } from '@angular/core';
-import { MenuChildren } from './menu-children';
-import { IMenuItem } from './menu-item';
+import { SipMenuChildren } from './sip-menu-children';
+import { ISipMenuItem } from './sip-menu-item';
 
 @Component({
   selector: 'sip-menu-item-divider',
   template: '',
   styles: []
 })
-export class MenuItemDividerComponent implements IMenuItem {
+export class SipMenuItemDividerComponent implements ISipMenuItem {
 
 	constructor(
-		@Optional() private _parant:MenuChildren
+		@Optional() private _parant:SipMenuChildren
 	){
 		this._parant && this._parant.addChild(this);
 	}

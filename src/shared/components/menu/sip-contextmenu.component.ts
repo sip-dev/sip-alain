@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, Output, TemplateRef, ViewChild, ViewContainerRef, ViewRef } from '@angular/core';
 import { Lib } from 'sip-lib';
 import { SipComponent, SipNgDestroy, SipNgInit } from '../../../core/extends/sip-helper';
-import { IMenuItem } from './menu-item';
+import { ISipMenuItem } from './sip-menu-item';
 
 export interface IContextMenu {
     width?: string;
-    items: IMenuItem[];
+    items: ISipMenuItem[];
 }
 
 

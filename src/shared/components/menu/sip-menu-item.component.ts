@@ -1,16 +1,16 @@
 import { Component, Input, Optional, EventEmitter, Output } from '@angular/core';
-import { MenuChildren } from './menu-children';
-import { IMenuItem } from './menu-item';
+import { SipMenuChildren } from './sip-menu-children';
+import { ISipMenuItem } from './sip-menu-item';
 
 @Component({
 	selector: 'sip-menu-item',
 	template: '',
 	styles: []
 })
-export class MenuItemComponent implements IMenuItem {
+export class SipMenuItemComponent implements ISipMenuItem {
 
 	constructor(
-		@Optional() private _parant:MenuChildren
+		@Optional() private _parant:SipMenuChildren
 	){
 		this._parant && this._parant.addChild(this);
 	}
@@ -20,9 +20,9 @@ export class MenuItemComponent implements IMenuItem {
 	@Input() icon = '';
 	@Input() disabled = false
 
-	@Output() click: EventEmitter<IMenuItem> = new EventEmitter<IMenuItem>();
+	@Output() click: EventEmitter<ISipMenuItem> = new EventEmitter<ISipMenuItem>();
 
-	onClick(item:IMenuItem){
+	onClick(item:ISipMenuItem){
 		this.click.emit(item);
 	}
 }

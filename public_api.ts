@@ -10,12 +10,12 @@ export * from './src/core/services/sip-event.service';
 export * from './src/core/services/sip-app-container.service';
 
 export * from './src/shared/components/menu/sip-contextmenu.component';
-export * from './src/shared/components/menu/menu-group.component';
-export * from './src/shared/components/menu/menu-item-divider.component';
-export * from './src/shared/components/menu/menu-item.component';
-export * from './src/shared/components/menu/menu-sub.component';
-export * from './src/shared/components/menu/menu.component';
-export * from './src/shared/components/menu/menu-item';
+export * from './src/shared/components/menu/sip-menu-group.component';
+export * from './src/shared/components/menu/sip-menu-item-divider.component';
+export * from './src/shared/components/menu/sip-menu-item.component';
+export * from './src/shared/components/menu/sip-menu-sub.component';
+export * from './src/shared/components/menu/sip-menu.component';
+export * from './src/shared/components/menu/sip-menu-item';
 export * from './src/shared/components/minitable/minicolumn.component';
 export * from './src/shared/components/minitable/minitable.component';
 export * from './src/shared/components/modal/modal-body.component';

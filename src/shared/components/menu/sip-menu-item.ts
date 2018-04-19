@@ -1,4 +1,4 @@
-export interface IMenuItem {
+export interface ISipMenuItem {
     title?:string;
     icon?:string;
     group?:boolean;
@@ -6,6 +6,6 @@ export interface IMenuItem {
     show?:boolean;
     open?:boolean;
     disabled?:boolean;
-    onClick?:(item?:IMenuItem)=>void;
-    children?:IMenuItem[];
+    onClick?:(item?:ISipMenuItem)=>void;
+    children?:ISipMenuItem[];
 }

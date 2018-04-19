@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { SipDirectivesModule } from '../directives/sip-directives.module';
 
 import { SipContextmenuComponent } from './menu/sip-contextmenu.component';
-import { MenuGroupComponent } from './menu/menu-group.component';
-import { MenuItemDividerComponent } from './menu/menu-item-divider.component';
-import { MenuItemComponent } from './menu/menu-item.component';
-import { MenuSubComponent } from './menu/menu-sub.component';
-import { MenuComponent } from './menu/menu.component';
+import { SipMenuGroupComponent } from './menu/sip-menu-group.component';
+import { SipMenuItemDividerComponent } from './menu/sip-menu-item-divider.component';
+import { SipMenuItemComponent } from './menu/sip-menu-item.component';
+import { SipMenuSubComponent } from './menu/sip-menu-sub.component';
+import { SipMenuComponent } from './menu/sip-menu.component';
 import { MinicolumnComponent } from './minitable/minicolumn.component';
 import { MinitableComponent } from './minitable/minitable.component';
 import { ModalBodyComponent } from './modal/modal-body.component';
@@ -41,11 +41,11 @@ import { SipCardGridComponent } from './card/sip-card-grid.component';
     ],
     declarations: [
         SipContextmenuComponent,
-        MenuGroupComponent,
-        MenuItemDividerComponent,
-        MenuItemComponent,
-        MenuSubComponent,
-        MenuComponent,
+        SipMenuGroupComponent,
+        SipMenuItemDividerComponent,
+        SipMenuItemComponent,
+        SipMenuSubComponent,
+        SipMenuComponent,
         MinicolumnComponent,
         MinitableComponent,
         ModalBodyComponent,
@@ -73,11 +73,11 @@ import { SipCardGridComponent } from './card/sip-card-grid.component';
     providers: [],
     exports:[
         SipContextmenuComponent,
-        MenuGroupComponent,
-        MenuItemDividerComponent,
-        MenuItemComponent,
-        MenuSubComponent,
-        MenuComponent,
+        SipMenuGroupComponent,
+        SipMenuItemDividerComponent,
+        SipMenuItemComponent,
+        SipMenuSubComponent,
+        SipMenuComponent,
         MinicolumnComponent,
         MinitableComponent,
         ModalBodyComponent,

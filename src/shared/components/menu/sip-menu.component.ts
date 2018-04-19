@@ -1,6 +1,6 @@
 import { Component, Input, forwardRef } from '@angular/core';
-import { MenuChildren } from './menu-children';
-import { IMenuItem } from './menu-item';
+import { SipMenuChildren } from './sip-menu-children';
+import { ISipMenuItem } from './sip-menu-item';
 
 
 @Component({
@@ -46,9 +46,9 @@ import { IMenuItem } from './menu-item';
 	</div>
 	`,
 	styles: [],
-	providers: [{ provide: MenuChildren, useExisting: forwardRef(() => MenuComponent) }],
+	providers: [{ provide: SipMenuChildren, useExisting: forwardRef(() => SipMenuComponent) }],
 })
-export class MenuComponent implements MenuChildren {
+export class SipMenuComponent implements SipMenuChildren {
 
 	@Input() theme = 'light';//	主题颜色	string: light dark		light
 	@Input() mode = 'vertical';//	菜单类型，现在支持垂直、水平、和内嵌模式三种	string: vertical horizontal inline		vertical
@@ -57,26 +57,26 @@ export class MenuComponent implements MenuChildren {
 
 	@Input() style: any;
 
-	private _menuItem: IMenuItem;
+	private _menuItem: ISipMenuItem;
 
-	showItem(item: IMenuItem) {
+	showItem(item: ISipMenuItem) {
 		return !item.disabled && !item.group && !item.divider && !item.children;
 	}
 
-	showItemSub(item: IMenuItem) {
+	showItemSub(item: ISipMenuItem) {
 		return !item.disabled && !item.group && item.children;
 	}
 
-	showItemGroup(item: IMenuItem) {
+	showItemGroup(item: ISipMenuItem) {
 		return !item.disabled && item.group;
 	}
 
-	showItemDivider(item: IMenuItem) {
+	showItemDivider(item: ISipMenuItem) {
 		return !item.disabled && item.divider;
 	}
 
-	@Input() datas: IMenuItem[] = [];
-	addChild(menu: IMenuItem) {
+	@Input() datas: ISipMenuItem[] = [];
+	addChild(menu: ISipMenuItem) {
 		this.datas.push(menu);
 	}
 

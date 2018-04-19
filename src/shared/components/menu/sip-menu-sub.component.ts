@@ -1,17 +1,17 @@
 import { Component, EventEmitter, Input, Output, forwardRef, Optional, SkipSelf } from '@angular/core';
-import { MenuChildren } from './menu-children';
-import { IMenuItem } from './menu-item';
+import { SipMenuChildren } from './sip-menu-children';
+import { ISipMenuItem } from './sip-menu-item';
 
 @Component({
 	selector: 'sip-menu-sub',
 	template: '',
 	styles: [],
-	providers:[{ provide: MenuChildren, useExisting: forwardRef(() => MenuSubComponent) }]
+	providers:[{ provide: SipMenuChildren, useExisting: forwardRef(() => SipMenuSubComponent) }]
 })
-export class MenuSubComponent implements MenuChildren, IMenuItem {
+export class SipMenuSubComponent implements SipMenuChildren, ISipMenuItem {
 
 	constructor(
-		@Optional() @SkipSelf() private _parant:MenuChildren
+		@Optional() @SkipSelf() private _parant:SipMenuChildren
 	){
 		this._parant && this._parant.addChild(this);
 	}
@@ -21,8 +21,8 @@ export class MenuSubComponent implements MenuChildren, IMenuItem {
 	@Input() icon = '';
 	@Input() disabled = false
 
-	children:IMenuItem[] = [];
-	addChild(menu:IMenuItem){
+	children:ISipMenuItem[] = [];
+	addChild(menu:ISipMenuItem){
 		this.children.push(menu);
 	}
 }
