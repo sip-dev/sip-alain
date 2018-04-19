@@ -6,7 +6,7 @@ import { Lib } from 'sip-lib';
 	template: ``,
 	styles: []
 })
-export class MinicolumnComponent {
+export class SipMinicolumnComponent {
 
 	//内容
 	@ContentChild('formatter') formatter: TemplateRef<any>;
@@ -68,7 +68,7 @@ export class MinicolumnComponent {
 	@Input() filterValueName = 'value';
 	@Input() filterDefault: any[];
 	//筛选菜单callback:function(item){}
-	@Input() filterCallback: (p: { values: any[]; items: any[]; column: MinicolumnComponent }) => void = Lib.noop;
+	@Input() filterCallback: (p: { values: any[]; items: any[]; column: SipMinicolumnComponent }) => void = Lib.noop;
 
 	public get filterValues(): any[] {
 		let vals = this.selectFilterItems.map((p) => { return p[this.filterValueName]; });

@@ -8,8 +8,8 @@ import { SipMenuItemDividerComponent } from './menu/sip-menu-item-divider.compon
 import { SipMenuItemComponent } from './menu/sip-menu-item.component';
 import { SipMenuSubComponent } from './menu/sip-menu-sub.component';
 import { SipMenuComponent } from './menu/sip-menu.component';
-import { MinicolumnComponent } from './minitable/minicolumn.component';
-import { MinitableComponent } from './minitable/minitable.component';
+import { SipMinicolumnComponent } from './minitable/sip-minicolumn.component';
+import { SipMinitableComponent } from './minitable/sip-minitable.component';
 import { ModalBodyComponent } from './modal/modal-body.component';
 import { ModalFooterComponent } from './modal/modal-footer.component';
 import { ModalHeaderComponent } from './modal/modal-header.component';
@@ -46,8 +46,8 @@ import { SipCardGridComponent } from './card/sip-card-grid.component';
         SipMenuItemComponent,
         SipMenuSubComponent,
         SipMenuComponent,
-        MinicolumnComponent,
-        MinitableComponent,
+        SipMinicolumnComponent,
+        SipMinitableComponent,
         ModalBodyComponent,
         ModalFooterComponent,
         ModalHeaderComponent,
@@ -78,8 +78,8 @@ import { SipCardGridComponent } from './card/sip-card-grid.component';
         SipMenuItemComponent,
         SipMenuSubComponent,
         SipMenuComponent,
-        MinicolumnComponent,
-        MinitableComponent,
+        SipMinicolumnComponent,
+        SipMinitableComponent,
         ModalBodyComponent,
         ModalFooterComponent,
         ModalHeaderComponent,

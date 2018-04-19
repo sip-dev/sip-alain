@@ -1,13 +1,13 @@
 import { Component, QueryList, ContentChildren, Input, EventEmitter, Output, ContentChild, ViewContainerRef, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { MinicolumnComponent } from './minicolumn.component';
+import { SipMinicolumnComponent } from './sip-minicolumn.component';
 import { SipContextmenuComponent, IContextMenu } from '../menu/sip-contextmenu.component';
 import { Lib } from 'sip-lib';
 import { SipComponent, SipNgDestroy, SipNgInit } from '../../../core/extends/sip-helper';
 import { SipRestSqlRet, SipSqlParam } from '../../../core/services/sip-rest.service';
 
-export interface MiniTableRow<T=any> {
+export interface SipMiniTableRow<T=any> {
     /**是否选择 */
     selected: boolean;
     /**是否编辑 */
@@ -21,24 +21,24 @@ export interface MiniTableRow<T=any> {
     data: T;
 }
 
-export interface MiniTableFilterEvent {
+export interface SipMiniTableFilterEvent {
     /**值 */
     values: string[];
     /**数据 */
     items: any[];
     /**列 */
-    column: MinicolumnComponent;
+    column: SipMinicolumnComponent;
 }
 
-export interface IMinitableManager<T=any> {
-    $table?: MinitableComponent;
+export interface ISipMinitableManager<T=any> {
+    $table?: SipMinitableComponent;
     /**开始时是否自动加载数据 */
     autoLoad?: boolean;
     datas?: any[];
     connstr?: string;
     sqlId?: string;
     url?: string;
-    restFun?: (this: MinitableManager<T>, params: SipSqlParam) => Observable<any>;
+    restFun?: (this: SipMinitableManager<T>, params: SipSqlParam) => Observable<any>;
     pageSize?: number;
     multiSelect?: boolean;
     pageIndex?: number;
@@ -46,25 +46,25 @@ export interface IMinitableManager<T=any> {
     selectMode?: string;
     filterSingle?: boolean;
     /**快捷菜单定义 */
-    contextmenu?: (this: MinitableManager<T>, menu: IContextMenu, row: MiniTableRow<T>[]) => void;
+    contextmenu?: (this: SipMinitableManager<T>, menu: IContextMenu, row: SipMiniTableRow<T>[]) => void;
 
     /**初始化时触发，表示table已经可以使用 */
-    onInit?: (this: MinitableManager<T>) => void;
+    onInit?: (this: SipMinitableManager<T>) => void;
     /**查询前触发，处理查询数据 */
-    onSearch?: (this: MinitableManager<T>, searchParams: object) => void;
+    onSearch?: (this: SipMinitableManager<T>, searchParams: object) => void;
     /**排序时触发 */
-    onSort?: (this: MinitableManager<T>, cols: MinicolumnComponent[]) => void;
+    onSort?: (this: SipMinitableManager<T>, cols: SipMinicolumnComponent[]) => void;
     /**选择改变时触发 */
-    onSelectChanged?: (this: MinitableManager<T>, rows: MiniTableRow<T>[]) => void;
+    onSelectChanged?: (this: SipMinitableManager<T>, rows: SipMiniTableRow<T>[]) => void;
     /**
      * 每次数据加载时触发，可以改造数据
      * @example rest.map(item=>item);
      */
-    onLoaded?: (this: MinitableManager<T>, rest: Observable<SipRestSqlRet>) => void;
+    onLoaded?: (this: SipMinitableManager<T>, rest: Observable<SipRestSqlRet>) => void;
     /**每次数据加载完成后并处理table业务时触发 */
-    onCompleted?: (this: MinitableManager<T>) => void;
+    onCompleted?: (this: SipMinitableManager<T>) => void;
     /**有过滤时触发 */
-    onFilter?: (this: MinitableManager<T>, event: MiniTableFilterEvent) => void;
+    onFilter?: (this: SipMinitableManager<T>, event: SipMiniTableFilterEvent) => void;
 
     /**列的下拉过滤 */
     filters?: {
@@ -78,21 +78,21 @@ export interface IMinitableManager<T=any> {
             /**默认值 */
             defaultValue?: any[],
             /**过滤处理事件 */
-            onFilter?: (this: MinitableManager<T>, p?: {
+            onFilter?: (this: SipMinitableManager<T>, p?: {
                 /**要过滤的值 */
                 values: any[];
                 /**下拉数据 */
                 items: any[];
                 /**列信息 */
-                column: MinicolumnComponent
+                column: SipMinicolumnComponent
             }) => void;
         }
     };
 }
 
-export class MinitableManager<T=any> implements IMinitableManager<T> {
-    private _table: MinitableComponent;
-    get $table(): MinitableComponent {
+export class SipMinitableManager<T=any> implements ISipMinitableManager<T> {
+    private _table: SipMinitableComponent;
+    get $table(): SipMinitableComponent {
         return this._table;
     }
 
@@ -108,20 +108,20 @@ export class MinitableManager<T=any> implements IMinitableManager<T> {
             /**默认值 */
             defaultValue?: any[],
             /**过滤处理事件 */
-            onFilter?: (this: MinitableManager<T>, p?: {
+            onFilter?: (this: SipMinitableManager<T>, p?: {
                 /**要过滤的值 */
                 values: any[];
                 /**下拉数据 */
                 items: any[];
                 /**列信息 */
-                column: MinicolumnComponent
+                column: SipMinicolumnComponent
             }) => void;
         }
     };
 
     filterSingle?: boolean;
 
-    restFun: (this: MinitableManager<T>, params: SipSqlParam) => Observable<any> = null;
+    restFun: (this: SipMinitableManager<T>, params: SipSqlParam) => Observable<any> = null;
 
     onInit() { };
 
@@ -177,10 +177,10 @@ export class MinitableManager<T=any> implements IMinitableManager<T> {
         this._table.selectMode = value;
     }
 
-    get rows(): MiniTableRow<T>[] {
+    get rows(): SipMiniTableRow<T>[] {
         return this._table.rows;
     }
-    get columns(): MinicolumnComponent[] {
+    get columns(): SipMinicolumnComponent[] {
         return this._table.columns;
     }
 
@@ -197,7 +197,7 @@ export class MinitableManager<T=any> implements IMinitableManager<T> {
     selectIndex(indexs: number[], seleced?: boolean) {
         return this._table.selectIndex.apply(this._table, arguments);
     }
-    get selectRows(): MiniTableRow<T>[] {
+    get selectRows(): SipMiniTableRow<T>[] {
         return this._table.selectRows;
     }
 
@@ -209,14 +209,14 @@ export class MinitableManager<T=any> implements IMinitableManager<T> {
         return this._table.selectFristData;
     }
 
-    get selectFristRow(): MiniTableRow<T> {
+    get selectFristRow(): SipMiniTableRow<T> {
         return this._table.selectFristRow;
     }
     sort(sortName: string, sortOrder: '' | 'asc' | 'desc') {
         return this._table.sort.apply(this._table, arguments);
     }
 
-    get sortColumns(): MinicolumnComponent[] {
+    get sortColumns(): SipMinicolumnComponent[] {
         return this._table.sortColumns;
     }
 
@@ -274,11 +274,11 @@ export class MinitableManager<T=any> implements IMinitableManager<T> {
         this._table && this._table.search(searchParams);
     }
 
-    constructor(private p: IMinitableManager<T>) {
+    constructor(private p: ISipMinitableManager<T>) {
     }
 
     private _isInit: boolean;
-    $init(table: MinitableComponent) {
+    $init(table: SipMinitableComponent) {
         if (this._isInit) return;
         this._isInit = true;
 
@@ -287,7 +287,7 @@ export class MinitableManager<T=any> implements IMinitableManager<T> {
         this._initEvent(this.p);
     }
 
-    private _initEvent(p: IMinitableManager<T>) {
+    private _initEvent(p: ISipMinitableManager<T>) {
         Lib.eachProp(p, (item, name) => {
             if (name.indexOf('on') == 0) {
                 this._table[name] && this._table[name].subscribe((p) => {
@@ -298,10 +298,10 @@ export class MinitableManager<T=any> implements IMinitableManager<T> {
     }
 
     $pushFilters() {
-        let p: IMinitableManager = this.p;
+        let p: ISipMinitableManager = this.p;
         if (p.filters) {
             let cols = this._table.columns;
-            let getCol = function (name: string): MinicolumnComponent {
+            let getCol = function (name: string): SipMinicolumnComponent {
                 return cols.find(function (item) { return item.name == name; });
             };
             Lib.eachProp(p.filters, (item, name) => {
@@ -334,22 +334,22 @@ export class MinitableManager<T=any> implements IMinitableManager<T> {
 
 @Component({
     selector: 'sip-minitable',
-    templateUrl: './minitable.component.html',
+    templateUrl: './sip-minitable.component.html',
     providers: [],
     styles: []
 })
-export class MinitableComponent extends SipComponent {
+export class SipMinitableComponent extends SipComponent {
 
     constructor(vcf: ViewContainerRef) {
         super(vcf);
     }
 
-    private _manager: MinitableManager;
-    public get manager(): MinitableManager {
+    private _manager: SipMinitableManager;
+    public get manager(): SipMinitableManager {
         return this._manager;
     }
     @Input()
-    public set manager(p: MinitableManager) {
+    public set manager(p: SipMinitableManager) {
         this._manager = p;
         this._manager.$init(this);
     }
@@ -360,12 +360,12 @@ export class MinitableComponent extends SipComponent {
         this._datas = this._rows = null;
     }
 
-    private _columnQueryList: QueryList<MinicolumnComponent>;
-    @ContentChildren(MinicolumnComponent)
-    public get columnQueryList(): QueryList<MinicolumnComponent> {
+    private _columnQueryList: QueryList<SipMinicolumnComponent>;
+    @ContentChildren(SipMinicolumnComponent)
+    public get columnQueryList(): QueryList<SipMinicolumnComponent> {
         return this._columnQueryList;
     }
-    public set columnQueryList(value: QueryList<MinicolumnComponent>) {
+    public set columnQueryList(value: QueryList<SipMinicolumnComponent>) {
         this._columnQueryList = value;
         let columns = this.columns = value.toArray();
         let count = columns.length;
@@ -398,7 +398,7 @@ export class MinitableComponent extends SipComponent {
             }
         }
     }
-    public columns: MinicolumnComponent[];
+    public columns: SipMinicolumnComponent[];
 
     _hasContextmenu = false;
     _showContextmenu(menu) {
@@ -430,7 +430,7 @@ export class MinitableComponent extends SipComponent {
 
     //region 事件
 
-    @Output() onSelectChanged = new EventEmitter<MiniTableRow[]>();
+    @Output() onSelectChanged = new EventEmitter<SipMiniTableRow[]>();
     @Output() onLoaded = new EventEmitter<Observable<SipRestSqlRet>>();
     @Output() onCompleted = new EventEmitter();
 
@@ -438,8 +438,8 @@ export class MinitableComponent extends SipComponent {
 
     //#region datas and rows
 
-    private _rows: MiniTableRow[] = [];
-    public get rows(): MiniTableRow[] {
+    private _rows: SipMiniTableRow[] = [];
+    public get rows(): SipMiniTableRow[] {
         return this._rows;
     }
 
@@ -452,7 +452,7 @@ export class MinitableComponent extends SipComponent {
         let count = value.length;
         let columns = this.columns;
         let hasCol = !!columns;
-        let rows: MiniTableRow[] = value.map((item, index) => {
+        let rows: SipMiniTableRow[] = value.map((item, index) => {
             return {
                 selected: false,
                 isEdit: false,
@@ -546,7 +546,7 @@ export class MinitableComponent extends SipComponent {
         this._refChecked();
     }
 
-    _tiggerRowSel(row: MiniTableRow, event: any) {
+    _tiggerRowSel(row: SipMiniTableRow, event: any) {
         let button = event.button;
         if (button != 0 && button != 2) return;
         if (this.selectMode == "select") {
@@ -562,7 +562,7 @@ export class MinitableComponent extends SipComponent {
         this._refChecked();
     }
 
-    _tiggerRowSelBySel(row: MiniTableRow, event: any) {
+    _tiggerRowSelBySel(row: SipMiniTableRow, event: any) {
         if (/td/i.test(event.target.tagName)) {
             row.selected = !row.selected
         }
@@ -578,11 +578,11 @@ export class MinitableComponent extends SipComponent {
         this._refChecked();
     }
 
-    get selectRows(): MiniTableRow[] {
+    get selectRows(): SipMiniTableRow[] {
         return this.rows.filter(item => item.selected);
     }
 
-    get selectFristRow(): MiniTableRow {
+    get selectFristRow(): SipMiniTableRow {
         let rows = this.selectRows;
         return rows.length > 0 ? rows[0] : null;
     }
@@ -637,19 +637,19 @@ export class MinitableComponent extends SipComponent {
         this.onSort.emit(this.sortColumns);
     }
 
-    get sortColumns(): MinicolumnComponent[] {
+    get sortColumns(): SipMinicolumnComponent[] {
         return this.columns.filter(item => item.sortOrder);
     }
 
-    @Output() onSort = new EventEmitter<MinicolumnComponent[]>();
+    @Output() onSort = new EventEmitter<SipMinicolumnComponent[]>();
 
     //#endregion sort
 
     //#region filter
 
-    @Output() onFilter = new EventEmitter<MiniTableFilterEvent>();
+    @Output() onFilter = new EventEmitter<SipMiniTableFilterEvent>();
 
-    _filter(column: MinicolumnComponent) {
+    _filter(column: SipMinicolumnComponent) {
         let items = column.selectFilterItems;
         let values = items.map(item => item[column.filterValueName]);
         let p = {
@@ -661,7 +661,7 @@ export class MinitableComponent extends SipComponent {
         this.onFilter.emit(p);
     }
 
-    _filterSingleChange(column: MinicolumnComponent, filter: any) {
+    _filterSingleChange(column: SipMinicolumnComponent, filter: any) {
         // if (filter._filtersel) return;
         let filterList = column.filterItems;
         filterList.forEach((p) => { p._filtersel = false; });
@@ -708,7 +708,7 @@ export class MinitableComponent extends SipComponent {
         return this._isEditCell(this.rows[rowIndex], columnIndex);
     }
 
-    _isEditCell(row: MiniTableRow<any>, columnIndex: number) {
+    _isEditCell(row: SipMiniTableRow<any>, columnIndex: number) {
         return row.isEdit && row.columns[columnIndex].isEdit;
     }
 
@@ -733,7 +733,7 @@ export class MinitableComponent extends SipComponent {
             });
     }
 
-    private _makeEditRowColumns(row: MiniTableRow<any>, columnIndexs: number[], isEdit: boolean) {
+    private _makeEditRowColumns(row: SipMiniTableRow<any>, columnIndexs: number[], isEdit: boolean) {
         let columns = row.columns;
         if (!columnIndexs) {
             columns.forEach(item => item.isEdit = isEdit);
