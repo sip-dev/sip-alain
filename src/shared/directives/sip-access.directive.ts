@@ -4,7 +4,7 @@ import { SipBusinessComponent, SipAccessManager } from '../../core/extends/sip-h
 @Directive({
     selector: '[sipAccess]'
 })
-export class AccessDirective {
+export class SipAccessDirective {
 
     constructor(
         @Optional() private _business: SipBusinessComponent,

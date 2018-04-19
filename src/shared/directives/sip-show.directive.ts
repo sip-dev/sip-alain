@@ -3,7 +3,7 @@ import { Directive, HostBinding, Input } from '@angular/core';
 @Directive({
   selector: '[sipShow]'
 })
-export class ShowDirective {
+export class SipShowDirective {
 
   @HostBinding('style.display') get display() { return this.sipShow ? '' : 'none'; }
 

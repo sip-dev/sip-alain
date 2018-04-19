@@ -4,7 +4,7 @@ import { SipDirective } from '../../core/extends/sip-helper';
 @Directive({
     selector: '[sipRouterLink]'
 })
-export class RouterLinkDirective extends SipDirective {
+export class SipRouterLinkDirective extends SipDirective {
 
     constructor(vcf: ViewContainerRef) {
         super(vcf);

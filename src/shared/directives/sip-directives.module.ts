@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ShowDirective } from './show.directive';
-import { RouterLinkDirective } from './router-link.directive';
-import { AccessDirective } from './access.directive';
+import { SipShowDirective } from './sip-show.directive';
+import { SipRouterLinkDirective } from './sip-router-link.directive';
+import { SipAccessDirective } from './sip-access.directive';
 import { DelonSharedModule } from '../../delon/delon-shared.module';
 
 @NgModule({
@@ -12,15 +12,15 @@ import { DelonSharedModule } from '../../delon/delon-shared.module';
         DelonSharedModule
     ],
     declarations: [
-        ShowDirective,
-        RouterLinkDirective,
-        AccessDirective
+        SipShowDirective,
+        SipRouterLinkDirective,
+        SipAccessDirective
     ],
     providers: [],
     exports:[
-        ShowDirective,
-        RouterLinkDirective,
-        AccessDirective
+        SipShowDirective,
+        SipRouterLinkDirective,
+        SipAccessDirective
     ],
     entryComponents:[]
 })
