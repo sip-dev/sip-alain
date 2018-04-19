@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SipDirectivesModule } from '../directives/sip-directives.module';
 
-import { ContextmenuComponent } from './menu/contextmenu.component';
+import { SipContextmenuComponent } from './menu/sip-contextmenu.component';
 import { MenuGroupComponent } from './menu/menu-group.component';
 import { MenuItemDividerComponent } from './menu/menu-item-divider.component';
 import { MenuItemComponent } from './menu/menu-item.component';
@@ -40,7 +40,7 @@ import { SipCardGridComponent } from './card/sip-card-grid.component';
         SipDirectivesModule
     ],
     declarations: [
-        ContextmenuComponent,
+        SipContextmenuComponent,
         MenuGroupComponent,
         MenuItemDividerComponent,
         MenuItemComponent,
@@ -72,7 +72,7 @@ import { SipCardGridComponent } from './card/sip-card-grid.component';
     ],
     providers: [],
     exports:[
-        ContextmenuComponent,
+        SipContextmenuComponent,
         MenuGroupComponent,
         MenuItemDividerComponent,
         MenuItemComponent,

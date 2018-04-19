@@ -2,7 +2,7 @@ import { Component, QueryList, ContentChildren, Input, EventEmitter, Output, Con
 import { Observable } from 'rxjs/Observable';
 
 import { MinicolumnComponent } from './minicolumn.component';
-import { ContextmenuComponent, IContextMenu } from '../menu/contextmenu.component';
+import { SipContextmenuComponent, IContextMenu } from '../menu/sip-contextmenu.component';
 import { Lib } from 'sip-lib';
 import { SipComponent, SipNgDestroy, SipNgInit } from '../../../core/extends/sip-helper';
 import { SipRestSqlRet, SipSqlParam } from '../../../core/services/sip-rest.service';

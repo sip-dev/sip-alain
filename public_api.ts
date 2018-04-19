@@ -9,7 +9,7 @@ export * from './src/core/services/sip-rest.service';
 export * from './src/core/services/sip-event.service';
 export * from './src/core/services/sip-app-container.service';
 
-export * from './src/shared/components/menu/contextmenu.component';
+export * from './src/shared/components/menu/sip-contextmenu.component';
 export * from './src/shared/components/menu/menu-group.component';
 export * from './src/shared/components/menu/menu-item-divider.component';
 export * from './src/shared/components/menu/menu-item.component';

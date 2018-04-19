@@ -18,7 +18,7 @@ export interface IContextMenu {
   </div></ng-template>`,
     styles: [`.sip-contextmenu {position: absolute;z-index:10000;}`]
 })
-export class ContextmenuComponent extends SipComponent {
+export class SipContextmenuComponent extends SipComponent {
     @ViewChild('tmpl') tmpl: TemplateRef<any>;
 
     constructor(vcf: ViewContainerRef) {
