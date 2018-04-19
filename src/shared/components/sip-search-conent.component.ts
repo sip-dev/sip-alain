@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-    selector: 'sip-searchConent',
+    selector: 'sip-search-conent',
     template:`<nz-input-group nzSuffixIcon="anticon anticon-search" style="width: 220px;vertical-align: bottom;">
     <input type="text" nz-input placeholder="请输入" [(ngModel)]="params.content" (click)="click($event)" (keydown.enter)="search()">
 </nz-input-group>`,
