@@ -1,8 +1,8 @@
 import { Component, ContentChild, Input, ViewContainerRef, Optional } from '@angular/core';
 import { NzModalService, NzModalRef } from 'ng-zorro-antd';
-import { ModalHeaderComponent } from './modal-header.component';
-import { ModalBodyComponent } from './modal-body.component';
-import { ModalFooterComponent } from './modal-footer.component';
+import { SipModalHeaderComponent } from './sip-modal-header.component';
+import { SipModalBodyComponent } from './sip-modal-body.component';
+import { SipModalFooterComponent } from './sip-modal-footer.component';
 import { Observable } from 'rxjs/Observable';
 import { SipComponent, SipInject, SipNgInit, SipSubscribe, SipNgDestroy } from '../../../core/extends/sip-helper';
 
@@ -11,7 +11,7 @@ import { SipComponent, SipInject, SipNgInit, SipSubscribe, SipNgDestroy } from '
     template: `<ng-content></ng-content>`,
     styles: []
 })
-export class ModalComponent extends SipComponent {
+export class SipModalComponent extends SipComponent {
 
     constructor(vcf: ViewContainerRef) {
         super(vcf);
@@ -21,9 +21,9 @@ export class ModalComponent extends SipComponent {
     @SipInject(NzModalService)
     private _modalSrv: NzModalService
 
-    @ContentChild(ModalHeaderComponent) _header: ModalHeaderComponent;
-    @ContentChild(ModalBodyComponent) _body: ModalBodyComponent;
-    @ContentChild(ModalFooterComponent) _footer: ModalFooterComponent;
+    @ContentChild(SipModalHeaderComponent) _header: SipModalHeaderComponent;
+    @ContentChild(SipModalBodyComponent) _body: SipModalBodyComponent;
+    @ContentChild(SipModalFooterComponent) _footer: SipModalFooterComponent;
 
     private _nzModal: NzModalRef;
 

@@ -10,10 +10,10 @@ import { SipMenuSubComponent } from './menu/sip-menu-sub.component';
 import { SipMenuComponent } from './menu/sip-menu.component';
 import { SipMinicolumnComponent } from './minitable/sip-minicolumn.component';
 import { SipMinitableComponent } from './minitable/sip-minitable.component';
-import { ModalBodyComponent } from './modal/modal-body.component';
-import { ModalFooterComponent } from './modal/modal-footer.component';
-import { ModalHeaderComponent } from './modal/modal-header.component';
-import { ModalComponent } from './modal/modal.component';
+import { SipModalBodyComponent } from './modal/sip-modal-body.component';
+import { SipModalFooterComponent } from './modal/sip-modal-footer.component';
+import { SipModalHeaderComponent } from './modal/sip-modal-header.component';
+import { SipModalComponent } from './modal/sip-modal.component';
 import { PageBodyComponent } from './page/page-body.component';
 import { PageHeaderComponent } from './page/page-header.component';
 import { PageToolbarComponent } from './page/page-toolbar.component';
@@ -48,10 +48,10 @@ import { SipCardGridComponent } from './card/sip-card-grid.component';
         SipMenuComponent,
         SipMinicolumnComponent,
         SipMinitableComponent,
-        ModalBodyComponent,
-        ModalFooterComponent,
-        ModalHeaderComponent,
-        ModalComponent,
+        SipModalBodyComponent,
+        SipModalFooterComponent,
+        SipModalHeaderComponent,
+        SipModalComponent,
         PageBodyComponent,
         PageHeaderComponent,
         PageToolbarComponent,
@@ -80,10 +80,10 @@ import { SipCardGridComponent } from './card/sip-card-grid.component';
         SipMenuComponent,
         SipMinicolumnComponent,
         SipMinitableComponent,
-        ModalBodyComponent,
-        ModalFooterComponent,
-        ModalHeaderComponent,
-        ModalComponent,
+        SipModalBodyComponent,
+        SipModalFooterComponent,
+        SipModalHeaderComponent,
+        SipModalComponent,
         PageBodyComponent,
         PageHeaderComponent,
         PageToolbarComponent,
@@ -102,6 +102,6 @@ import { SipCardGridComponent } from './card/sip-card-grid.component';
         SipCardCoverComponent,
         SipCardGridComponent
     ],
-    entryComponents:[ModalComponent]
+    entryComponents:[SipModalComponent]
 })
 export class SipComponentsModule { }

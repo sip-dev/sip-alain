@@ -5,7 +5,7 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
   template: `<ng-template #content><ng-content></ng-content></ng-template>`,
   styles: []
 })
-export class ModalHeaderComponent {
+export class SipModalHeaderComponent {
 
 	@ViewChild('content') content: TemplateRef<any>;
 

@@ -11,7 +11,7 @@ import { Component, ViewChild, TemplateRef } from '@angular/core';
   </ng-template>`,
   styles: []
 })
-export class ModalBodyComponent {
+export class SipModalBodyComponent {
 
   @ViewChild('content') content: TemplateRef<any>;
   height = 'auot';
