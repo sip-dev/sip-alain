@@ -26,7 +26,7 @@ export * from './src/shared/components/page/sip-page-body.component';
 export * from './src/shared/components/page/sip-page-header.component';
 export * from './src/shared/components/page/sip-page-toolbar.component';
 export * from './src/shared/components/page/sip-page.component';
-export * from './src/shared/components/searchConent.component';
+export * from './src/shared/components/sip-search-conent.component';
 
 export * from './src/shared/components/card/sip-card.component';
 export * from './src/shared/components/card/sip-card-title.component';

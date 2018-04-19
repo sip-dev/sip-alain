@@ -7,7 +7,7 @@ import { Component, Input } from '@angular/core';
 </nz-input-group>`,
     styles:[]
 })
-export class SearchConentComponent {
+export class SipSearchConentComponent {
 
     @Input()
     params = {

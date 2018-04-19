@@ -19,7 +19,7 @@ import { SipPageHeaderComponent } from './page/sip-page-header.component';
 import { SipPageToolbarComponent } from './page/sip-page-toolbar.component';
 import { SipPageComponent } from './page/sip-page.component';
 import { SipCardComponent } from './card/sip-card.component';
-import { SearchConentComponent } from './searchConent.component';
+import { SipSearchConentComponent } from './sip-search-conent.component';
 import { DelonSharedModule } from '../../delon/delon-shared.module';
 import { SipCardTitleComponent } from './card/sip-card-title.component';
 import { SipCardExtraComponent } from './card/sip-card-extra.component';
@@ -57,7 +57,7 @@ import { SipCardGridComponent } from './card/sip-card-grid.component';
         SipPageToolbarComponent,
         SipPageComponent,
         SipCardComponent,
-        SearchConentComponent,
+        SipSearchConentComponent,
         SipCardTitleComponent,
         SipCardExtraComponent,
         SipCardBodyComponent,
@@ -89,7 +89,7 @@ import { SipCardGridComponent } from './card/sip-card-grid.component';
         SipPageToolbarComponent,
         SipPageComponent,
         SipCardComponent,
-        SearchConentComponent,
+        SipSearchConentComponent,
         SipCardTitleComponent,
         SipCardExtraComponent,
         SipCardBodyComponent,
