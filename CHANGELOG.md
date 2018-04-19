@@ -7,6 +7,7 @@
 * update ng-zorro-antd 0.7.0-beta.2
 * ADD: minitable isEditCell
 * FIX: minitable editCell
+* 重构：sip-card
 
 ## 0.2.5
 
