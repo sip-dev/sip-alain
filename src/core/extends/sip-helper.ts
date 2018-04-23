@@ -1,4 +1,4 @@
-import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, ComponentFactoryResolver, ComponentRef, DoCheck, EventEmitter, Injector, OnChanges, OnDestroy, OnInit, TemplateRef, Type, ViewContainerRef, ViewRef } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, ComponentFactoryResolver, ComponentRef, DoCheck, EventEmitter, Injector, OnChanges, OnDestroy, OnInit, TemplateRef, Type, ViewContainerRef, ViewRef, QueryList } from '@angular/core';
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from "@angular/router";
 import { ReuseTabService } from "@delon/abc";
@@ -305,6 +305,33 @@ export function SipInject(token: any, params?: ISipInjectParams) {
     };
 }
 
+/**
+ * QueryList变为普通Array
+ * @param prop
+ * @param map
+ * @example SipQueryList('this.queryList', function(queryList){ return queryList.map(function(item){return item.aaa})})
+ */
+export function SipQueryList(prop: string, map?: (queryList: QueryList<any>) => any[]) {
+    let fn: any = new Function('return ' + prop);
+    return function (target: any, propKey: string) {
+        Object.defineProperty(target, propKey, {
+            configurable: false,
+            enumerable: true,
+            get: function () {
+                let sipQueryList = this.__SipQueryList$ || (this.__SipQueryList$ = {});
+                let list = sipQueryList[propKey];
+                if (!list) {
+                    let qList = fn.call(this);
+                    qList.changes.subscribe((p) => {
+                        sipQueryList[propKey] = map ? map.call(this, qList) : qList.toArray();
+                    });
+                    list = sipQueryList[propKey] = map ? map.call(this, qList) : qList.toArray();
+                }
+                return list;
+            }
+        });
+    };
+}
 //#endregion SipInject
 
 //#region SipAccess

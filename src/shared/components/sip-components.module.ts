@@ -32,6 +32,11 @@ import { SipCardMetaAvatarComponent } from './card/sip-card-meta-avatar.componen
 import { SipCardActionComponent } from './card/sip-card-action.component';
 import { SipCardCoverComponent } from './card/sip-card-cover.component';
 import { SipCardGridComponent } from './card/sip-card-grid.component';
+import { SipTabsetComponent } from './tabset/sip-tabset.component';
+import { SipTabsetTitleComponent } from './tabset/sip-tabset-title.component';
+import { SipTabsetHeaderComponent } from './tabset/sip-tabset-header.component';
+import { SipTabsetContentComponent } from './tabset/sip-tabset-content.component';
+import { SipTabsetBodyComponent } from './tabset/sip-tabset-body.component';
 
 @NgModule({
     imports: [
@@ -68,7 +73,12 @@ import { SipCardGridComponent } from './card/sip-card-grid.component';
         SipCardMetaAvatarComponent,
         SipCardActionComponent,
         SipCardCoverComponent,
-        SipCardGridComponent
+        SipCardGridComponent,
+        SipTabsetComponent,
+        SipTabsetTitleComponent,
+        SipTabsetHeaderComponent,
+        SipTabsetContentComponent,
+        SipTabsetBodyComponent
     ],
     providers: [],
     exports:[
@@ -100,7 +110,12 @@ import { SipCardGridComponent } from './card/sip-card-grid.component';
         SipCardMetaAvatarComponent,
         SipCardActionComponent,
         SipCardCoverComponent,
-        SipCardGridComponent
+        SipCardGridComponent,
+        SipTabsetComponent,
+        SipTabsetTitleComponent,
+        SipTabsetHeaderComponent,
+        SipTabsetContentComponent,
+        SipTabsetBodyComponent
     ],
     entryComponents:[SipModalComponent]
 })

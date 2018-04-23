@@ -29,11 +29,13 @@ export * from './src/shared/components/page/sip-page.component';
 export * from './src/shared/components/sip-search-conent.component';
 
 export * from './src/shared/components/card/sip-card.component';
-export * from './src/shared/components/card/sip-card-title.component';
-export * from './src/shared/components/card/sip-card-body.component';
-export * from './src/shared/components/card/sip-card-extra.component';
-export * from './src/shared/components/card/sip-card-tab.component';
-export * from './src/shared/components/card/sip-card-meta.component';
+// export * from './src/shared/components/card/sip-card-title.component';
+// export * from './src/shared/components/card/sip-card-body.component';
+// export * from './src/shared/components/card/sip-card-extra.component';
+// export * from './src/shared/components/card/sip-card-tab.component';
+// export * from './src/shared/components/card/sip-card-meta.component';
+
+export * from './src/shared/components/tabset/sip-tabset.component';
 
 export * from './src/shared/sip-alain-shared.module';
 export * from './src/sip-alain.module';
