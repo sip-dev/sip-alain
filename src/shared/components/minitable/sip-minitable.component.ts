@@ -7,6 +7,8 @@ import { IContextMenu } from '../menu/sip-contextmenu.component';
 import { SipMinicolumnComponent } from './sip-minicolumn.component';
 
 
+export interface SipMiniTableRowColumn { index: number; isEdit: boolean; }
+
 export interface SipMiniTableRow<T=any> {
     /**是否选择 */
     selected: boolean;
@@ -16,9 +18,47 @@ export interface SipMiniTableRow<T=any> {
     index: number;
     /**数量 */
     count: number;
-    columns: { index: number; isEdit: boolean; }[];
+    columns: SipMiniTableRowColumn[];
+    tree: {
+        expand: boolean;
+        isShow: () => boolean;
+        collapse: (expand: boolean) => void;
+    };
     /**数据 */
     data: T;
+    children: SipMiniTableRow<T>[];
+    expands?: SipMiniTableRow<T>[];
+}
+
+export interface SipMiniTableTreeOpt<T=any> {
+    /**展开数据字段，内容为数组，如: children */
+    childName?: string;
+    /**确定是否可以展开字段，跟load配合使用(动态加载展开数据) */
+    existName?: string;
+    /**加载展开数据,之前最好配合exits确定是否可以展开 */
+    load?: (row: SipMiniTableRow<T>) => Observable<T[]>
+}
+
+export interface SipMiniTableFilterOpt<T=any> {
+    [prop: string]: {
+        /**下拉数据 */
+        items?: any[],
+        /**显示字段名称 */
+        textName?: string,
+        /**值字段名称 */
+        valueName?: string,
+        /**默认值 */
+        defaultValue?: any[],
+        /**过滤处理事件 */
+        onFilter?: (this: SipMinitableManager<T>, p?: {
+            /**要过滤的值 */
+            values: any[];
+            /**下拉数据 */
+            items: any[];
+            /**列信息 */
+            column: SipMinicolumnComponent
+        }) => void;
+    }
 }
 
 export interface SipMiniTableFilterEvent {
@@ -47,6 +87,7 @@ export interface ISipMinitableManager<T=any> {
     filterSingle?: boolean;
     /**快捷菜单定义 */
     contextmenu?: (this: SipMinitableManager<T>, menu: IContextMenu, row: SipMiniTableRow<T>[]) => void;
+    tree?: SipMiniTableTreeOpt<T>;
 
     /**初始化时触发，表示table已经可以使用 */
     onInit?: (this: SipMinitableManager<T>) => void;
@@ -60,34 +101,14 @@ export interface ISipMinitableManager<T=any> {
      * 每次数据加载时触发，可以改造数据
      * @example rest.map(item=>item);
      */
-    onLoaded?: (this: SipMinitableManager<T>, rest: Observable<SipRestSqlRet>) => void;
+    onLoaded?: (this: SipMinitableManager<T>, rest: Observable<SipRestSqlRet<T>>) => void;
     /**每次数据加载完成后并处理table业务时触发 */
     onCompleted?: (this: SipMinitableManager<T>) => void;
     /**有过滤时触发 */
     onFilter?: (this: SipMinitableManager<T>, event: SipMiniTableFilterEvent) => void;
 
     /**列的下拉过滤 */
-    filters?: {
-        [prop: string]: {
-            /**下拉数据 */
-            items?: any[],
-            /**显示字段名称 */
-            textName?: string,
-            /**值字段名称 */
-            valueName?: string,
-            /**默认值 */
-            defaultValue?: any[],
-            /**过滤处理事件 */
-            onFilter?: (this: SipMinitableManager<T>, p?: {
-                /**要过滤的值 */
-                values: any[];
-                /**下拉数据 */
-                items: any[];
-                /**列信息 */
-                column: SipMinicolumnComponent
-            }) => void;
-        }
-    };
+    filters?: SipMiniTableFilterOpt<T>;
 }
 
 export class SipMinitableManager<T=any> implements ISipMinitableManager<T> {
@@ -95,29 +116,10 @@ export class SipMinitableManager<T=any> implements ISipMinitableManager<T> {
     get $table(): SipMinitableComponent {
         return this._table;
     }
+    tree?: SipMiniTableTreeOpt<T>;
 
     /**列的下拉过滤 */
-    filters?: {
-        [prop: string]: {
-            /**下拉数据 */
-            items?: any[],
-            /**显示字段名称 */
-            textName?: string,
-            /**值字段名称 */
-            valueName?: string,
-            /**默认值 */
-            defaultValue?: any[],
-            /**过滤处理事件 */
-            onFilter?: (this: SipMinitableManager<T>, p?: {
-                /**要过滤的值 */
-                values: any[];
-                /**下拉数据 */
-                items: any[];
-                /**列信息 */
-                column: SipMinicolumnComponent
-            }) => void;
-        }
-    };
+    filters?: SipMiniTableFilterOpt<T>;
 
     filterSingle?: boolean;
 
@@ -374,12 +376,12 @@ export class SipMinitableComponent extends SipComponent {
             item.count = count;
         });
 
-        if (!this.isInit){
+        if (!this.isInit) {
             this.isInit = true;
             //处理rows.columns数据， 防止没初始化
-            let rows = this.rows;
-            if (rows && rows.length > 0 && !rows[0].columns){
-                rows.forEach(function(row){
+            let rows = this._allRows;
+            if (rows && rows.length > 0 && !rows[0].columns) {
+                rows.forEach(function (row) {
                     row.columns = columns.map(function (item) {
                         return { index: item.index, isEdit: false };
                     })
@@ -443,17 +445,56 @@ export class SipMinitableComponent extends SipComponent {
         return this._rows;
     }
 
+    private _allRows: SipMiniTableRow[] = [];
+    private _resetAllRows(rows?: SipMiniTableRow[]) {
+        let isFirst = arguments.length <= 0;
+        if (isFirst) {
+            if (!this.manager.tree) {
+                this._allRows = this.rows;
+                return;
+            }
+            rows = this.rows;
+            this._allRows = [];
+        }
+        let list = this._allRows;
+        rows.forEach((p) => {
+            list.push(p);
+            if (p.children) this._resetAllRows(p.children);
+        });
+        if (isFirst) {
+            let count = list.length;
+            list.forEach((p, idx) => {
+                p.count = count;
+                p.index = idx;
+            });
+            this._refChecked();
+        }
+    }
+
     private _datas: any[] = [];
     public get datas(): any[] {
         return this._datas;
     }
     @Input() public set datas(value: any[]) {
         value || (value = []);
-        let count = value.length;
+        let rows: SipMiniTableRow[] = this._makeRows(value);
+        this._rows = rows;
+        this._resetAllRows();
+        this._datas = value;
+        setTimeout(() => { this._checkSelectChange(); this.onCompleted.emit(); }, 50);
+    }
+
+    private _makeRows(datas: any[]): SipMiniTableRow[] {
+        let count = datas.length;
         let columns = this.columns;
         let hasCol = !!columns;
-        let rows: SipMiniTableRow[] = value.map((item, index) => {
-            return {
+        let isTree = null;
+        let rows: SipMiniTableRow[] = datas.map((item: SipMiniTableRow, index) => {
+            let setChild = (children) => {
+                row.children = children;
+                this._resetAllRows();
+            };
+            let row = {
                 selected: false,
                 isEdit: false,
                 index: index,
@@ -461,12 +502,41 @@ export class SipMinitableComponent extends SipComponent {
                 columns: hasCol ? columns.map(function (item) {
                     return { index: item.index, isEdit: false };
                 }) : null,
+                tree: {
+                    isShow: () => {
+                        let tree = this.manager.tree;
+                        if (!tree) return false;
+                        let childName = tree.childName;
+                        if (childName) {
+                            let cList = item && item[childName];
+                            return cList ? cList.length > 0 : false;
+                        } else if (tree.existName && tree.load) {
+                            return item ? item[tree.existName] : false;
+                        }
+                        return false;
+                    },
+                    collapse: (expand: boolean) => {
+                        if (expand) {
+                            let tree = this.manager.tree;
+                            if (tree.childName)
+                                setChild(this._makeRows(item[tree.childName]));
+                            else if (tree.load) {
+                                tree.load(row).subscribe((p) => {
+                                    setChild(this._makeRows(p));
+                                });
+                            }
+                        } else {
+                            setChild(null);
+                        }
+                    },
+                    expand: false
+                },
+                children: null,
                 data: item
             };
+            return row;
         });
-        this._rows = rows;
-        this._datas = value;
-        setTimeout(() => { this._checkSelectChange(); this.onCompleted.emit(); }, 50);
+        return rows;
     }
 
     //#endregion
@@ -542,7 +612,7 @@ export class SipMinitableComponent extends SipComponent {
 
     selectAll(seleced?: boolean) {
         seleced = (seleced !== false);
-        this.rows.forEach(item => item.selected = seleced);
+        this._allRows.forEach(item => item.selected = seleced);
         this._refChecked();
     }
 
@@ -554,7 +624,7 @@ export class SipMinitableComponent extends SipComponent {
         } else {
             if (row.selected && button == 2) return;
             if (!event.ctrlKey) {
-                this.rows.forEach(item => item.selected = false);
+                this._allRows.forEach(item => item.selected = false);
                 row.selected = true;
             } else
                 row.selected = !row.selected;
@@ -571,7 +641,7 @@ export class SipMinitableComponent extends SipComponent {
     selectIndex(indexs: number[], seleced?: boolean) {
         if (indexs.length == 0) return;
         seleced = (seleced !== false);
-        let rows = this.rows
+        let rows = this._allRows
         indexs.forEach(item => {
             rows[item].selected = seleced;
         });
@@ -579,7 +649,7 @@ export class SipMinitableComponent extends SipComponent {
     }
 
     get selectRows(): SipMiniTableRow[] {
-        return this.rows.filter(item => item.selected);
+        return this._allRows.filter(item => item.selected);
     }
 
     get selectFristRow(): SipMiniTableRow {
@@ -597,8 +667,8 @@ export class SipMinitableComponent extends SipComponent {
     }
 
     _refChecked() {
-        const checkedCount = this.rows.filter(w => w.selected).length;
-        this._allSelected = checkedCount === this.rows.length;
+        const checkedCount = this._allRows.filter(w => w.selected).length;
+        this._allSelected = checkedCount === this._allRows.length;
         this._indeterminate = this._allSelected ? false : checkedCount > 0;
         this._checkSelectChange();
     }
@@ -615,6 +685,12 @@ export class SipMinitableComponent extends SipComponent {
     }
 
     //#endregion
+
+    expand(rows: SipMiniTableRow[], expand?: boolean) {
+        if (!this.manager.tree) return;
+        arguments.length == 1 && (expand = true);
+        rows.forEach((p) => { p.tree.collapse(true); })
+    }
 
     //#region sort
 
@@ -705,7 +781,7 @@ export class SipMinitableComponent extends SipComponent {
      * @param columnIndex 
      */
     isEditCell(rowIndex: number, columnIndex: number) {
-        return this._isEditCell(this.rows[rowIndex], columnIndex);
+        return this._isEditCell(this._allRows[rowIndex], columnIndex);
     }
 
     _isEditCell(row: SipMiniTableRow<any>, columnIndex: number) {
@@ -719,7 +795,7 @@ export class SipMinitableComponent extends SipComponent {
      * @param isEdit 是否可以编辑，默认为true
      */
     editCell(rowIndexs: number[], columnIndexs: number[], isEdit: boolean = true) {
-        let rows = this.rows;
+        let rows = this._allRows;
         if (!rowIndexs)
             rows.forEach(item => {
                 item.isEdit = isEdit;

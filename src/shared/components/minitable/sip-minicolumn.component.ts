@@ -27,6 +27,8 @@ export class SipMinicolumnComponent {
 
 	@Input() group = ''
 
+	@Input() tree: boolean = false;
+
 	index: number;
 	count: number;
 
@@ -52,13 +54,13 @@ export class SipMinicolumnComponent {
 
 	//#region filter
 
-	private _filterItems:any[];
-	public get filterItems():any[]{
+	private _filterItems: any[];
+	public get filterItems(): any[] {
 		return this._filterItems;
 	}
 	//筛选菜单, [{value:'', text:'全部'}]
 	@Input()
-	public set filterItems(p:any[]){
+	public set filterItems(p: any[]) {
 		this._filterItems = p;
 		this.filterValues = this.filterDefault;
 	}

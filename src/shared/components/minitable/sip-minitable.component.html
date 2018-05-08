@@ -1,4 +1,4 @@
-<nz-table #nzTable [nzData]="rows" [nzSize]="'middle'" [nzShowPagination]="false" [nzLoading]="_loading" [nzTotal]="total"
+<nz-table #nzTable [nzData]="rows" nzSize="middle" [nzShowPagination]="false" [nzLoading]="_loading" [nzTotal]="total"
     [(nzPageIndex)]="pageIndex" (nzPageIndexChange)="_load()" [(nzPageSize)]="pageSize" (nzPageSizeChange)="_load()">
     <thead nz-thead>
         <tr>
@@ -28,19 +28,34 @@
         </tr>
     </thead>
     <tbody nz-tbody>
-        <tr nz-tbody-tr *ngFor="let row of nzTable.data">
-            <td *ngIf="multiSelect" nzShowCheckbox [(nzChecked)]="row.selected" (nzCheckedChange)="_refChecked()" (mousedown)="_tiggerRowSelBySel(row, $event)"></td>
-            <td nz-td *ngFor="let column of columnQueryList" (mousedown)="_tiggerRowSel(row, $event)">
-                <ng-template [ngIf]="_isEditCell(row, column.index)">
-                    <input nz-input *ngIf="!column.editor" [(ngModel)]="row.data[column.name]">
-                    <ng-container *ngIf="column.editor" [ngTemplateOutlet]="column.editor" [ngTemplateOutletContext]="{row:row, column:column, data:row.data}"></ng-container>
-                </ng-template>
-                <ng-template [ngIf]="!_isEditCell(row, column.index)">
-                    <span *ngIf="!column.formatter">{{row.data[column.name]}}</span>
-                    <ng-container *ngIf="column.formatter" [ngTemplateOutlet]="column.formatter" [ngTemplateOutletContext]="{row:row, column:column, data:row.data}"></ng-container>
-                </ng-template>
-            </td>
-        </tr>
+        <ng-template #rowtmpl let-rowList="rowList" let-level="level">
+            <ng-template ngFor let-row [ngForOf]="rowList">
+                <tr nz-tbody-tr>
+                    <td *ngIf="multiSelect" nzShowCheckbox [(nzChecked)]="row.selected" (nzCheckedChange)="_refChecked()" (mousedown)="_tiggerRowSelBySel(row, $event)"></td>
+                    <ng-template #tdcontent let-column="column">
+                        <ng-template [ngIf]="_isEditCell(row, column.index)">
+                            <input nz-input *ngIf="!column.editor" [(ngModel)]="row.data[column.name]">
+                            <ng-template *ngIf="column.editor" [ngTemplateOutlet]="column.editor" [ngTemplateOutletContext]="{row:row, column:column, data:row.data}"></ng-template>
+                        </ng-template>
+                        <ng-template [ngIf]="!_isEditCell(row, column.index)">
+                            <span *ngIf="!column.formatter">{{row.data[column.name]}}</span>
+                            <ng-template *ngIf="column.formatter" [ngTemplateOutlet]="column.formatter" [ngTemplateOutletContext]="{row:row, column:column, data:row.data}"></ng-template>
+                        </ng-template>
+                    </ng-template>
+                    <ng-template ngFor let-column [ngForOf]="columnQueryList">
+                        <td nz-td *ngIf="!column.tree" (mousedown)="_tiggerRowSel(row, $event)">
+                            <ng-template [ngTemplateOutlet]="tdcontent" [ngTemplateOutletContext]="{column:column}"></ng-template>
+                        </td>
+                        <td nz-td *ngIf="column.tree" (mousedown)="_tiggerRowSel(row, $event)" [nzIndentSize]="level*20" [nzShowExpand]="row.tree.isShow()"
+                            [(nzExpand)]="row.tree.expand" (nzExpandChange)="row.tree.collapse($event)">
+                            <ng-template [ngTemplateOutlet]="tdcontent" [ngTemplateOutletContext]="{column:column}"></ng-template>
+                        </td>
+                    </ng-template>
+                </tr>
+                <ng-template *ngIf="row.children" [ngTemplateOutlet]="rowtmpl" [ngTemplateOutletContext]="{rowList:row.children, level:level+1}"></ng-template>
+            </ng-template>
+        </ng-template>
+        <ng-template [ngTemplateOutlet]="rowtmpl" [ngTemplateOutletContext]="{rowList:nzTable.data, level:0}"></ng-template>
     </tbody>
     <sip-contextmenu *ngIf="_hasContextmenu" (onShow)="_showContextmenu($event)"></sip-contextmenu>
 </nz-table>
