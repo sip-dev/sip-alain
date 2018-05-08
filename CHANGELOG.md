@@ -8,6 +8,7 @@
 * ADD: minitable isEditCell
 * FIX: minitable editCell
 * 重构：sip-card
+* ADD: minitable tree mode
 
 ## 0.2.5
 
