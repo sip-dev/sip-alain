@@ -1,4 +1,4 @@
-import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, ComponentFactoryResolver, ComponentRef, DoCheck, EventEmitter, Injector, OnChanges, OnDestroy, OnInit, TemplateRef, Type, ViewContainerRef, ViewRef, QueryList } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, ComponentFactoryResolver, ComponentRef, DoCheck, EventEmitter, Injector, OnChanges, OnDestroy, OnInit, QueryList, TemplateRef, Type, ViewContainerRef, ViewRef } from '@angular/core';
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from "@angular/router";
 import { ReuseTabService } from "@delon/abc";
@@ -1057,9 +1057,15 @@ export class SipUiBase extends SipParent implements OnInit, OnDestroy, OnChanges
     public get $routeParams(): any {
         let routeParams = this._$routeParams;
         if (routeParams) return routeParams;
+        this.$activatedRoute.queryParams.subscribe((p) => {
+            routeParams = p;
+        })
+        let params;
+        this.$activatedRoute.queryParams.subscribe((p) => {
+            params = p;
+        })
         routeParams = this._$routeParams =
-            Lib.extend({}, this.$activatedRoute.queryParams.toValue(),
-                this.$activatedRoute.params.toValue());
+            Lib.extend({}, routeParams, params);
         return routeParams;
     }
 
