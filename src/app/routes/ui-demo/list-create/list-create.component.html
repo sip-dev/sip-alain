@@ -1,0 +1,291 @@
+<sip-page>
+
+  <sip-page-header navigator="申请Spark服务">
+    <ng-template #title>申请Spark服务</ng-template>
+    <ng-template #desc>
+      Spark是一个高效通用的分布式计算框架、也是统一的数据处理架构。其优秀的DAG执行引擎支持循环数据流的高效重用及内存计算。 官网：
+      <a href="http://spark.apache.org/" target="_blank">http://spark.apache.org/</a>
+    </ng-template>
+  </sip-page-header>
+
+  <sip-page-body>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzXl]="18" [nzMd]="16">
+        <sip-card [bordered]="false">
+          <sip-card-body>
+            <form nz-form [formGroup]="form">
+              <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+                  <label nz-form-item-required>版本</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="18" [nzXs]="24">
+                  <nz-select formControlName="edition" [nzAllowClear]="false" nzShowSearch>
+                    <nz-option *ngFor="let item of editionoptions" [nzLabel]="item.label" [nzValue]="item.value" [nzDisabled]="item.disabled">
+                    </nz-option>
+                  </nz-select>
+                </div>
+              </div>
+              <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+                  <label nz-form-item-required>架构</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="18" [nzXs]="24">
+                  <nz-radio-group formControlName="architecture">
+                    <label nz-radio-button [nzValue]="'A'">
+                      <span>Spark2集群</span>
+                    </label>
+                    <label nz-radio-button [nzValue]="'B'" [nzDisabled]="true">
+                      <span>Spark3集群</span>
+                    </label>
+                    <label nz-radio-button [nzValue]="'C'">
+                      <span>Spark4集群</span>
+                    </label>
+                    <label nz-radio-button [nzValue]="'D'">
+                      <span>Spark5集群</span>
+                    </label>
+                  </nz-radio-group>
+                </div>
+              </div>
+              <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+                  <label nz-form-item-required>用户</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="18" [nzXs]="24">
+                  <input nz-input formControlName="installuser" placeholder="hadoop">
+                </div>
+              </div>
+              <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+                  <label nz-form-item-required>密码</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="18" [nzXs]="24">
+                  <input nz-input formControlName="password" type="password">
+                </div>
+              </div>
+
+              <nz-divider nzTitle="" nzDashed></nz-divider>
+
+              <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+                  <label nz-form-item-required>名称</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="18" [nzXs]="24">
+                  <input nz-input formControlName="name" placeholder="请输入名称">
+                </div>
+              </div>
+
+              <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+                  <label nz-form-item-required>项目</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="18" [nzXs]="24">
+                  <nz-select formControlName="projects" [nzAllowClear]="true" nzShowSearch>
+                    <nz-option *ngFor="let item of projectsoptions" [nzLabel]="item.label" [nzValue]="item.value" [nzDisabled]="item.disabled">
+                    </nz-option>
+                  </nz-select>
+                </div>
+              </div>
+
+              <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+                  <label nz-form-item-required>区域</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="18" [nzXs]="24">
+                  <nz-select formControlName="region" [nzAllowClear]="true" nzShowSearch>
+                    <nz-option *ngFor="let item of areaoptions" [nzLabel]="item.label" [nzValue]="item.value" [nzDisabled]="item.disabled">
+                    </nz-option>
+                  </nz-select>
+                </div>
+              </div>
+
+              <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+                  <label nz-form-item-required>网络</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="18" [nzXs]="24">
+                  <nz-select formControlName="networks" [nzAllowClear]="true" nzShowSearch>
+                    <nz-option *ngFor="let item of networksoptions" [nzLabel]="item.label" [nzValue]="item.value" [nzDisabled]="item.disabled">
+                    </nz-option>
+                  </nz-select>
+                </div>
+              </div>
+
+              <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+                  <label for="specification" nz-form-item-required>规格</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="18" [nzXs]="24">
+                  <nz-radio-group formControlName="specification">
+                    <nz-popover [nzTitle]="'小规格-配置'" class="mr-sm">
+                      <label nz-radio-button nz-popover [nzValue]="'sm'">
+                        <span>小规格</span>
+                      </label>
+                      <ng-template #nzTemplate>
+                        <nz-table #nzTable [nzShowPagination]="false" [nzBordered]="false" [nzSize]="small" [nzData]="smspecification">
+                          <tbody nz-tbody>
+                            <tr nz-tbody-tr *ngFor="let i of nzTable.data">
+                              <td widh="100" nz-td>{{i.name}}</td>
+                              <td widh="60" nz-td>{{i.id}}</td>
+                              <td widh="300" nz-td>{{i.spec}}</td>
+                            </tr>
+                          </tbody>
+                        </nz-table>
+                      </ng-template>
+                    </nz-popover>
+                    <nz-popover [nzTitle]="'中规格'" class="mr-sm">
+                      <label nz-radio-button nz-popover [nzValue]="'md'">
+                        <span>中规格</span>
+                      </label>
+                      <ng-template #nzTemplate>
+                        <div>
+                          <p>内容</p>
+                          <p>内容</p>
+                        </div>
+                      </ng-template>
+                    </nz-popover>
+                    <nz-popover [nzTitle]="'大规格'" class="mr-sm">
+                      <label nz-radio-button nz-popover [nzValue]="'lg'">
+                        <span>大规格</span>
+                      </label>
+                      <ng-template #nzTemplate>
+                        <div>
+                          <p>内容</p>
+                          <p>内容</p>
+                        </div>
+                      </ng-template>
+                    </nz-popover>
+                  </nz-radio-group>
+                </div>
+              </div>
+
+              <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+                  <label for="security" nz-form-item-required>安全组</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="18" [nzXs]="24">
+                  <nz-select formControlName="security" [nzAllowClear]="true">
+                    <nz-option *ngFor="let item of securityoptions" [nzLabel]="item.label" [nzValue]="item.value" [nzDisabled]="item.disabled">
+                    </nz-option>
+                  </nz-select>
+                </div>
+              </div>
+
+              <nz-divider nzTitle="" nzDashed></nz-divider>
+
+              <div nz-form-item nz-row>
+                <div nz-form-control nz-col [nzSpan]="18" [nzXs]="24" [nzOffset]="6">
+                  <label nz-checkbox>
+                    <span>记住我的选择</span>
+                  </label>
+
+                  <div class="mt-sm">
+                    <button nz-button [nzType]="'primary'" class="mr-sm" (click)="save()">申请</button>
+                    <button nz-button (click)="$close()">取消</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </sip-card-body>
+        </sip-card>
+      </div>
+
+
+      <div nz-col [nzXl]="6" [nzMd]="8">
+        <sip-card [bordered]="true" [hoverable]="false" [loading]="false" [bodyStyle]="" [type]="">
+          <sip-card-tab>
+            <sip-tabset>
+              <sip-tabset-header>
+                <sip-tabset-title>tab11</sip-tabset-title>
+                <sip-tabset-title>tab21</sip-tabset-title>
+              </sip-tabset-header>
+              <sip-tabset-body>
+                <sip-tabset-content>content11</sip-tabset-content>
+                <sip-tabset-content>content21</sip-tabset-content>
+              </sip-tabset-body>
+            </sip-tabset>
+          </sip-card-tab>
+        </sip-card>
+        <sip-tabset>
+          <sip-tabset-title [content]="tabContent1">tab1</sip-tabset-title>
+          <sip-tabset-title [content]="tabContent2">tab2</sip-tabset-title>
+        </sip-tabset>
+        <sip-tabset-content #tabContent1>content1</sip-tabset-content>
+        <sip-tabset-content #tabContent2>content2</sip-tabset-content>
+        <sip-tabset>
+          <sip-tabset-header>
+            <sip-tabset-title>tab11</sip-tabset-title>
+            <sip-tabset-title>tab21</sip-tabset-title>
+          </sip-tabset-header>
+          <sip-tabset-body>
+            <sip-tabset-content>content11</sip-tabset-content>
+            <sip-tabset-content>content21</sip-tabset-content>
+          </sip-tabset-body>
+        </sip-tabset>
+        22222222
+        <!-- card meta demo -->
+        <sip-card [bordered]="true">
+          <sip-card-cover>
+            <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />
+          </sip-card-cover>
+          <sip-card-meta>
+            <sip-card-meta-title>title</sip-card-meta-title>
+            <!-- <sip-card-meta-avatar>
+              <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />
+            </sip-card-meta-avatar> -->
+            <sip-card-meta-desc>desc</sip-card-meta-desc>
+          </sip-card-meta>
+        </sip-card>
+
+        <!-- sip card demo -->
+        <sip-card [bordered]="true" [hoverable]="false" [loading]="false" [bodyStyle]="" [type]="">
+          <sip-card-title>title</sip-card-title>
+          <sip-card-extra>
+            <a href="javascript:void(0)">extra</a>
+          </sip-card-extra>
+          <sip-card-body>
+            sip-card-body
+          </sip-card-body>
+          <sip-card-action>act1</sip-card-action>
+          <sip-card-action>act2</sip-card-action>
+          <sip-card-action>act3</sip-card-action>
+        </sip-card>
+
+        <sip-card [bordered]="true">
+          <sip-card-grid [gridStyle]="{width:'50%', textAlign: 'center'}">grid1</sip-card-grid>
+          <sip-card-grid>grid2</sip-card-grid>
+          <sip-card-grid>grid3</sip-card-grid>
+          <sip-card-grid>grid3</sip-card-grid>
+        </sip-card>
+
+        <sip-card [bordered]="false">
+          <sip-card-title>当前配置</sip-card-title>
+          <sip-card-body>
+            <sip-contextmenu>
+              <ul nz-menu [nzMode]="'vertical'" [nzTheme]="'light'">
+                <li nz-menu-item>sdfsdfsdf</li>
+                <li nz-menu-item>sdfsdfsdf</li>
+                <li nz-menu-item>sdfsdfsdf</li>
+                <li nz-menu-item>sdfsdfsdf</li>
+                <li nz-menu-item>sdfsdfsdf</li>
+              </ul>
+            </sip-contextmenu>
+            <desc-list col="1" size="large" class="mb-md">
+              <desc-list-item term="版本">2.0.0</desc-list-item>
+              <desc-list-item term="用户">Hadoop</desc-list-item>
+              <desc-list-item term="密码">hadooppass</desc-list-item>
+              <desc-list-item term="规格">小</desc-list-item>
+            </desc-list>
+            <nz-divider nzTitle="" nzDashed></nz-divider>
+            <desc-list col="1" size="large" class="mb-md">
+              <desc-list-item term="名称">Spark</desc-list-item>
+              <desc-list-item term="项目">wotest003</desc-list-item>
+              <desc-list-item term="区域">上海</desc-list-item>
+              <desc-list-item term="网络">无</desc-list-item>
+            </desc-list>
+          </sip-card-body>
+        </sip-card>
+
+      </div>
+    </div>
+  </sip-page-body>
+</sip-page>

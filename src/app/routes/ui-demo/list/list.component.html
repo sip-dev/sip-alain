@@ -1,0 +1,103 @@
+<sip-page>
+  <sip-page-header navigator="列表">
+    <ng-template #title>列表</ng-template>
+    <ng-template #desc>
+      列表
+      <nz-tooltip [nzTitle]="'了解更多实例介绍'">
+        <a nz-tooltip [sipRouterLink]>更多…</a>
+      </nz-tooltip>
+    </ng-template>
+  </sip-page-header>
+
+  <sip-page-body>
+    <!-- 卡片 -->
+    <sip-card [bordered]="false">
+      <sip-card-body>
+        <!-- 操作栏 -->
+        <sip-page-toolbar>
+          <button nz-button [nzType]="'default'" class="mr-sm">
+            <i class="anticon anticon-reload"></i>
+          </button>
+          <button nz-button (click)="create()" sipAccess="create" [nzType]="'primary'" class="mr-sm">
+            <i class="anticon anticon-plus"></i>
+            <span>新建</span>
+          </button>
+          <button nz-button (click)="test()" sipAccess="test" [nzType]="'default'" class="mr-sm">
+            <i class="anticon anticon-caret-right"></i>
+            <span>测试</span>
+          </button>
+          <nz-dropdown [nzTrigger]="'hover'" [nzPlacement]="'bottomLeft'" class="mr-sm">
+            <button nz-button nz-dropdown>
+              <i class="fa fa-ellipsis-v mr-sm"></i>
+              <span>更多</span>
+              <i class="anticon anticon-down"></i>
+            </button>
+            <ul nz-menu>
+              <li nz-menu-item>
+                <a (click)="edit()" sipAccess="edit">{{editText}}</a>
+              </li>
+              <li nz-menu-item>
+                <a (click)="test()" sipAccess="test">测试</a>
+              </li>
+              <li nz-menu-item>
+                <a [sipRouterLink]>测试</a>
+              </li>
+              <li nz-menu-divider></li>
+              <li nz-submenu>
+                <span title>更多</span>
+                <ul>
+                  <li nz-menu-item>
+                    <a (click)="edit()" sipAccess="edit">{{editText}}</a>
+                  </li>
+                  <li nz-menu-item>
+                    <a (click)="test()" sipAccess="test">测试</a>
+                  </li>
+                  <li nz-menu-item>
+                    <a [sipRouterLink]>测试</a>
+                  </li>
+                </ul>
+              </li>
+
+            </ul>
+          </nz-dropdown>
+
+          <sip-search-conent [params]="searchContent"></sip-search-conent>
+        </sip-page-toolbar>
+
+        <div class="mb-md">
+          <nz-alert [nzType]="'info'">
+            <span alert-body>
+              <nz-tag [nzColor]="'purple'" nzMode="closeable">purple</nz-tag>
+            </span>
+          </nz-alert>
+        </div>
+        <sip-minitable [manager]="tableManager">
+          <sip-minicolumn name="num" title="编号" [tree]="true">
+            <ng-template #formatter let-row="row" let-column="column" let-data="data">
+              <a [sipRouterLink]="['/ui-demo/list-detail', {id:data.num}]">{{data.num}}</a>
+              <i class="fa fa-desktop ml-sm"></i>
+            </ng-template>
+          </sip-minicolumn>
+          <sip-minicolumn name="name" title="名称" [sortable]="true" sortOrder="desc"></sip-minicolumn>
+          <sip-minicolumn name="status" title="状态">
+            <ng-template #formatter let-row="row" let-column="column" let-data="data">
+              <nz-badge [nzStatus]="data.status" class="mr-sm"></nz-badge>
+              {{column.getFilterText(data.status)}}
+            </ng-template>
+            <ng-template #editor let-row="row" let-column="column" let-data="data">
+              <nz-select [(ngModel)]="data.status">
+                <nz-option *ngFor="let item of column.filterItems" [nzLabel]="item.text" [nzValue]="item.value">
+                </nz-option>
+              </nz-select>
+            </ng-template>
+          </sip-minicolumn>
+          <sip-minicolumn name="region" title="区域" [sortable]="true"></sip-minicolumn>
+          <sip-minicolumn name="ip" title="IP" [sortable]="true"></sip-minicolumn>
+          <sip-minicolumn name="spec" title="系统/规格" [sortable]="true"></sip-minicolumn>
+          <sip-minicolumn name="user" title="创建人" [sortable]="true"></sip-minicolumn>
+          <sip-minicolumn name="date" title="创建时间" [sortable]="true" width="100px"></sip-minicolumn>
+        </sip-minitable>
+      </sip-card-body>
+    </sip-card>
+  </sip-page-body>
+</sip-page>

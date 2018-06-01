@@ -1,0 +1,47 @@
+{
+  "name": "sip-alain",
+  "version": "0.3.0",
+  "description": "ng-zorro-antd admin panel front-end framework",
+  "author": "sip",
+  "homepage": "https://github.com/sip-dev/sip-alain/",
+  "bugs": {
+    "url": "https://github.com/sip-dev/sip-alain/issues"
+  },
+  "keywords": [
+    "ng-sip",
+    "sip-alain",
+    "delon",
+    "antd",
+    "ng-zorro-antd",
+    "angular"
+  ],
+  "peerDependencies": {
+    "@angular/animations": "^6.0.0",
+    "@angular/common": "^6.0.0",
+    "@angular/compiler": "^6.0.0",
+    "@angular/core": "^6.0.0",
+    "@angular/forms": "^6.0.0",
+    "@angular/http": "^6.0.0",
+    "@angular/platform-browser": "^6.0.0",
+    "@angular/platform-browser-dynamic": "^6.0.0",
+    "@angular/router": "^6.0.0",
+    "@delon/abc": "^1.0.5",
+    "@delon/acl": "^1.0.5",
+    "@delon/auth": "^1.0.5",
+    "@delon/cache": "^1.0.5",
+    "@delon/form": "^1.0.5",
+    "@delon/mock": "^1.0.5",
+    "@delon/theme": "^1.0.5",
+    "@delon/util": "^1.0.5",
+    "@ngx-translate/core": "^10.0.1",
+    "@ngx-translate/http-loader": "^3.0.1",
+    "@types/node": "~8.9.4",
+    "core-js": "^2.5.4",
+    "rxjs": "^6.0.0",
+    "gulp": "^3.9.1",
+    "ng-zorro-antd": "^0.7.0-beta.2",
+    "sip-lib": "^0.1.0",
+    "typescript": "~2.7.2",
+    "zone.js": "^0.8.26"
+  }
+}
