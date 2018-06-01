@@ -3,7 +3,7 @@
 
 ## 0.3.0
 
-* update ng-alain 1.0.4
+* update ng-alain 1.0.5
 * update ng-zorro-antd 0.7.1
 * ADD: minitable isEditCell
 * FIX: minitable editCell
