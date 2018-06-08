@@ -1,12 +1,11 @@
-import { Component, HostBinding, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, HostBinding, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { SettingsService, TitleService } from '@delon/theme';
 import { filter } from 'rxjs/operators';
-import { SipAppContainerService } from 'sip-alain';
 
 @Component({
   selector: 'app-root',
-  template: `<router-outlet></router-outlet>`,
+  template: `<router-outlet></router-outlet><sip-app-container></sip-app-container>`,
 })
 export class AppComponent implements OnInit {
   @HostBinding('class.layout-fixed')
@@ -25,10 +24,7 @@ export class AppComponent implements OnInit {
   constructor(
     private settings: SettingsService,
     private router: Router,
-    private titleSrv: TitleService,
-    contain: SipAppContainerService,
-    vcRef: ViewContainerRef
-  ) { contain.init(vcRef); }
+    private titleSrv: TitleService) { }
 
   ngOnInit() {
     this.router.events

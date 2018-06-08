@@ -37,6 +37,7 @@ import { SipTabsetTitleComponent } from './tabset/sip-tabset-title.component';
 import { SipTabsetHeaderComponent } from './tabset/sip-tabset-header.component';
 import { SipTabsetContentComponent } from './tabset/sip-tabset-content.component';
 import { SipTabsetBodyComponent } from './tabset/sip-tabset-body.component';
+import { SipAppContainerComponent } from './sip-app-container.component';
 
 @NgModule({
     imports: [
@@ -78,7 +79,8 @@ import { SipTabsetBodyComponent } from './tabset/sip-tabset-body.component';
         SipTabsetTitleComponent,
         SipTabsetHeaderComponent,
         SipTabsetContentComponent,
-        SipTabsetBodyComponent
+        SipTabsetBodyComponent,
+        SipAppContainerComponent
     ],
     providers: [],
     exports:[
@@ -115,7 +117,8 @@ import { SipTabsetBodyComponent } from './tabset/sip-tabset-body.component';
         SipTabsetTitleComponent,
         SipTabsetHeaderComponent,
         SipTabsetContentComponent,
-        SipTabsetBodyComponent
+        SipTabsetBodyComponent,
+        SipAppContainerComponent
     ],
     entryComponents:[SipModalComponent]
 })
