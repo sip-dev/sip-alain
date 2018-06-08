@@ -1,13 +1,13 @@
-import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, ComponentFactoryResolver, ComponentRef, DoCheck, EventEmitter, Injector, OnChanges, OnDestroy, OnInit, QueryList, TemplateRef, Type, ViewContainerRef, ViewRef } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, ComponentFactoryResolver, ComponentRef, DoCheck, EventEmitter, forwardRef, Injector, OnChanges, OnDestroy, OnInit, QueryList, TemplateRef, Type, ViewContainerRef, ViewRef } from '@angular/core';
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from "@angular/router";
 import { ReuseTabService } from "@delon/abc";
 import { Menu, MenuService } from "@delon/theme";
 import { Observable } from "rxjs/Observable";
+import { map } from 'rxjs/operators';
 import { Subject } from "rxjs/Subject";
 import { Subscription } from "rxjs/Subscription";
-import { map } from 'rxjs/operators';
-import { Lib, breakOff } from 'sip-lib';
+import { breakOff, Lib } from 'sip-lib';
 import { SipAppContainerService } from '../services/sip-app-container.service';
 import { SipEventService } from '../services/sip-event.service';
 import { ISipRestDict, SipHttpOptions, SipRestRet, SipRestService, SipRestSqlRet } from '../services/sip-rest.service';
@@ -1367,3 +1367,14 @@ export class SipPage extends SipBusinessComponent {
 
 }
 
+/** 注入父类, SipBusinessComponent | SIpPage */
+export function SipProvidePages(page: Type<SipPage>) {
+    return [{ provide: SipBusinessComponent, useExisting: forwardRef(() => page) },
+    { provide: SipPage, useExisting: forwardRef(() => page) }]
+}
+
+/** 注入父类, SipBusinessComponent | SipModal */
+export function SipProvideModals(modal: Type<SipModal>) {
+    return [{ provide: SipBusinessComponent, useExisting: forwardRef(() => modal) },
+    { provide: SipModal, useExisting: forwardRef(() => modal) }]
+}

@@ -1,12 +1,12 @@
-import { Component, ViewContainerRef, forwardRef } from '@angular/core';
-import { SipModal, SipNgInit, SipFormGroup, ISipFormGroup, SipBusinessComponent, SipFormSubmit, SipRestDef, SipRestMethod, SipRestFunction, SipRestDictDef, SipRestDictFunction, SipOnShow } from 'sip-alain';
+import { Component, ViewContainerRef } from '@angular/core';
 import { SipValidators } from '@core/sip/sip-validators';
+import { ISipFormGroup, SipFormGroup, SipFormSubmit, SipModal, SipNgInit, SipOnShow, SipProvideModals } from 'sip-alain';
 
 @Component({
     selector: 'sip-list-form',
     templateUrl: './list-form.component.html',
     styles: [],
-    providers: [{ provide: SipBusinessComponent, useExisting: forwardRef(() => ListFormComponent) }]
+    providers: [...SipProvideModals(ListFormComponent)]
 })
 export class ListFormComponent extends SipModal {
 

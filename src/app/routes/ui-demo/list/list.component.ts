@@ -1,12 +1,12 @@
-import { Component, ViewContainerRef, forwardRef } from '@angular/core';
-import { SipPage, SipNgInit, SipBusinessComponent, SipAccess, SipAccessManager, Lib, SipAccessItem, SipMinitableManager, SipNgDestroy, SipRestSqlDef, SipRestSqlFunction, SipRestSqlType } from 'sip-alain';
+import { Component, ViewContainerRef } from '@angular/core';
+import { Lib, SipAccess, SipAccessItem, SipAccessManager, SipMinitableManager, SipNgDestroy, SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
 import { ListFormComponent } from '../list-form/list-form.component';
 
 @Component({
     selector: 'sip-list',
     templateUrl: './list.component.html',
     styles: [],
-    providers: [{ provide: SipBusinessComponent, useExisting: forwardRef(() => ListComponent) }]
+    providers: [...SipProvidePages(ListComponent)]
 })
 export class ListComponent extends SipPage {
 
@@ -61,7 +61,7 @@ export class ListComponent extends SipPage {
             spec: "4核4G",
             user: "开发账号",
             date: "2017-11-15",
-            children:[{
+            children: [{
                 num: "i-mysql",
                 name: "mysql",
                 status: "success",
@@ -112,15 +112,15 @@ export class ListComponent extends SipPage {
                     { text: '处理中', value: 'processing' },
                     { text: '失败', value: 'error' }
                 ],
-                defaultValue:['success'],
+                defaultValue: ['success'],
                 onFilter: (p) => {
                     let values = p.values;
                     this.tableManager.search({ status: status });
                 }
             }
         },
-        tree:{
-            childName:'children'
+        tree: {
+            childName: 'children'
         },
         /**初始化时触发，表示table已经可以使用 */
         onInit: () => {

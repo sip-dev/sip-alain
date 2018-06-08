@@ -1,4 +1,4 @@
-import { Injectable, ComponentFactoryResolver, ViewContainerRef, Optional, TemplateRef, ComponentRef, Type, ViewRef } from '@angular/core';
+import { ComponentFactoryResolver, ComponentRef, Injectable, TemplateRef, Type, ViewContainerRef, ViewRef } from '@angular/core';
 
 @Injectable()
 /**
