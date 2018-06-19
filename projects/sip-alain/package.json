@@ -38,7 +38,6 @@
     "@types/node": "~8.9.4",
     "core-js": "^2.5.4",
     "rxjs": "^6.0.0",
-    "gulp": "^3.9.1",
     "ng-zorro-antd": "^1.0.0",
     "sip-lib": "^0.1.0",
     "typescript": "~2.7.2",

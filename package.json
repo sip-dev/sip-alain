@@ -72,7 +72,7 @@
     "screenfull": "^3.3.1",
     "simple-line-icons": "^2.4.1",
     "sip-lib": "^0.1.0",
-    "sip-alain": "^0.3.0",
+    "sip-alain": "^0.4.0",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
