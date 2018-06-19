@@ -3,9 +3,9 @@
 
 ## 0.6.0
 
-* update sip-alain 0.3.0
-* update ng-alain 1.0.5
-* update ng-zorro-antd 0.7.1
+* update sip-alain 0.4.0
+* update ng-alain 1.1.1
+* update ng-zorro-antd 1.0.0
 
 ## 0.5.5
 

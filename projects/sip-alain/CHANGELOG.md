@@ -1,6 +1,11 @@
 
 # 更新
 
+## 0.4.0
+
+* update ng-alain 1.1.1
+* update ng-zorro-antd 1.0.0
+
 ## 0.3.0
 
 * update ng-alain 1.0.5
