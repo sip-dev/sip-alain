@@ -8,7 +8,7 @@ import { SidebarComponent } from './default/sidebar/sidebar.component';
 import { HeaderSearchComponent } from './default/header/components/search.component';
 import { HeaderNotifyComponent } from './default/header/components/notify.component';
 import { HeaderTaskComponent } from './default/header/components/task.component';
-import { HeaderIconComponent } from './default/header/components/icon.component';
+import { HeaderIconComponent } from './default/header/components/service.component';
 import { HeaderFullScreenComponent } from './default/header/components/fullscreen.component';
 import { HeaderI18nComponent } from './default/header/components/i18n.component';
 import { HeaderStorageComponent } from './default/header/components/storage.component';

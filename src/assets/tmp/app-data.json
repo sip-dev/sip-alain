@@ -1,40 +1,47 @@
 {
-  "app": {
-    "name": "New Design",
-    "description": "开箱即用的中台前端/设计解决方案"
-  },
-  "user": {
-    "name": "管理员",
-    "avatar": "./assets/img/user.png",
-    "email": "admin@admin.com"
-  },
-  "menu": [{
-    "text": "云服务",
-    "i18n": "main_navigation",
-    "group": true,
-    "hide": false,
-    "children": [
-		{
-			"text": "ServerList",
-      "i18n": "服务目录",
-      "link": "/ui-demo/server-list",
-      "icon": "anticon anticon-appstore-o"
-		},{
-      "text": "demo_ui",
-      "i18n": "UIDemo",
-      "link": "/ui-demo",
-      "icon": "anticon anticon-usb",
-      "children": [{
-        "text": "表格",
-        "link": "/ui-demo/list",
-        "i18n": "表格",
-        "description":""
-      },{
-        "text": "基本表单",
-        "link": "/ui-demo/list-create",
-        "i18n": "基本表单",
-        "description":"基本表单 description"
-      }]
-    }]
-  }]
+    "app": {
+        "name": "Bingo Design",
+        "description": "开箱即用的中台前端/设计解决方案"
+    },
+    "user": {
+        "name": "系统管理员",
+        "avatar": "./assets/user.png",
+        "email": "bingodesign@bingosoft.net"
+    },
+    "menu": [
+        {
+            "text": "云服务",
+            "i18n": "main_navigation",
+            "group": true,
+            "hide": false,
+            "children": [
+                {
+                    "text": "ServerList",
+                    "i18n": "UI-demo",
+                    "link": "/ui-demo/server-list",
+                    "icon": "anticon anticon-appstore-o"
+                },
+                {
+                    "text": "demo_ui",
+                    "i18n": "UIDemo",
+                    "link": "/ui-demo",
+                    "icon": "anticon anticon-usb",
+                    "children": [
+                        {
+                            "text": "表格",
+                            "link": "/ui-demo/list",
+                            "i18n": "表格",
+                            "description": ""
+                        },
+                        {
+                            "text": "基本表单",
+                            "link": "/ui-demo/list-create",
+                            "i18n": "基本表单",
+                            "description": "基本表单 description"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
 }
