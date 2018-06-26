@@ -18,15 +18,15 @@
                 {
                     "text": "ServerList",
                     "i18n": "UI-demo",
-                    "link": "/ui-demo/server-list",
-                    "icon": "anticon anticon-appstore-o"
-                },
-                {
-                    "text": "demo_ui",
-                    "i18n": "UIDemo",
-                    "link": "/ui-demo",
-                    "icon": "anticon anticon-usb",
-                    "children": [
+                    "link": "",
+                    "icon": "anticon anticon-appstore-o",
+                    "children":[
+                        {
+                            "text": "service-directory",
+                            "link": "/ui-demo/server-list",
+                            "i18n": "服务目录",
+                            "description": ""
+                        },
                         {
                             "text": "表格",
                             "link": "/ui-demo/list",

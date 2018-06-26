@@ -1,36 +1,30 @@
 <sip-page>
-  <sip-page-header navigator="服务目录" class="hide">
-    <ng-template #title>服务目录</ng-template>
-    <ng-template #desc>
-      展示提供的各项云服务，如弹性计算服务、存储服务、数据库服务，大数据服务等，通过服务目录可便捷地进行各项服务的申请。
-    </ng-template>
-  </sip-page-header>
+    <sip-page-header navigator="服务目录" class="hide">
+        <ng-template #title>服务目录</ng-template>
+        <ng-template #desc>
+        展示提供的各项云服务，如弹性计算服务、存储服务、数据库服务，大数据服务等，通过服务目录可便捷地进行各项服务的申请。
+        </ng-template>
+    </sip-page-header>
 
-  <sip-page-body>
-    <sip-card *ngFor="let list of serverList" [bordered]="true" class="server-directory mb-sm">
-      <sip-card-title>{{list.name}}</sip-card-title>
-      <sip-card-body>
-        <div nz-row [nzGutter]="24">
-          <div *ngFor="let item of list.child" nz-col [nzXs]='24' [nzSm]='12' [nzMd]="6">
-            <sip-card>
-              <sip-card-body>
-                <div class="serveinfo">
-                  <div class="img">
-                    <img nf-if="item.isimg" src="{{item.icon}}" alt="">
-                    <i class="{{item.icon}} {{item.color}}"></i>
-                  </div>
-                  <div class="info">
-                    <h4 class="{{item.color}}">{{item.title}}</h4>
-                    <p>{{item.des}}</p>
-                  </div>
+    <sip-page-body>
+        <nz-card *ngFor="let list of serverList" [nzTitle]="title" nzNoPadding [nzBordered]=false class="server-directory mb-lg">
+            <ng-template #title>
+                {{list.name}}
+            </ng-template>
+            <div nz-row [nzGutter]="16">
+                <div *ngFor="let item of list.child" nz-col [nzXs]="24" [nzMd]="12" [nzLg]="8" [nzXl]="6">
+                    <nz-card nzNoHovering [nzBordered]=false class="serveinfo">
+                        <div class="img">
+                            <img nf-if="item.isimg" src="{{item.icon}}" alt="">
+                            <i class="{{item.icon}} {{item.color}}"></i>
+                        </div>
+                        <div class="info">
+                            <h4 class="{{item.color}}">{{item.title}}</h4>
+                            <p>{{item.des}}</p>
+                        </div>
+                    </nz-card>
                 </div>
-              </sip-card-body>
-            </sip-card>
-          </div>
-        </div>
-      </sip-card-body>
-    </sip-card>
-
-
-  </sip-page-body>
+            </div>
+        </nz-card>
+    </sip-page-body>
 </sip-page>

@@ -4,7 +4,7 @@ import { SipPage, SipNgInit, SipBusinessComponent } from 'sip-alain';
 @Component({
     selector: 'sip-server-list',
     templateUrl: './server-list.component.html',
-    styles: [],
+    styleUrls: [ './server-list.less' ],
     providers: [{ provide: SipBusinessComponent, useExisting: forwardRef(() => ServerListComponent) }]
 })
 export class ServerListComponent extends SipPage {
@@ -20,7 +20,7 @@ export class ServerListComponent extends SipPage {
     private _init() {
         this.params = this.$params(this.params);
 	}
-	
+    
 	/**
 	 * 基础demo数据可删除
 	 */
