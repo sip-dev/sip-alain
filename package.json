@@ -23,6 +23,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start-proxy":"ng serve -pc=\"proxy.conf.js\"",
     "build": "ng build --prod --build-optimizer",
     "analyze": "ng build --prod --build-optimizer --stats-json",
     "lint": "npm run lint:ts && npm run lint:style",
@@ -31,7 +32,7 @@
     "lint-staged": "lint-staged",
     "tslint-check": "tslint-config-prettier-check ./tslint.json",
     "e2e": "ng e2e",
-    "test": "ng test --watch",
+    "test": "ng test ng-alain --watch=true  --source-map",
     "test-coverage": "ng test --code-coverage --watch=false",
     "build-sip-alain": "ng build sip-alain --prod",
     "publish-sip-alain": "npm run build-sip-alain && npm pu ./node_modules/sip-alain"

@@ -1,0 +1,40 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "group": "none",
+            "label": "启动 web (start)",
+            "type": "npm",
+            "script": "start",
+            "problemMatcher": []
+        },
+        {
+            "label": "启动 web 代理 (start-proxy)",
+            "type": "npm",
+            "script": "start-proxy",
+            "problemMatcher": []
+        },
+        {
+            "group": "build",
+            "label": "编译 web (build)",
+            "type": "npm",
+            "script": "build",
+            "problemMatcher": []
+        },
+        {
+            "group": "build",
+            "label": "编译 sip-alain (build-sip-alain)",
+            "type": "npm",
+            "script": "build-sip-alain",
+            "problemMatcher": []
+        },
+        {
+            "label": "测试 web",
+            "type": "npm",
+            "script": "test",
+            "problemMatcher": []
+        }
+    ]
+}
