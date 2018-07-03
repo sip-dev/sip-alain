@@ -1,8 +1,8 @@
-import {Component, OnInit, ViewChild, Input, Output, EventEmitter, ViewEncapsulation, OnDestroy} from '@angular/core';
-import {ModalEditFormComponent} from '../modal-edit-form/modal-edit-form.component';
-import {DataManager} from '../../base';
-import {Row} from '../../types';
-import {Subscription} from 'rxjs';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { DataManager } from '../../base';
+import { Row } from '../../types';
+import { ModalEditFormComponent } from '../modal-edit-form/modal-edit-form.component';
 
 @Component({
   selector: 'app-crud-table',

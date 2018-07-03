@@ -51,7 +51,13 @@
                             "text": "data-table",
                             "link": "/ng-crud-table/data-table",
                             "i18n": "data-table",
-                            "description": ""
+                            "description": "data-table"
+                        },
+                        {
+                            "text": "row-group",
+                            "link": "/ng-crud-table/row-group",
+                            "i18n": "row-group",
+                            "description": "row-group"
                         }
                     ]
                 }

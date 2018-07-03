@@ -1,6 +1,7 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import { Column, DataTable, Settings } from '@shared/components/ng-crud-table';
-import { SipNgDestroy, SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
+import { SipAccess, SipAccessItem, SipAccessManager, SipNgDestroy, SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
+import { ListFormComponent } from '../../ui-demo/list-form/list-form.component';
 import { getColumnsPlayers } from '../shareds/column';
 @Component({
   selector: 'sip-data-table',
@@ -18,6 +19,9 @@ export class DataTableComponent extends SipPage {
 
   params = { id: '' };
 
+  @SipAccess<DataTableComponent>()
+  accessManager: SipAccessManager;
+
   //等效于ngOnInit, 但可以多次使用
   @SipNgInit()
   private _init() {
@@ -26,6 +30,10 @@ export class DataTableComponent extends SipPage {
     this.$httpSrv.get('assets/tmp/players.json').subscribe(rs => {
       this.table.rows = rs.datas;
       this.table.events.onLoading(false);
+    });
+    this.table.events.selectionSource$.subscribe(() => {
+      var rows = this.table.dataSelection.getSelectedRows(this.table.getRows());
+      this.$access.check(rows);
     });
     console.log('init', this.params);
   }
@@ -41,6 +49,45 @@ export class DataTableComponent extends SipPage {
   public settings: Settings = <Settings>{
     clientSide: true,
     columnResizeMode: 'aminated',
+    selectionType: 'multiple',
+    selectionMode: 'checkbox'
   };
+
+  @SipAccessItem<DataTableComponent>('create', {
+    multi: false, hasData: false,
+    check: function () {
+      return true;
+    }
+  })
+  create() {
+    let url = 'ui-demo/list-create';
+    this.$navigate(url, { id: '' }).subscribe(r => {
+      if (!r) return;
+      console.log(url, r);
+    });
+  }
+
+  @SipAccessItem<DataTableComponent>('test', {
+    multi: false, hasData: true,
+    check: function () {
+      return true;
+    }
+  })
+  test() {
+    this.$modal(ListFormComponent, { id: '' }).subscribe(r => {
+      if (!r) return;
+      console.log('ListFormComponent', r);
+    });
+  }
+
+  editText = '编辑';
+  @SipAccessItem<DataTableComponent>('edit', {
+    multi: true, hasData: true,
+    check: function () {
+      return true;
+    }
+  })
+  edit() {
+  }
 
 }
