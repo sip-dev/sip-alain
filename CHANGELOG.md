@@ -1,6 +1,10 @@
 
 # 更新
 
+## 0.7.0
+
+* ADD: ng-crud-table
+
 ## 0.6.0
 
 * update sip-alain 0.4.0
