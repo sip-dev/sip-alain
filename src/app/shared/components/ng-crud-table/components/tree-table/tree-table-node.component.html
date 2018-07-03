@@ -1,0 +1,56 @@
+<ng-container *ngFor="let node of nodes">
+  <div class="datatable-body-row">
+
+    <div class="datatable-row-left"
+         [ngStyle]="stylesByGroup()">
+      <div class="datatable-body-cell"
+           [ngStyle]="{'width.px': 250}">
+
+        <div class="datatable-tree-node"
+             [ngStyle]="{'padding-left.px': level*10}"
+             style=" cursor: pointer;">
+          <i [class]="getIcon(node)"
+             (click)="onExpand(node)">
+          </i>
+          <i *ngIf="node.icon" [ngClass]="node.icon"></i>
+          <span class="datatable-tree-node-content"
+                (dblclick)="onExpand(node)">
+            {{node.name}}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="datatable-row-center">
+      <ng-container *ngFor="let column of columns; trackBy: table.columnTrackingFn">
+        <app-datatable-body-cell
+          *ngIf="!column.editable"
+          tabindex="-1"
+          [table]="table"
+          [row]="node.data"
+          [column]="column">
+        </app-datatable-body-cell>
+        <app-datatable-body-cell-edit
+          *ngIf="column.editable"
+          tabindex="-1"
+          [table]="table"
+          [row]="node.data"
+          [column]="column"
+          (editComplete)="onCellEditComplete($event)">
+        </app-datatable-body-cell-edit>
+      </ng-container>
+    </div>
+
+  </div>
+
+  <app-tree-table-node
+    [table]="table"
+    [nodes]="node.children"
+    [service]="service"
+    *ngIf="node.children && node.expanded"
+    [columns]="columns"
+    [level]="level+1"
+    (requestNodes)="onRequestLocal($event)">
+  </app-tree-table-node>
+
+</ng-container>

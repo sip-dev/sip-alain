@@ -7,7 +7,7 @@ import { LayoutFullScreenComponent } from '../layout/fullscreen/fullscreen.compo
 import { LayoutPassportComponent } from '../layout/passport/passport.component';
 
 const routes: Routes = [
-  {
+    {
     path: '',
     component: LayoutDefaultComponent,
     children: [
@@ -15,19 +15,23 @@ const routes: Routes = [
       {
         path: 'ui-demo',
         loadChildren: './ui-demo/ui-demo.module#UiDemoModule'
+      },
+      {
+          path: 'ng-crud-table',
+          loadChildren: './ng-crud-table/ng-crud-table.module#NgCrudTableModule'
       }
     ]
   },
-  // 全屏布局
-  {
+    // 全屏布局
+    {
     path: 'data-v',
     component: LayoutFullScreenComponent,
     children: [
       { path: '', redirectTo: 'ng-alain/data-v', pathMatch: 'full' }
     ]
   },
-  // passport
-  {
+    // passport
+    {
     path: 'passport',
     component: LayoutPassportComponent,
     children: [
@@ -46,27 +50,27 @@ const routes: Routes = [
       },
     ]
   },
-  // 单页不包裹Layout
-  {
+    // 单页不包裹Layout
+    {
     path: 'callback/:type',
     redirectTo: 'ng-alain/callback/:type', pathMatch: 'full'
   },
-  {
+    {
     path: 'lock', redirectTo: 'ng-alain/lock', pathMatch: 'full',
   },
-  {
+    {
     path: '403',
     redirectTo: 'ng-alain/403', pathMatch: 'full'
   },
-  {
+    {
     path: '404',
     redirectTo: 'ng-alain/404', pathMatch: 'full'
   },
-  {
+    {
     path: '500',
     redirectTo: 'ng-alain/500', pathMatch: 'full'
   },
-  {
+    {
     path: 'ng-alain',
     loadChildren: './ng-alain/ng-alain.module#NgAlainModule'
   }

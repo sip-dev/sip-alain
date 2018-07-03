@@ -8,6 +8,7 @@ import { CountdownModule } from 'ngx-countdown';
 import { NgxTinymceModule } from 'ngx-tinymce';
 import { UEditorModule } from 'ngx-ueditor';
 import { SipAlainSharedModule } from 'sip-alain';
+import { CrudTableModule } from './components/ng-crud-table';
 
 
 const THIRDMODULES = [
@@ -15,6 +16,7 @@ const THIRDMODULES = [
   CountdownModule,
   UEditorModule,
   NgxTinymceModule,
+  CrudTableModule
 ];
 // endregion
 

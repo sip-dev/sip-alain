@@ -1,0 +1,11 @@
+<div class="df-alert df-alert-danger" *ngIf="this.dataManager.errors">{{this.dataManager.errors}}</div>
+
+<app-datatable-toolbar [table]="dataManager" (createAction)="onCreateAction()">
+</app-datatable-toolbar>
+
+<app-datatable [table]="dataManager"></app-datatable>
+
+<app-modal-edit-form
+  #modalEditForm
+  [dataManager]="dataManager">
+</app-modal-edit-form>

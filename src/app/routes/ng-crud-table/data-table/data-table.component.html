@@ -1,0 +1,78 @@
+<sip-page>
+  <sip-page-header navigator="列表">
+    <ng-template #title>列表</ng-template>
+    <ng-template #desc>
+      列表
+      <nz-tooltip [nzTitle]="'了解更多实例介绍'">
+        <a nz-tooltip [sipRouterLink]>更多…</a>
+      </nz-tooltip>
+    </ng-template>
+  </sip-page-header>
+
+  <sip-page-body>
+    <!-- 卡片 -->
+    <sip-card [bordered]="false">
+      <sip-card-body>
+        <!-- 操作栏 -->
+        <sip-page-toolbar>
+          <button nz-button [nzType]="'default'" class="mr-sm">
+            <i class="anticon anticon-reload"></i>
+          </button>
+          <button nz-button (click)="create()" sipAccess="create" [nzType]="'primary'" class="mr-sm">
+            <i class="anticon anticon-plus"></i>
+            <span>新建</span>
+          </button>
+          <button nz-button (click)="test()" sipAccess="test" [nzType]="'default'" class="mr-sm">
+            <i class="anticon anticon-caret-right"></i>
+            <span>测试</span>
+          </button>
+          <nz-dropdown [nzTrigger]="'hover'" [nzPlacement]="'bottomLeft'" class="mr-sm">
+            <button nz-button nz-dropdown>
+              <i class="fa fa-ellipsis-v mr-sm"></i>
+              <span>更多</span>
+              <i class="anticon anticon-down"></i>
+            </button>
+            <ul nz-menu>
+              <li nz-menu-item>
+                <a (click)="edit()" sipAccess="edit">{{editText}}</a>
+              </li>
+              <li nz-menu-item>
+                <a (click)="test()" sipAccess="test">测试</a>
+              </li>
+              <li nz-menu-item>
+                <a [sipRouterLink]>测试</a>
+              </li>
+              <li nz-menu-divider></li>
+              <li nz-submenu>
+                <span title>更多</span>
+                <ul>
+                  <li nz-menu-item>
+                    <a (click)="edit()" sipAccess="edit">{{editText}}</a>
+                  </li>
+                  <li nz-menu-item>
+                    <a (click)="test()" sipAccess="test">测试</a>
+                  </li>
+                  <li nz-menu-item>
+                    <a [sipRouterLink]>测试</a>
+                  </li>
+                </ul>
+              </li>
+
+            </ul>
+          </nz-dropdown>
+
+          <!-- <sip-search-conent [params]="searchContent"></sip-search-conent> -->
+        </sip-page-toolbar>
+
+        <div class="mb-md">
+          <nz-alert [nzType]="'info'">
+            <span alert-body>
+              <nz-tag [nzColor]="'purple'" nzMode="closeable">purple</nz-tag>
+            </span>
+          </nz-alert>
+        </div>
+        <app-datatable [table]="table"></app-datatable>
+      </sip-card-body>
+    </sip-card>
+  </sip-page-body>
+</sip-page>

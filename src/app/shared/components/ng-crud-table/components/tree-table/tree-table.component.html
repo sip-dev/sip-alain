@@ -1,0 +1,24 @@
+<div class="datatable fixed-header fixed-row scroll-horz">
+  <app-datatable-header
+    [table]="table">
+  </app-datatable-header>
+
+  <div class="datatable-body"
+      appBodyScroll
+      appBodyMouseover
+      appBodyKeydown
+      appBodyClick
+      appBodyDblClick
+      appBodyContextMenu
+      [table]="table">
+        <app-tree-table-node
+          [table]="table"
+          [nodes]="nodes"
+          [service]="service"
+          [columns]="table.columns"
+          (editComplete)="onCellEditComplete($event)"
+          (requestNodes)="onRequestNodes($event)">
+        </app-tree-table-node>
+  </div>
+
+</div>

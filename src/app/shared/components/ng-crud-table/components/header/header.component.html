@@ -1,0 +1,70 @@
+<ng-template #headerTemplate
+            *ngIf="table.settings.headerTemplate"
+            [ngTemplateOutlet]="table.settings.headerTemplate"
+            [ngTemplateOutletContext]="table">
+</ng-template>
+
+<div class="datatable-header-inner" [style.height.px]="table.dimensions.headerRowHeight">
+
+  <div class="datatable-row-left">
+    <div class="datatable-header-cell"
+         *ngIf="table.dimensions.actionColumnWidth"
+         [ngStyle]="{'width.px': table.dimensions.actionColumnWidth}">
+      <ng-template [ngIf]="table.settings.filter">
+        <i class="icon-filter"
+           [style.visibility]="(!table.dataFilter.hasFilter()) ? 'hidden' : 'visible' "
+           style="cursor: pointer;"
+           (click)="clearAllFilters()"
+           [title]="table.messages.clearFilters">
+        </i>
+      </ng-template>
+    </div>
+
+    <div class="datatable-header-cell"
+         *ngFor="let column of table.frozenColumns; trackBy: table.columnTrackingFn"
+         [ngStyle]="{'width.px': column.width}"
+         [attr.title]="column.title"
+         appResizeableColumn
+         [table]="table"
+         [column]="column">
+          <span class="column-title" (click)="onSort(column)">
+            <span [innerHTML]="column.title"></span>
+            <i class="icon"
+               *ngIf="column.sortable"
+               [ngClass]="table.sorter.getDirection(column.name)">
+            </i>
+          </span>
+      <i *ngIf="column.filter"
+         (click)="clickColumnMenu($event, column)"
+         [ngClass]="{'is-filter': table.dataFilter.isFilter(column.name)}"
+         class="icon-filter column-menu">
+      </i>
+    </div>
+  </div>
+
+  <div class="datatable-row-center"
+       [ngStyle]="stylesByGroup()">
+    <div class="datatable-header-cell"
+         *ngFor="let column of table.scrollableColumns; trackBy: table.columnTrackingFn last as isLast"
+         [ngStyle]="{'width.px': column.width}"
+         [attr.title]="column.title"
+         appResizeableColumn
+         [table]="table"
+         [column]="column">
+            <span class="column-title" (click)="onSort(column)">
+              <span [innerHTML]="column.title"></span>
+              <i class="icon"
+                 *ngIf="column.sortable"
+                 [ngClass]="table.sorter.getDirection(column.name)">
+              </i>
+            </span>
+      <i *ngIf="column.filter"
+         (click)="clickColumnMenu($event, column, isLast)"
+         [ngClass]="{'is-filter': table.dataFilter.isFilter(column.name)}"
+         class="icon-filter column-menu">
+      </i>
+    </div>
+  </div>
+
+</div>
+

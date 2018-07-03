@@ -40,6 +40,20 @@
                             "description": "基本表单 description"
                         }
                     ]
+                },
+                {
+                    "text": "NgCrudTable",
+                    "i18n": "ng-crud-table",
+                    "link": "",
+                    "icon": "anticon anticon-appstore-o",
+                    "children":[
+                        {
+                            "text": "data-table",
+                            "link": "/ng-crud-table/data-table",
+                            "i18n": "data-table",
+                            "description": ""
+                        }
+                    ]
                 }
             ]
         }

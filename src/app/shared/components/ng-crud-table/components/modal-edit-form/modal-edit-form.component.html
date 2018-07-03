@@ -1,0 +1,33 @@
+<app-modal #childModal [modalTitle]="modalTitle()" [width]="500" [zIndex]="dataManager.settings.zIndexModal">
+  <ng-container class="app-modal-body">
+    <div *ngIf="childModal.visible">
+      <app-row-form
+        *ngIf="!dataManager.detailView"
+        [dataManager]="dataManager">
+      </app-row-form>
+      <app-row-view
+        *ngIf="dataManager.detailView"
+        [dataManager]="dataManager">
+      </app-row-view>
+
+    </div>
+  </ng-container>
+  <ng-container class="app-modal-footer">
+    <button type="button"
+            class="button button3"
+            *ngIf="!dataManager.isNewItem && !dataManager.detailView"
+            (click)="delete()">{{dataManager.messages.delete}}
+    </button>&nbsp;
+    <button type="button"
+            class="button button1"
+            [style.visibility]="!dataManager.detailView ? 'visible': 'hidden'"
+            (click)="save()"
+            [disabled]="!dataManager.formValid">{{dataManager.messages.save}}
+    </button>
+    <button type="button"
+            class="button"
+            style="float: right;"
+            (click)="close()">{{dataManager.messages.close}}
+    </button>
+  </ng-container>
+</app-modal>
