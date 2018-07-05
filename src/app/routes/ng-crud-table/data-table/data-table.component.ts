@@ -102,7 +102,7 @@ export class DataTableComponent extends SipPage {
           this.table.editCell(row.index, colIndex, isEditing);
       });
     } else {
-      this.table.cancleAllEditCell();
+      this.table.unEditCellAll();
     }
     this.editText = this.table.isEditing ? '保存' : '编辑';
   }
