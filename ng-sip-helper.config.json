@@ -1,0 +1,501 @@
+{
+    "commands": [
+        {
+            "builtin": true,
+            "command": "sip-generate",
+            "title": "Generate >"
+        },
+        {
+            "children": [
+                {
+                    "builtin": true,
+                    "command": "sip-regmodlue",
+                    "input": false,
+                    "params": [
+                        {
+                            "param": "--module",
+                            "title": "Module"
+                        }
+                    ],
+                    "path": "%currentPath%",
+                    "title": "Module >"
+                },
+                {
+                    "builtin": true,
+                    "command": "sip-regmodlue",
+                    "input": false,
+                    "params": [
+                        {
+                            "param": "--routing",
+                            "title": "Routing"
+                        }
+                    ],
+                    "path": "%currentPath%",
+                    "title": "Routing >"
+                },
+                {
+                    "builtin": true,
+                    "command": "sip-regmodlue",
+                    "input": false,
+                    "params": [
+                        {
+                            "param": "--both",
+                            "title": "Module And Routing"
+                        }
+                    ],
+                    "path": "%currentPath%",
+                    "title": "Module And Routing >"
+                },
+                {
+                    "builtin": true,
+                    "command": "sip-regmodlue",
+                    "input": false,
+                    "params": [
+                        {
+                            "param": "--cleanmodule",
+                            "title": "Module"
+                        }
+                    ],
+                    "path": "%currentPath%",
+                    "title": "撤消 Module >"
+                },
+                {
+                    "builtin": true,
+                    "command": "sip-regmodlue",
+                    "input": false,
+                    "params": [
+                        {
+                            "param": "--cleanrouting",
+                            "title": "Routing"
+                        }
+                    ],
+                    "path": "%currentPath%",
+                    "title": "撤消 Routing >"
+                },
+                {
+                    "builtin": true,
+                    "command": "sip-regmodlue",
+                    "input": false,
+                    "params": [
+                        {
+                            "param": "--cleanboth",
+                            "title": "Module And Routing"
+                        }
+                    ],
+                    "path": "%currentPath%",
+                    "title": "撤消 Module And Routing >"
+                }
+            ],
+            "command": "",
+            "title": "注册 Modlue >"
+        },
+        {
+            "builtin": true,
+            "command": "npm",
+            "title": "Npm >"
+        },
+        {
+            "children": [
+                {
+                    "builtin": true,
+                    "command": "json-class",
+                    "title": "JSON To Class"
+                },
+                {
+                    "builtin": true,
+                    "command": "snippet-text",
+                    "title": "To Snippet Text"
+                },
+                {
+                    "builtin": true,
+                    "command": "region",
+                    "title": "Region Block"
+                }
+            ],
+            "command": "",
+            "title": "Other >"
+        },
+        {
+            "builtin": false,
+            "children": [
+                {
+                    "builtin": true,
+                    "command": "sip-generate-tmpl",
+                    "title": "设置模板"
+                },
+                {
+                    "builtin": true,
+                    "command": "config",
+                    "title": "编辑设置文件"
+                }
+            ],
+            "command": "",
+            "title": "设 置 >"
+        }
+    ],
+    "prefix": "sip",
+    "templates": [
+        {
+            "active": true,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "<p>\n  @{input} works!\n</p>\n",
+                    "importToModue": "",
+                    "input": "sip-data-table",
+                    "path": "@{input}",
+                    "specContent": "import { async, ComponentFixture, TestBed } from '@angular/core/testing';\n\nimport { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let component: @{className};\n  let fixture: ComponentFixture<@{className}>;\n\n  beforeEach(async(() => {\n    TestBed.configureTestingModule({\n      declarations: [ @{className}]\n    })\n    .compileComponents();\n  }));\n\n  beforeEach(() => {\n    fixture = TestBed.createComponent(@{className});\n    component = fixture.componentInstance;\n    fixture.detectChanges();\n  });\n\n  it('should create', () => {\n    expect(component).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: '@{prefix}-@{input}',\n  templateUrl: './@{fileName}.html',\n  styleUrls: ['./@{fileName}.@{styleType}']\n})\nexport class @{className} implements OnInit {\n\n  constructor() { }\n\n  ngOnInit() {\n  }\n\n}\n",
+                    "type": "component",
+                    "typeInfo": {
+                        "html": true,
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleDeclaration": true,
+                        "spec": false,
+                        "style": true,
+                        "styleType": "less",
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 0,
+            "title": "component"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "sip-data-table",
+                    "path": "",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  it('should create an instance', () => {\n    const directive = new @{className}();\n    expect(directive).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { Directive } from \"@angular/core\";\n\n@Directive({\n  selector: '[@{prefix}@{#input}]'\n})\nexport class @{className} {\n\n  constructor() { }\n\n}\n",
+                    "type": "directive",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleDeclaration": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 1,
+            "title": "directive"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "sip-data-table",
+                    "path": "@{input}",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let testModule: @{className};\n\n  beforeEach(() => {\n    testModule = new @{className}();\n  });\n\n  it('should create an instance', () => {\n    expect(testModule).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\n\n@NgModule({\n  imports: [\n    CommonModule\n  ],\n  declarations: []\n})\nexport class @{className} { }\n",
+                    "type": "module",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleImport": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 2,
+            "title": "module"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}-routing.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "sip-data-table",
+                    "path": "@{input}",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let testRoutingModule: @{className};\n\n  beforeEach(() => {\n    testRoutingModule = new @{className}();\n  });\n\n  it('should create an instance', () => {\n    expect(testRoutingModule).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { NgModule } from '@angular/core';\nimport { Routes, RouterModule } from '@angular/router';\n\nconst routes: Routes = [];\n\n@NgModule({\n  imports: [RouterModule.forChild(routes)],\n  exports: [RouterModule]\n})\nexport class @{className} { }\n",
+                    "type": "module",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleImport": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 3,
+            "title": "routing"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": false,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "sip-data-table",
+                    "path": "@{input}",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let testModule: @{className};\n\n  beforeEach(() => {\n    testModule = new @{className}();\n  });\n\n  it('should create an instance', () => {\n    expect(testModule).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\n\nimport { @{#input}RoutingModule } from './@{input}-routing.module';\n\n@NgModule({\n  imports: [\n    CommonModule,\n    @{#input}RoutingModule\n  ],\n  declarations: []\n})\nexport class @{className} { }\n",
+                    "type": "module",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleImport": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                },
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}-routing.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "./@{input}.@{type}.ts",
+                    "input": "sip-data-table",
+                    "path": "@{input}",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let testRoutingModule: @{className};\n\n  beforeEach(() => {\n    testRoutingModule = new @{className}();\n  });\n\n  it('should create an instance', () => {\n    expect(testRoutingModule).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { NgModule } from '@angular/core';\nimport { Routes, RouterModule } from '@angular/router';\n\nconst routes: Routes = [];\n\n@NgModule({\n  imports: [RouterModule.forChild(routes)],\n  exports: [RouterModule]\n})\nexport class @{className} { }\n",
+                    "type": "module",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleImport": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 4,
+            "title": "module & routing"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "sip-data-table",
+                    "path": "",
+                    "specContent": "import { TestBed, inject } from '@angular/core/testing';\n\nimport { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  beforeEach(() => {\n    TestBed.configureTestingModule({\n      providers: [@{className}]\n    });\n  });\n\n  it('should be created', inject([@{className}], (service: @{className}) => {\n    expect(service).toBeTruthy();\n  }));\n});",
+                    "styleContent": "",
+                    "tsContent": "import { Injectable } from '@angular/core';\n\n@Injectable({\n  providedIn: 'root'\n})\nexport class @{className} {\n\n  constructor() { }\n}\n",
+                    "type": "service",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "moduleProvider": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 5,
+            "title": "service"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "sip-data-table",
+                    "path": "",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  it('create an instance', () => {\n    const pipe = new @{className}();\n    expect(pipe).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { Pipe, PipeTransform } from '@angular/core';\n\n@Pipe({\n  name: '@{input}'\n})\nexport class @{className} implements PipeTransform {\n\n  transform(value: any, args?: any): any {\n    return null;\n  }\n\n}\n",
+                    "type": "pipe",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleDeclaration": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 6,
+            "title": "pipe"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "sip-data-table",
+                    "path": "",
+                    "specContent": "import { TestBed, async, inject } from '@angular/core/testing';\n\nimport { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  beforeEach(() => {\n    TestBed.configureTestingModule({\n      providers: [@{className}]\n    });\n  });\n\n  it('should ...', inject([@{className}], (guard: @{className}) => {\n    expect(guard).toBeTruthy();\n  }));\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { Injectable } from '@angular/core';\nimport { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';\nimport { Observable } from 'rxjs';\n\n@Injectable()\nexport class @{className} implements CanActivate {\n  canActivate(\n    next: ActivatedRouteSnapshot,\n    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {\n    return true;\n  }\n}\n",
+                    "type": "guard",
+                    "typeInfo": {
+                        "spec": false,
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 7,
+            "title": "guard"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "i-@{input}",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "sip-data-table",
+                    "path": "",
+                    "specContent": "",
+                    "styleContent": "",
+                    "tsContent": "export interface @{className} {\n}\n\n",
+                    "type": "interface",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "moduleProvider": true,
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 8,
+            "title": "interface"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "settings",
+                    "path": "",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  it('should create an instance', () => {\n    expect(new @{className}()).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "export class @{className} {\n\n}\n",
+                    "type": "class",
+                    "typeInfo": {
+                        "spec": false,
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 9,
+            "title": "class"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.model",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "settings",
+                    "path": "",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  it('should create an instance', () => {\n    expect(new @{className}()).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "export class @{className} {\n\n  constructor(init?: Partial<@{className}>) {\n    if (init) {\n      Object.assign(this, init);\n    }\n  }\n\n}\n",
+                    "type": "class",
+                    "typeInfo": {
+                        "spec": false,
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 10,
+            "title": "model"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "test",
+                    "path": "",
+                    "specContent": "",
+                    "styleContent": "",
+                    "tsContent": "export enum @{className} {\n}\n",
+                    "type": "enum",
+                    "typeInfo": {
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 11,
+            "title": "enum"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "<sip-page>\n  <sip-page-header navigator=\"页面\">\n    <ng-template #title>@{input} page</ng-template>\n    <ng-template #desc>\n      页面\n      <nz-tooltip [nzTitle]=\"'了解更多实例介绍'\">\n        <a nz-tooltip [sipRouterLink]>更多…</a>\n      </nz-tooltip>\n    </ng-template>\n  </sip-page-header>\n\n  <sip-page-body>\n    <!-- 卡片 -->\n    <sip-card [bordered]=\"false\">\n      <sip-card-body>\n          @{input} body\n      </sip-card-body>\n    </sip-card>\n  </sip-page-body>\n</sip-page>",
+                    "importToModue": "",
+                    "input": "row-group",
+                    "path": "@{input}",
+                    "specContent": "import { async, ComponentFixture, TestBed } from '@angular/core/testing';\n\nimport { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let component: @{className};\n  let fixture: ComponentFixture<@{className}>;\n\n  beforeEach(async(() => {\n    TestBed.configureTestingModule({\n      declarations: [ @{className}]\n    })\n    .compileComponents();\n  }));\n\n  beforeEach(() => {\n    fixture = TestBed.createComponent(@{className});\n    component = fixture.componentInstance;\n    fixture.detectChanges();\n  });\n\n  it('should create', () => {\n    expect(component).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { Component, ViewContainerRef } from '@angular/core';\nimport { SipNgInit, SipPage, SipProvidePages } from 'sip-alain';\n\n@Component({\n  selector: '@{prefix}-@{input}',\n  templateUrl: './@{fileName}.html',\n  styleUrls: ['./@{fileName}.@{styleType}'],\n  providers: [...SipProvidePages(@{className})]\n})\nexport class @{className} extends SipPage {\n\n  constructor(vcf: ViewContainerRef) {\n    super(vcf);\n  }\n\n  params = { id: '' };\n\n  /**等效于ngOnInit, 但可以多次使用 */\n  @SipNgInit()\n  private _init() {\n    this.params = this.$params(this.params);\n    console.log('init', this.params);\n  }\n\n}\n",
+                    "type": "component",
+                    "typeInfo": {
+                        "html": true,
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleDeclaration": true,
+                        "moduleExport": true,
+                        "spec": false,
+                        "style": true,
+                        "styleType": "less",
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 12,
+            "title": "page_base"
+        }
+    ]
+}

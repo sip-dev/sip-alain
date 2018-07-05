@@ -1,8 +1,9 @@
 import { Component, ViewContainerRef } from '@angular/core';
-import { Column, DataTable, Settings } from '@shared/components/ng-crud-table';
+import { Column, Settings } from '@shared/components/ng-crud-table';
 import { SipAccess, SipAccessItem, SipAccessManager, SipNgDestroy, SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
 import { ListFormComponent } from '../../ui-demo/list-form/list-form.component';
 import { getColumnsPlayers } from '../shareds/column';
+import { SipDataTable } from '../shareds/sip-data-table';
 @Component({
   selector: 'sip-data-table',
   templateUrl: './data-table.component.html',
@@ -14,7 +15,7 @@ export class DataTableComponent extends SipPage {
   constructor(vcf: ViewContainerRef) {
     super(vcf);
     this.columns = getColumnsPlayers();
-    this.table = new DataTable(this.columns, this.settings);
+    this.table = new SipDataTable(this.columns, this.settings);
   }
 
   params = { id: '' };
@@ -43,14 +44,16 @@ export class DataTableComponent extends SipPage {
     console.log('_destroy test in list');
   }
 
-  public table: DataTable;
+  public table: SipDataTable;
   public columns: Column[];
 
   public settings: Settings = <Settings>{
     clientSide: true,
     columnResizeMode: 'aminated',
     selectionType: 'multiple',
-    selectionMode: 'checkbox'
+    selectionMode: 'checkbox',
+    contextMenu: true,
+    editMode: 'editProgrammatically'
   };
 
   @SipAccessItem<DataTableComponent>('create', {
@@ -74,6 +77,8 @@ export class DataTableComponent extends SipPage {
     }
   })
   test() {
+    let rows = this.table.getSelectedRows();
+    console.log('rows', rows);
     this.$modal(ListFormComponent, { id: '' }).subscribe(r => {
       if (!r) return;
       console.log('ListFormComponent', r);
@@ -84,10 +89,22 @@ export class DataTableComponent extends SipPage {
   @SipAccessItem<DataTableComponent>('edit', {
     multi: true, hasData: true,
     check: function () {
+      this.editText = this.table.isEditing ? '保存' : '编辑';
       return true;
     }
   })
   edit() {
+
+    let isEditing = !this.table.isEditing;
+    if (isEditing){
+      this.table.getSelectedRows().forEach((row) => {
+        for (let colIndex = 0; colIndex < 6; colIndex++)
+          this.table.editCell(row.index, colIndex, isEditing);
+      });
+    } else {
+      this.table.cancleAllEditCell();
+    }
+    this.editText = this.table.isEditing ? '保存' : '编辑';
   }
 
 }

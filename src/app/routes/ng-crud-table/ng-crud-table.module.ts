@@ -5,22 +5,25 @@ import { UiDemoModule } from '../ui-demo/ui-demo.module';
 import { DataTableComponent } from './data-table/data-table.component';
 import { NgCrudTableRoutingModule } from './ng-crud-table-routing.module';
 import { RowGroupComponent } from './row-group/row-group.component';
+import { TreeTableComponent } from './tree-table/tree-table.component';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SharedModule,
-    UiDemoModule,
-    NgCrudTableRoutingModule
-  ],
-  declarations: [
+    imports: [
+        CommonModule,
+        SharedModule,
+        UiDemoModule,
+        NgCrudTableRoutingModule
+    ],
+    declarations: [
         DataTableComponent,
-        RowGroupComponent
+        RowGroupComponent,
+        TreeTableComponent
     ],
     exports: [
         DataTableComponent,
-        RowGroupComponent
+        RowGroupComponent,
+        TreeTableComponent
     ]
 })
 export class NgCrudTableModule { }

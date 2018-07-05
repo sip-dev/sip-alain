@@ -5,27 +5,27 @@
     "tasks": [
         {
             "group": "none",
-            "label": "启动 web (start)",
+            "label": "* 启动 web (start)",
             "type": "npm",
             "script": "start",
             "problemMatcher": []
         },
         {
-            "label": "启动 web 代理 (start-proxy)",
+            "label": "* 启动 web 代理 (start-proxy)",
             "type": "npm",
             "script": "start-proxy",
             "problemMatcher": []
         },
         {
             "group": "build",
-            "label": "编译 web (build)",
+            "label": "! 编译 web (build)",
             "type": "npm",
             "script": "build",
             "problemMatcher": []
         },
         {
             "group": "build",
-            "label": "编译 sip-alain (build-sip-alain)",
+            "label": "! 编译 sip-alain (build-sip-alain)",
             "type": "npm",
             "script": "build-sip-alain",
             "problemMatcher": []
