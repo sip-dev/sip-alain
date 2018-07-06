@@ -11,10 +11,12 @@ export class SipAppContainerService {
     ) { }
 
     private _vcRef: ViewContainerRef;
+    _contextmenu: TemplateRef<any>;
 
-    init(vcRef: ViewContainerRef) {
+    _init(vcRef: ViewContainerRef, contextmenu?: TemplateRef<any>) {
         if (this._vcRef) return;
         this._vcRef = vcRef;
+        this._contextmenu = contextmenu;
     }
 
     /**

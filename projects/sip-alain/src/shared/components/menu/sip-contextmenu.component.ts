@@ -1,13 +1,7 @@
 import { Component, EventEmitter, Input, Output, TemplateRef, ViewChild, ViewContainerRef, ViewRef } from '@angular/core';
 import { Lib } from 'sip-lib';
+import { IContextMenu } from '../../../core/extends/sip-contextmenu';
 import { SipComponent, SipNgDestroy, SipNgInit } from '../../../core/extends/sip-helper';
-import { ISipMenuItem } from './sip-menu-item';
-
-export interface IContextMenu {
-    width?: string;
-    items: ISipMenuItem[];
-}
-
 
 @Component({
     selector: 'sip-contextmenu',

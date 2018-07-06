@@ -1,6 +1,6 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import { Column, Settings } from '@shared/components/ng-crud-table';
-import { SipAccess, SipAccessItem, SipAccessManager, SipNgDestroy, SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
+import { SipAccess, SipAccessItem, SipAccessManager, SipAppContainerService, SipContextmenu, SipNgDestroy, SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
 import { ListFormComponent } from '../../ui-demo/list-form/list-form.component';
 import { getColumnsPlayers } from '../shareds/column';
 import { SipDataTable } from '../shareds/sip-data-table';
@@ -14,8 +14,25 @@ export class DataTableComponent extends SipPage {
 
   constructor(vcf: ViewContainerRef) {
     super(vcf);
+    console.log(vcf.injector.get(SipAppContainerService));
     this.columns = getColumnsPlayers();
-    this.table = new SipDataTable(this.columns, this.settings);
+    let contextmenu = new SipContextmenu(vcf, ()=>{
+      return {
+        items:[{
+          title:'test',
+          onClick:(p)=>{
+            console.log('test')
+          }
+        },
+        {
+          title:'test1',
+          onClick:(p)=>{
+            console.log('test1', p)
+          }
+        }]
+      };
+    });
+    this.table = new SipDataTable(this.columns, this.settings, null, contextmenu);
   }
 
   params = { id: '' };

@@ -1,9 +1,9 @@
 import { Component, ContentChildren, EventEmitter, Input, Output, QueryList, ViewContainerRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Lib } from 'sip-lib';
+import { IContextMenu } from '../../../core/extends/sip-contextmenu';
 import { SipComponent, SipNgDestroy } from '../../../core/extends/sip-helper';
 import { SipRestSqlRet, SipSqlParam } from '../../../core/services/sip-rest.service';
-import { IContextMenu } from '../menu/sip-contextmenu.component';
 import { SipMinicolumnComponent } from './sip-minicolumn.component';
 
 

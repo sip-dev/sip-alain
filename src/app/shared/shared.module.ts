@@ -9,14 +9,15 @@ import { NgxTinymceModule } from 'ngx-tinymce';
 import { UEditorModule } from 'ngx-ueditor';
 import { SipAlainSharedModule } from 'sip-alain';
 import { CrudTableModule } from './components/ng-crud-table';
-
+import { DataTableModule } from './components/ng-data-table';
 
 const THIRDMODULES = [
   NgZorroAntdModule,
   CountdownModule,
   UEditorModule,
   NgxTinymceModule,
-  CrudTableModule
+  CrudTableModule,
+  DataTableModule
 ];
 // endregion
 
