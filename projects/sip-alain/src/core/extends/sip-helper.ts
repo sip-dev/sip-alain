@@ -15,7 +15,7 @@ import { SipAlainConfig } from './sip-alain-config';
 
 let undef;
 
-//region equals
+//#region equals
 
 let _equalArrayIn = function (array1: Array<any>, array2: Array<any>) {
     var ok = true;
@@ -54,9 +54,9 @@ let _equalArrayIn = function (array1: Array<any>, array2: Array<any>) {
         return p == p1;
 }
 
-//endregion equals
+//#endregion equals
 
-// region watch
+//#region watch
 
 let _getWatchContext = function (owner, name) {
     let context = owner._$sipWatch;
@@ -127,9 +127,9 @@ export function SipWatch(...args: any[]) {
     };
 }
 
-// endregion watch
+//#endregion watch
 
-// region component events
+//#region component events
 
 /**_pushSipEvent(target, '$onShow', target[propKey]) */
 let _pushSipEvent = function (target: any, eventName: string, newFn: Function) {
@@ -238,8 +238,7 @@ export function SipNgDestroy() {
     };
 }
 
-
-// endregion component events
+//#endregion component events
 
 //#region SipSubscribe
 
