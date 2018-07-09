@@ -50,7 +50,7 @@ export class DataTableComponent extends SipPage {
       this.table.events.onLoading(false);
     });
     this.table.events.selectionSource$.subscribe(() => {
-      var rows = this.table.dataSelection.getSelectedRows(this.table.getRows());
+      var rows = this.table.selection.getSelectedRows(this.table.getRows());
       this.$access.check(rows);
     });
     console.log('init', this.params);
@@ -116,7 +116,7 @@ export class DataTableComponent extends SipPage {
     if (isEditing){
       this.table.getSelectedRows().forEach((row) => {
         for (let colIndex = 0; colIndex < 6; colIndex++)
-          this.table.editCell(row.index, colIndex, isEditing);
+          this.table.editCell(row.$$index, colIndex, isEditing);
       });
     } else {
       this.table.unEditCellAll();

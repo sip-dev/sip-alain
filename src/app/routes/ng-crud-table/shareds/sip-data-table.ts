@@ -26,7 +26,7 @@ export class SipDataTable extends DataTable {
     }
 
     getSelectedRows(): Row[] {
-        return this.dataSelection.getSelectedRows(this.getRows()) || [];
+        return this.selection.getSelectedRows(this.getRows()) || [];
     }
 
     getSelectedFirstRow(): Row {
