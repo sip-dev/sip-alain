@@ -11,8 +11,8 @@ export class TreeDataSourceService implements TreeDataSource {
 
   http: SipRestService;
 
-  constructor(public injector: Injector) {
-    this.http = injector.get(SipRestService);
+  constructor(private injector: Injector) {
+    this.http = this.injector.get(SipRestService);
   }
 
   getNodes(node: TreeNode): Promise<TreeNode[]> {

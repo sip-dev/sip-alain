@@ -1,0 +1,20 @@
+<sip-page>
+  <sip-page-header navigator="页面">
+    <ng-template #title>crud-table page</ng-template>
+    <ng-template #desc>
+      页面
+      <nz-tooltip [nzTitle]="'了解更多实例介绍'">
+        <a nz-tooltip [sipRouterLink]>更多…</a>
+      </nz-tooltip>
+    </ng-template>
+  </sip-page-header>
+
+  <sip-page-body>
+    <!-- 卡片 -->
+    <sip-card [bordered]="false">
+      <sip-card-body>
+        <app-crud-table [dataManager]="dataManager"></app-crud-table>
+      </sip-card-body>
+    </sip-card>
+  </sip-page-body>
+</sip-page>

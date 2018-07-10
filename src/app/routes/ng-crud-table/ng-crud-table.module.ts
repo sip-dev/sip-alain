@@ -6,6 +6,7 @@ import { DataTableComponent } from './data-table/data-table.component';
 import { NgCrudTableRoutingModule } from './ng-crud-table-routing.module';
 import { RowGroupComponent } from './row-group/row-group.component';
 import { TreeTableComponent } from './tree-table/tree-table.component';
+import { CrudTableComponent } from './crud-table/crud-table.component';
 
 
 @NgModule({
@@ -18,12 +19,14 @@ import { TreeTableComponent } from './tree-table/tree-table.component';
     declarations: [
         DataTableComponent,
         RowGroupComponent,
-        TreeTableComponent
+        TreeTableComponent,
+        CrudTableComponent
     ],
     exports: [
         DataTableComponent,
         RowGroupComponent,
-        TreeTableComponent
+        TreeTableComponent,
+        CrudTableComponent
     ]
 })
 export class NgCrudTableModule { }

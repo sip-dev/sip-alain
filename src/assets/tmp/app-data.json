@@ -64,6 +64,12 @@
                             "link": "/ng-crud-table/tree-table",
                             "i18n": "tree-table",
                             "description": "tree-table"
+                        },
+                        {
+                            "text": "crud-table",
+                            "link": "/ng-crud-table/crud-table",
+                            "i18n": "crud-table",
+                            "description": "crud-table"
                         }
                     ]
                 }
