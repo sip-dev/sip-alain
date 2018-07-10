@@ -13,7 +13,11 @@
     <!-- 卡片 -->
     <sip-card [bordered]="false">
       <sip-card-body>
-          tree-table body
+        <app-tree-table
+          [service]="treeService"
+          [table]="table"
+          (editComplete)="onEditComplete($event)">
+        </app-tree-table>
       </sip-card-body>
     </sip-card>
   </sip-page-body>

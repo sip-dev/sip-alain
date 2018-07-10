@@ -45,7 +45,7 @@ export class DataTableComponent extends SipPage {
   private _init() {
     this.params = this.$params(this.params);
     this.table.events.onLoading(true);
-    this.$httpSrv.get('assets/tmp/players.json').subscribe(rs => {
+    this.$httpSrv.get('api/demo/data-table/players').subscribe(rs => {
       this.table.rows = rs.datas;
       this.table.events.onLoading(false);
     });

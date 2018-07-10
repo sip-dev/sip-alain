@@ -276,5 +276,5 @@ function getActivities(): any[] {
 export const APIS = {
   '/api/list': (req: MockRequest) => getFakeList(req.queryString.count),
   '/api/notice': () => getNotice(),
-  '/api/activities': () => getActivities(),
+  '/api/activities': () => getActivities()
 };

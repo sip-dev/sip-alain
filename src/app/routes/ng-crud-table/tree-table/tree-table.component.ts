@@ -1,5 +1,7 @@
 import { Component, ViewContainerRef } from '@angular/core';
+import { Column, DataTable, Settings } from '@shared/components/ng-data-table';
 import { SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
+import { TreeDataSourceService } from '../shareds/services/tree-data-source.service';
 
 @Component({
   selector: 'sip-tree-table',
@@ -11,6 +13,8 @@ export class TreeTableComponent extends SipPage {
 
   constructor(vcf: ViewContainerRef) {
     super(vcf);
+    this.treeService = new TreeDataSourceService(vcf.injector);
+    this.table = new DataTable(this.columns, this.settings);
   }
 
   params = { id: '' };
@@ -22,4 +26,44 @@ export class TreeTableComponent extends SipPage {
     console.log('init', this.params);
   }
 
+  
+  public treeService: TreeDataSourceService;
+  public table: DataTable;
+  public settings: Settings;
+  public columns: Column[] = <Column[]>[
+    {
+      title: 'Column',
+      name: 'column',
+      sortable: false,
+      filter: false,
+      frozen: false,
+      resizeable: true,
+      editable: true,
+      width: 250,
+    },
+    {
+      title: 'Cube_size',
+      name: 'cube_size',
+      sortable: false,
+      filter: false,
+      frozen: false,
+      resizeable: true,
+      editable: true,
+      width: 250,
+    },
+    {
+      title: 'Exp',
+      name: 'exp',
+      sortable: false,
+      filter: false,
+      frozen: false,
+      resizeable: true,
+      editable: true,
+      width: 250,
+    }
+  ];
+
+  onEditComplete(event) {
+    console.log(event);
+  }
 }

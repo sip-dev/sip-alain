@@ -58,6 +58,12 @@
                             "link": "/ng-crud-table/row-group",
                             "i18n": "row-group",
                             "description": "row-group"
+                        },
+                        {
+                            "text": "tree-table",
+                            "link": "/ng-crud-table/tree-table",
+                            "i18n": "tree-table",
+                            "description": "tree-table"
                         }
                     ]
                 }

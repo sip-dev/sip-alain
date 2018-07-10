@@ -151,7 +151,7 @@ export class SipConfigService implements SipAlainConfig {
          * rest url 改造路径
          */
         mapPath: function (path: string) {
-            return _rmPathSplit('/' + path);
+            return _rmPathSplit(path);
         },
         /**
          * 提交类型form | body

@@ -2,12 +2,17 @@
 // `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+// mock
+import { DelonMockModule } from '@delon/mock';
+import * as MOCKDATA from '../../_mock';
+const MOCKMODULE = [DelonMockModule.forRoot({ data: MOCKDATA })];
+
 export const environment = {
   SERVER_URL: `./`,
   production: false,
   useHash: true,
+  MOCKMODULE: MOCKMODULE
 };
-
 /*
  * In development mode, to ignore zone related error stack frames such as
  * `zone.run`, `zoneDelegate.invokeTask` for easier debugging, you can
