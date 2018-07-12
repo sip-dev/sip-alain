@@ -1,5 +1,6 @@
 import { Component, ViewContainerRef } from '@angular/core';
-import { Lib, SipAccess, SipAccessItem, SipAccessManager, SipMinitableManager, SipNgDestroy, SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
+import { SipAccess, SipAccessItem, SipAccessManager, SipMinitableManager, SipNgDestroy, SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
+import { Lib } from 'sip-lib';
 import { ListFormComponent } from '../list-form/list-form.component';
 
 @Component({

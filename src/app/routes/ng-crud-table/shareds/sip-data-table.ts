@@ -1,9 +1,8 @@
 import { Column, DataTable, Message, Settings } from "@shared/components/ng-crud-table";
 import { Row } from "@shared/components/ng-data-table";
-import { SipContextmenu } from "sip-alain";
 
 export class SipDataTable extends DataTable {
-    constructor(columns: Column[], settings: Settings, messages?: Message, contextmenu?:SipContextmenu) {
+    constructor(columns: Column[], settings: Settings, messages?: Message) {
         super(columns, settings, messages);
         if (settings) {
             this._isEditMode = settings.editMode === 'editProgrammatically';
@@ -11,15 +10,6 @@ export class SipDataTable extends DataTable {
                 /**翻页时取消所有cell编辑状态 */
                 this.events.pageSource$.subscribe((p) => {
                     this.unEditCellAll();
-                });
-            }
-            if (settings.contextMenu) {
-                // this.
-                this.events.contextMenuSource$.subscribe((e) => {
-                    // let e: MouseEvent = p.event;
-                    // e.stopPropagation();
-                    // e.preventDefault();
-                    return contextmenu.show(e.event, e);
                 });
             }
         }

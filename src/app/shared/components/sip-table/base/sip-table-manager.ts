@@ -1,4 +1,5 @@
 import { Injector } from '@angular/core';
+import { SipContextMenuService } from 'sip-alain';
 import { DataManager } from '../../ng-crud-table';
 import { Row } from '../../ng-data-table';
 import { ColumnBase } from '../../ng-data-table/base';
@@ -15,7 +16,7 @@ export class SipTableManager extends DataManager {
         let sortName = settings.sortName;
         if (sortName) {
             let sortOrder = settings.sortOrder == 'asc' ? 1 : -1;
-            this.sorter.sortMeta.push({field:sortName, order:sortOrder});
+            this.sorter.sortMeta.push({ field: sortName, order: sortOrder });
         }
 
         if (settings) {
@@ -27,9 +28,11 @@ export class SipTableManager extends DataManager {
                 });
             }
             if (settings.contextmenuAction) {
-                let contextmenu = settings.contextmenuAction;
+                let contextmenu = injector.get(SipContextMenuService);
                 this.events.contextMenuSource$.subscribe((e) => {
-                    return contextmenu.show(e.event, e);
+                    let row = this.getRows()[e.rowIndex];
+                    let ct = settings.contextmenuAction(e, row);
+                    return contextmenu.show(ct, e.event);
                 });
             }
         }
@@ -43,13 +46,18 @@ export class SipTableManager extends DataManager {
         this.service = value;
     }
 
-    refresh(){
+    refresh() {
         this.getItems().then();
     }
 
-    search(searchparams?:object){
+    search(searchparams?: object) {
         this.dataSource.searchparams = searchparams;
         this.refresh();
+    }
+
+    getRow(val: string, propName?: string) {
+        propName || (propName = this.dataSource.primaryKeys[0]);
+        return this.getRows().find((item) => { return item.$$data[propName] == val; });
     }
 
     getSelectedRows(): Row[] {

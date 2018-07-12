@@ -1,5 +1,5 @@
-import { SipContextmenu } from 'sip-alain';
-import { Settings } from '../../ng-data-table';
+import { ISipContextMenu } from 'sip-alain';
+import { CellEventArgs, Row, Settings } from '../../ng-data-table';
 
 export class SipTableSettings extends Settings {
 
@@ -12,11 +12,12 @@ export class SipTableSettings extends Settings {
     sortOrder?: '' | 'asc' | 'desc';
     searchparam?: object;
 
-    contextmenuAction?: SipContextmenu;
+    contextmenuAction?: (event: CellEventArgs, row: Row) => ISipContextMenu;
 
     constructor(init?: Partial<SipTableSettings>) {
         super(init);
         this.api || (this.api = this.url);
+        this.primaryKeys || (this.primaryKeys = ['id']);
         this.contextmenuAction && (this.contextMenu = true);
     }
 }

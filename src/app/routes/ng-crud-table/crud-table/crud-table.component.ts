@@ -1,7 +1,7 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import { Column, DataSource } from '@shared/components/ng-crud-table';
 import { SipTableManager, SipTableSettings } from '@shared/components/sip-table';
-import { SipContextmenu, SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
+import { SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
 import { getColumnsPlayers } from '../shareds/column';
 
 @Component({
@@ -37,25 +37,26 @@ export class CrudTableComponent extends SipPage {
   public dataManager: SipTableManager;
 
   public serverSideSettings: SipTableSettings = new SipTableSettings({
-    sqlId:'iaas.instlist',connstr:'iaas',
-    sortName:'name',sortOrder:'asc',
-    pageSize:10,
-    contextmenuAction:new SipContextmenu(this.vcf, ()=>{
+    sqlId: 'iaas.instlist', connstr: 'iaas',
+    sortName: 'name', sortOrder: 'asc',
+    pageSize: 10,
+    contextmenuAction: (e, row) => {
       return {
-        items:[{
-          title:'test',
-          onClick:(p)=>{
-            console.log('test')
+        width:'100px',
+        items: [{
+          title: 'test',
+          onClick: (p) => {
+            console.log('test',row);
           }
         },
         {
-          title:'test1',
-          onClick:(p)=>{
-            console.log('test1', p)
+          title: 'test1',
+          onClick: (p) => {
+            console.log('test1', row);
           }
         }]
       };
-    })
+    }
   });
 
 
