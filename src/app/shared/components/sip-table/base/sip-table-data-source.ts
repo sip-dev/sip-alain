@@ -4,6 +4,7 @@ import { Filter, SortMeta } from '../../ng-data-table';
 export abstract class SipTableDataSource implements DataSource {
     abstract url: string;
     abstract primaryKeys: string[];
+    abstract searchparams?:object;
     abstract getItems(page: number, filters: Filter, sortMeta: SortMeta[], globalFilterValue?: string): Promise<any>;
     abstract getItem(row: any): Promise<any>;
     abstract post(row: any): Promise<any>;

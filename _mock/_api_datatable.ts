@@ -1,7 +1,20 @@
 
 export const API_DataTable = {
     '(.*)/api/demo/data-table/players': () => { return getPlayers() },
-    '(.*)/api/demo/data-table/tree': () => { return getTree() }
+    '(.*)/api/demo/data-table/tree': () => { return getTree() },
+    '(.*)/api/basicData/loadGridData': () => {
+        let start:number = ~~(Math.random()*10);
+        let totalPages = 15;
+        let pageSize = 10;
+        return {
+            "version": 1, "returnCode": 200, "isSuccess": true,
+            "returnValue": {
+                "PageSize": pageSize, "TotalRecords": pageSize * totalPages, "TotalPages": totalPages,
+                "Data": getPlayers().slice(start, start + 9),
+                "PageIndex": 1
+            }, "returnStatus": "OK", "returnDesc": null, "error": null
+        };
+    }
 };
 
 function getPlayers(): any[] {

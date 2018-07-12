@@ -1,8 +1,8 @@
 import { Injectable, Injector } from '@angular/core';
-import { SipRestService } from 'sip-alain';
+import { Lib, SipRestService, SipRestSqlRet } from 'sip-alain';
 import { Filter, SortMeta } from '../../ng-data-table';
-import { DataFilter, DataSort } from '../../ng-data-table/base';
-import { SipTableDataSource, SipTableSettings } from '../base';
+import { SipTableDataSource } from '../base/sip-table-data-source';
+import { SipTableSettings } from '../base/sip-table-settings';
 
 @Injectable()
 export class SipDataSourceService extends SipTableDataSource {
@@ -10,78 +10,71 @@ export class SipDataSourceService extends SipTableDataSource {
   public url: string;
   public primaryKeys: any;
 
-  private pageSize: number = 10;
-  private dataFilter: DataFilter;
-  private dataSort: DataSort;
-  private http: SipRestService;
+  public get searchparams(): object {
+    return this.settings.searchparam;
+  }
 
-  constructor(private injector: Injector, private settings:SipTableSettings ) {
+  public set searchparams(value: object) {
+    this.settings.searchparam = value;
+  }
+
+  private http: SipRestService;
+  private settings: SipTableSettings;
+  private rs: SipRestSqlRet;
+  private pageSize:number;
+
+  constructor(private injector: Injector, settings: SipTableSettings) {
     super();
     this.http = this.injector.get(SipRestService);
-    this.dataFilter = new DataFilter();
-    this.dataSort = new DataSort(settings);
-    this.pageSize =  settings.pageSize || this.pageSize;
+    this.settings = Object.assign(settings);
+    this.pageSize = settings.pageSize || 10;
   }
 
   getItems(page: number = 1, filters: Filter, sortMeta: SortMeta[], globalFilterValue?: string): Promise<any> {
     return this.http.sql(this.settings)
       .toPromise()
-      .then(function (res) {
-        const rows: any[] = res.datas || [];
-        this.dataFilter.filters = filters;
-        if (Object.keys(filters).length === 0 && globalFilterValue) {
-          this.dataFilter.isGlobal = true;
-          this.dataFilter.globalFilterValue = globalFilterValue;
-        }
-        const filteredData = this.dataFilter.filterRows(rows);
-        this.dataSort.sortMeta = sortMeta;
-        const sortedData = this.dataSort.sortRows(filteredData);
-        const pageData = this.page(sortedData, page);
-        const totalCount = sortedData.length;
-        const pageCount = pageData.length;
+      .then((rs: SipRestSqlRet) => {
+        this.rs = rs;
+        const rows: any[] = rs.datas || [];
+
         const result = {
-          'items': pageData,
+          'items': rows,
           '_meta': {
-            'totalCount': totalCount,
-            'pageCount': pageCount,
-            'currentPage': page,
-            'perPage': this.itemsPerPage
+            'totalCount': rs.total,
+            'pageCount': rs.totalPages,
+            'currentPage': rs.pageIndex,
+            'perPage': this.pageSize
           }
         };
         return result;
-      }.bind(this));
+      });
   }
 
   getItem(id: number): Promise<any> {
-    const filterId = {
-      [this.primaryKeys]: {value: id}
-    };
-    return this.getItems(1, filterId, null)
-      .then(data => data.items[0]);
-  }
-
-  page(data: any, page: any): Array<any> {
-    const start = (page - 1) * this.pageSize;
-    const end = this.pageSize > -1 ? (start + this.pageSize) : data.length;
-    return data.slice(start, end);
+    return new Promise((resolve) => {
+      let item: any, prikey: string = this.primaryKeys ? this.primaryKeys[0] : '';
+      if (prikey) {
+        let rows = this.rs.datas || [];
+        Lib.each(rows, function (it) {
+        });
+      }
+      return item;
+    });
   }
 
   post(item: any): Promise<any> {
-    // this.data.items.push(item); // exist in component
     return new Promise((resolve) => {
-      setTimeout(() => resolve(item), 250);
+      setTimeout(() => resolve(item), 100);
     });
   }
 
   put(item: any): Promise<any> {
-    // this.data.items[this.findSelectedItemIndex(item)] = item; // exist in component
     return new Promise((resolve) => {
-      setTimeout(() => resolve(item), 250);
+      setTimeout(() => resolve(item), 100);
     });
   }
 
   delete(item: any): Promise<any> {
-    // this.data.items.splice(this.findSelectedItemIndex(item), 1); // exist in component
     return new Promise((resolve) => {
       setTimeout(() => resolve(item), 250);
     });
@@ -91,7 +84,7 @@ export class SipDataSourceService extends SipTableDataSource {
     return this.http.get(url)
       .toPromise()
       .then((response: any) => {
-        const result = response.filter((value: any) => {
+        const result = response.datas.filter((value: any) => {
           return value['parentId'] === parentId;
         });
         return new Promise((resolve) => {

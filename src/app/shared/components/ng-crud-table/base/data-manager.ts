@@ -1,9 +1,9 @@
-import {DataSource} from './interface';
-import {Row, Filter} from '../../ng-data-table';
-import {DataTable} from '../../ng-data-table/base/data-table';
-import {ColumnBase} from '../../ng-data-table/base/column-base';
-import {Settings} from '../../ng-data-table/base/settings';
-import {Message} from '../../ng-data-table/base/message';
+import { Filter, Row } from '../../ng-data-table';
+import { ColumnBase } from '../../ng-data-table/base/column-base';
+import { DataTable } from '../../ng-data-table/base/data-table';
+import { Message } from '../../ng-data-table/base/message';
+import { Settings } from '../../ng-data-table/base/settings';
+import { DataSource } from './interface';
 
 export class DataManager extends DataTable {
 
@@ -143,6 +143,7 @@ export class DataManager extends DataTable {
         this.rows[rowIndex][key] = result[key];
       }
     }
+    this.rows[rowIndex] = this.generateRow(this.rows[rowIndex]);
   }
 
   refreshRow(row: any, isNew: boolean) {

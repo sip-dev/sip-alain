@@ -1,8 +1,8 @@
 import { Component, ViewContainerRef } from '@angular/core';
-import { Column, DataManager, DataSource, Settings } from '@shared/components/ng-crud-table';
-import { SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
+import { Column, DataSource } from '@shared/components/ng-crud-table';
+import { SipTableManager, SipTableSettings } from '@shared/components/sip-table';
+import { SipContextmenu, SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
 import { getColumnsPlayers } from '../shareds/column';
-import { SipDataTableService } from '../shareds/services/sip-data-table.service';
 
 @Component({
   selector: 'sip-crud-table',
@@ -12,14 +12,15 @@ import { SipDataTableService } from '../shareds/services/sip-data-table.service'
 })
 export class CrudTableComponent extends SipPage {
 
-  constructor(vcf: ViewContainerRef) {
+  constructor(private vcf: ViewContainerRef) {
     super(vcf);
     this.columns = getColumnsPlayers();
     // for (const column of this.columns) {
     //   column.editable = false;
     // }
-    this.service = new SipDataTableService(vcf.injector, 10);
-    this.dataManager = new DataManager(this.columns, this.serverSideSettings, this.service);
+    // this.service = new SipDataTableService(vcf.injector, 10);
+    // this.dataManager = new DataManager(this.columns, this.serverSideSettings, this.service);
+    this.dataManager = new SipTableManager(vcf.injector, this.columns, this.serverSideSettings);
   }
 
   params = { id: '' };
@@ -33,12 +34,29 @@ export class CrudTableComponent extends SipPage {
 
   public service: DataSource;
   public columns: Column[];
-  public dataManager: DataManager;
+  public dataManager: SipTableManager;
 
-  public serverSideSettings: Settings = <Settings>{
-    api: 'api/demo/data-table/players',
-    globalFilter: true
-  };
+  public serverSideSettings: SipTableSettings = new SipTableSettings({
+    sqlId:'iaas.instlist',connstr:'iaas',
+    sortName:'name',sortOrder:'asc',
+    pageSize:10,
+    contextmenuAction:new SipContextmenu(this.vcf, ()=>{
+      return {
+        items:[{
+          title:'test',
+          onClick:(p)=>{
+            console.log('test')
+          }
+        },
+        {
+          title:'test1',
+          onClick:(p)=>{
+            console.log('test1', p)
+          }
+        }]
+      };
+    })
+  });
 
 
 }

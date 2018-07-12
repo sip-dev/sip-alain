@@ -1,3 +1,4 @@
+import { SipContextmenu } from 'sip-alain';
 import { Settings } from '../../ng-data-table';
 
 export class SipTableSettings extends Settings {
@@ -11,8 +12,11 @@ export class SipTableSettings extends Settings {
     sortOrder?: '' | 'asc' | 'desc';
     searchparam?: object;
 
+    contextmenuAction?: SipContextmenu;
+
     constructor(init?: Partial<SipTableSettings>) {
         super(init);
         this.api || (this.api = this.url);
+        this.contextmenuAction && (this.contextMenu = true);
     }
 }
