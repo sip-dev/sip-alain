@@ -1,6 +1,6 @@
 import { HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
-import { SipAlainConfig } from '../../core/extends/sip-alain-config';
+import { SipAlainConfig } from '../../sip/base/sip-alain-config';
 
 
 /**

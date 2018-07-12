@@ -5,8 +5,8 @@ import { ALAIN_I18N_TOKEN, MenuService, SettingsService, TitleService } from '@d
 import { TranslateService } from '@ngx-translate/core';
 import { zip } from 'rxjs/observable/zip';
 import { catchError } from 'rxjs/operators';
-import { SipAlainConfig } from '../../core/extends/sip-alain-config';
-import { SipRestService } from '../../core/services/sip-rest.service';
+import { SipAlainConfig } from '../../sip/base/sip-alain-config';
+import { SipRestService } from '../../sip/services/sip-rest.service';
 import { I18NService } from '../i18n/i18n.service';
 
 /**

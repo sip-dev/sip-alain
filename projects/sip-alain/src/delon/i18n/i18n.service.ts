@@ -3,10 +3,10 @@ import { AlainI18NService, SettingsService } from '@delon/theme';
 import { TranslateService } from '@ngx-translate/core';
 import * as df_en from 'date-fns/locale/en';
 import * as df_zh_cn from 'date-fns/locale/zh_cn';
-import { NzI18nService, en_US, zh_CN } from 'ng-zorro-antd';
+import { en_US, NzI18nService, zh_CN } from 'ng-zorro-antd';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { SipAlainConfig } from '../../core/extends/sip-alain-config';
+import { SipAlainConfig } from '../../sip/base/sip-alain-config';
 
 
 @Injectable()
