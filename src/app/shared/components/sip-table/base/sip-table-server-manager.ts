@@ -3,15 +3,16 @@ import { SipContextMenuService } from 'sip-alain';
 import { DataManager } from '../../ng-crud-table';
 import { Row } from '../../ng-data-table';
 import { ColumnBase } from '../../ng-data-table/base';
-import { SipDataSourceService } from '../services/sip-data-source.service';
+import { SipTableServerSourceService } from '../services/sip-table-server-source.service';
 import { SipTableDataSource } from './sip-table-data-source';
 import { SipTableSettings } from './sip-table-settings';
 
-export class SipTableManager extends DataManager {
+export class SipTableServerManager extends DataManager {
 
-    constructor(private injector: Injector, columns: ColumnBase[],
-        settings: SipTableSettings, dataSource?: SipTableDataSource) {
-        super(columns, settings, dataSource ? dataSource : new SipDataSourceService(injector, settings));
+
+    constructor(public injector: Injector, columns: ColumnBase[],
+        settings: SipTableSettings, source?: SipTableDataSource) {
+        super(columns, settings, source || new SipTableServerSourceService(injector, settings));
 
         let sortName = settings.sortName;
         if (sortName) {
@@ -55,9 +56,14 @@ export class SipTableManager extends DataManager {
         this.refresh();
     }
 
-    getRow(val: string, propName?: string) {
-        propName || (propName = this.dataSource.primaryKeys[0]);
-        return this.getRows().find((item) => { return item.$$data[propName] == val; });
+    /**
+     * 根据属性值，获取row
+     * @param propName 
+     * @param value 
+     * @example getRow('id', '1111');
+     */
+    getRow(propName: string, value: any): Row {
+        return this.getRows().find((item) => { return item.$$data[propName] == value; });
     }
 
     getSelectedRows(): Row[] {

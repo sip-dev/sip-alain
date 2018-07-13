@@ -16,19 +16,19 @@ export class TreeDataSourceService implements TreeDataSource {
   }
 
   getNodes(node: TreeNode): Promise<TreeNode[]> {
-    const children: TreeNode[] = [
-      {
-        id: 'MALE',
-        name: 'MALE',
-        data: { column: 'gender' },
-        leaf: false,
-      },
-      {
-        id: 'FEMALE',
-        name: 'FEMALE',
-        data: { column: 'gender' },
-      }];
     if (node) {
+      const children: TreeNode[] = [
+        {
+          id: 'MALE',
+          name: 'MALE',
+          data: { column: 'gender' },
+          leaf: false,
+        },
+        {
+          id: 'FEMALE',
+          name: 'FEMALE',
+          data: { column: 'gender' },
+        }];
       if (node.$$level) {
         children[0].id = 'MALE' + node.$$level;
         children[0].name = 'MALE' + node.$$level;

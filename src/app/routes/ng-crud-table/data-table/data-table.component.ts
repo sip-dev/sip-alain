@@ -1,9 +1,9 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import { Column, Settings } from '@shared/components/ng-crud-table';
+import { SipTableDataManager } from '@shared/components/sip-table';
 import { SipAccess, SipAccessItem, SipAccessManager, SipNgDestroy, SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
 import { ListFormComponent } from '../../ui-demo/list-form/list-form.component';
 import { getColumnsPlayers } from '../shareds/column';
-import { SipDataTable } from '../shareds/sip-data-table';
 @Component({
   selector: 'sip-data-table',
   templateUrl: './data-table.component.html',
@@ -15,7 +15,7 @@ export class DataTableComponent extends SipPage {
   constructor(vcf: ViewContainerRef) {
     super(vcf);
     this.columns = getColumnsPlayers();
-    this.table = new SipDataTable(this.columns, this.settings, null);
+    this.manager = new SipTableDataManager(vcf.injector, this.columns, this.settings);
   }
 
   params = { id: '' };
@@ -27,13 +27,13 @@ export class DataTableComponent extends SipPage {
   @SipNgInit()
   private _init() {
     this.params = this.$params(this.params);
-    this.table.events.onLoading(true);
+    this.manager.events.onLoading(true);
     this.$httpSrv.get('api/demo/data-table/players').subscribe(rs => {
-      this.table.rows = rs.datas;
-      this.table.events.onLoading(false);
+      this.manager.rows = rs.datas;
+      this.manager.events.onLoading(false);
     });
-    this.table.events.selectionSource$.subscribe(() => {
-      var rows = this.table.selection.getSelectedRows(this.table.getRows());
+    this.manager.events.selectionSource$.subscribe(() => {
+      var rows = this.manager.selection.getSelectedRows(this.manager.getRows());
       this.$access.check(rows);
     });
     console.log('init', this.params);
@@ -44,7 +44,7 @@ export class DataTableComponent extends SipPage {
     console.log('_destroy test in list');
   }
 
-  public table: SipDataTable;
+  public manager: SipTableDataManager;
   public columns: Column[];
 
   public settings: Settings = <Settings>{
@@ -77,7 +77,7 @@ export class DataTableComponent extends SipPage {
     }
   })
   test() {
-    let rows = this.table.getSelectedRows();
+    let rows = this.manager.getSelectedRows();
     console.log('rows', rows);
     this.$modal(ListFormComponent, { id: '' }).subscribe(r => {
       if (!r) return;
@@ -89,22 +89,22 @@ export class DataTableComponent extends SipPage {
   @SipAccessItem<DataTableComponent>('edit', {
     multi: true, hasData: true,
     check: function () {
-      this.editText = this.table.isEditing ? '保存' : '编辑';
+      this.editText = this.manager.isEditing ? '保存' : '编辑';
       return true;
     }
   })
   edit() {
 
-    let isEditing = !this.table.isEditing;
+    let isEditing = !this.manager.isEditing;
     if (isEditing){
-      this.table.getSelectedRows().forEach((row) => {
+      this.manager.getSelectedRows().forEach((row) => {
         for (let colIndex = 0; colIndex < 6; colIndex++)
-          this.table.editCell(row.$$index, colIndex, isEditing);
+          this.manager.editCell(row.$$index, colIndex, isEditing);
       });
     } else {
-      this.table.unEditCellAll();
+      this.manager.unEditCellAll();
     }
-    this.editText = this.table.isEditing ? '保存' : '编辑';
+    this.editText = this.manager.isEditing ? '保存' : '编辑';
   }
 
 }

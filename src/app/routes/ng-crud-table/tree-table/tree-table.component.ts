@@ -1,5 +1,6 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import { Column, DataTable, Settings } from '@shared/components/ng-data-table';
+import { SipTableSettings, SipTableTreeManager } from '@shared/components/sip-table';
 import { SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
 import { TreeDataSourceService } from '../shareds/services/tree-data-source.service';
 
@@ -15,7 +16,29 @@ export class TreeTableComponent extends SipPage {
     super(vcf);
     this.treeService = new TreeDataSourceService(vcf.injector);
     this.table = new DataTable(this.columns, this.settings);
+    this.manager = new SipTableTreeManager(vcf.injector, this.columns, new SipTableSettings({
+      treeDatas:[
+        {
+          id: 'MALE',
+          name: 'MALE',
+          data: { column: 'gender' },
+          leaf:false
+        },
+        {
+          id: 'FEMALE',
+          name: 'FEMALE',
+          data: { column: 'gender' },
+        },
+        {
+          id: 'FEMALE_1',
+          parentId:'MALE',
+          name: 'FEMALE_1',
+          data: { column: 'gender_1' },
+        }]
+    }));
   }
+
+  manager:SipTableTreeManager;
 
   params = { id: '' };
 
@@ -24,6 +47,9 @@ export class TreeTableComponent extends SipPage {
   private _init() {
     this.params = this.$params(this.params);
     console.log('init', this.params);
+    setTimeout(()=>{
+      this.table.rows = [];
+    }, 2000);
   }
 
   

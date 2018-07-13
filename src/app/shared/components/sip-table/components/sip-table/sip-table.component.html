@@ -1,1 +1,13 @@
-<app-crud-table [dataManager]="dataManager"></app-crud-table>
+<ng-template [ngIf]="serverManager">
+    <app-crud-table [dataManager]="serverManager"></app-crud-table>
+</ng-template>
+<ng-template [ngIf]="dataManager">
+    <app-datatable [table]="dataManager"></app-datatable>
+</ng-template>
+<ng-template [ngIf]="treeMananger">
+    <app-tree-table
+          [service]="treeMananger.dataSource"
+          [table]="treeMananger"
+          (editComplete)="onEditComplete($event)">
+        </app-tree-table>
+</ng-template>

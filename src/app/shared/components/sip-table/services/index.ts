@@ -1,1 +1,2 @@
-export * from "@shared/components/sip-table/services/sip-data-source.service";
+export * from "./sip-table-server-source.service";
+export * from './sip-table-tree-source.service';

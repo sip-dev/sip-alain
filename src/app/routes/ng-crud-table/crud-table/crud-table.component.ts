@@ -1,6 +1,6 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import { Column, DataSource } from '@shared/components/ng-crud-table';
-import { SipTableManager, SipTableSettings } from '@shared/components/sip-table';
+import { SipTableServerManager, SipTableSettings } from '@shared/components/sip-table';
 import { SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
 import { getColumnsPlayers } from '../shareds/column';
 
@@ -15,12 +15,7 @@ export class CrudTableComponent extends SipPage {
   constructor(private vcf: ViewContainerRef) {
     super(vcf);
     this.columns = getColumnsPlayers();
-    // for (const column of this.columns) {
-    //   column.editable = false;
-    // }
-    // this.service = new SipDataTableService(vcf.injector, 10);
-    // this.dataManager = new DataManager(this.columns, this.serverSideSettings, this.service);
-    this.dataManager = new SipTableManager(vcf.injector, this.columns, this.serverSideSettings);
+    this.tableManager = new SipTableServerManager(vcf.injector, this.columns, this.serverSideSettings);
   }
 
   params = { id: '' };
@@ -34,7 +29,7 @@ export class CrudTableComponent extends SipPage {
 
   public service: DataSource;
   public columns: Column[];
-  public dataManager: SipTableManager;
+  public tableManager: SipTableServerManager;
 
   public serverSideSettings: SipTableSettings = new SipTableSettings({
     sqlId: 'iaas.instlist', connstr: 'iaas',

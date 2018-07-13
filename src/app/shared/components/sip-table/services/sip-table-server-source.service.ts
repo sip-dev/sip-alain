@@ -6,7 +6,7 @@ import { SipTableDataSource } from '../base/sip-table-data-source';
 import { SipTableSettings } from '../base/sip-table-settings';
 
 @Injectable()
-export class SipDataSourceService extends SipTableDataSource {
+export class SipTableServerSourceService extends SipTableDataSource {
 
   public url: string;
   public primaryKeys: any;

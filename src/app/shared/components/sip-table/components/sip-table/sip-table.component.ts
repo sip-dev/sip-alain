@@ -1,5 +1,7 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { SipTableManager } from '../../base';
+import { SipTableDataManager } from '../../base/sip-table-data-manager';
+import { SipTableServerManager } from '../../base/sip-table-server-manager';
+import { SipTableTreeManager } from '../../base/sip-table-tree-manager';
 
 @Component({
   selector: 'sip-table',
@@ -14,6 +16,25 @@ export class SipTableComponent implements OnInit {
   ngOnInit() {
   }
 
-  @Input() dataManager:SipTableManager;
+  dataManager:SipTableDataManager;
+  serverManager:SipTableServerManager;
+  treeMananger:SipTableTreeManager;
+
+  private _manager: any;
+  @Input()
+  public get manager(): any {
+    return this._manager;
+  }
+  public set manager(value: any) {
+    this._manager = value;
+    this.serverManager = this.dataManager = this.treeMananger = null;
+    if (value instanceof SipTableDataManager){
+      this.dataManager = value;
+    } else if (value instanceof SipTableServerManager){
+      this.serverManager = value;
+    } else if (value instanceof SipTableTreeManager){
+      this.treeMananger = value;
+    }
+  }
 
 }

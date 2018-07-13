@@ -1,8 +1,8 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import { Column, Settings } from '@shared/components/ng-crud-table';
+import { SipTableDataManager } from '@shared/components/sip-table';
 import { SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
 import { getColumnsPlayers } from '../shareds/column';
-import { SipDataTable } from '../shareds/sip-data-table';
 
 @Component({
   selector: 'sip-row-group',
@@ -15,10 +15,10 @@ export class RowGroupComponent extends SipPage {
   constructor(vcf: ViewContainerRef) {
     super(vcf);
     this.columns = getColumnsPlayers();
-    this.table = new SipDataTable(this.columns, this.settings);
+    this.manager = new SipTableDataManager(vcf.injector, this.columns, this.settings);
   }
 
-  public table: SipDataTable;
+  public manager: SipTableDataManager;
   public columns: Column[];
 
   public settings: Settings = <Settings>{
@@ -28,11 +28,11 @@ export class RowGroupComponent extends SipPage {
   //等效于ngOnInit, 但可以多次使用
   @SipNgInit()
   private _init() {
-    this.table.events.onLoading(true);
-    this.table.pager.perPage = 50;
-    this.$httpSrv.get('assets/tmp/players.json').subscribe(rs => {
-      this.table.rows = rs.datas;
-      this.table.events.onLoading(false);
+    this.manager.events.onLoading(true);
+    this.manager.pager.perPage = 50;
+    this.$httpSrv.get('api/demo/data-table/players').subscribe(rs => {
+      this.manager.rows = rs.datas;
+      this.manager.events.onLoading(false);
     });
   }
 
