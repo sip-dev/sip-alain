@@ -9,17 +9,8 @@ import {Row, CellEventArgs} from '../../types';
 
 @Component({
   selector: 'app-datatable-body-cell',
+  templateUrl: 'body-cell.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <div class="cell-data" *ngIf="!column.cellTemplate" title="{{value}}">
-      {{value}}
-    </div>
-    <ng-template #cellTemplate
-                 *ngIf="column.cellTemplate"
-                 [ngTemplateOutlet]="column.cellTemplate"
-                 [ngTemplateOutletContext]="cellContext">
-    </ng-template>
-  `
 })
 export class BodyCellComponent implements OnInit, OnDestroy {
 
@@ -68,6 +59,9 @@ export class BodyCellComponent implements OnInit, OnDestroy {
     if (this.row && this.row.$$data && this.cellContext.value !== this.column.getValue(this.row.$$data)) {
       cls += ' cell-changed';
     }
+    if (this.hasError) {
+      cls += ' cell-error';
+    }
     return cls;
   }
 
@@ -97,6 +91,7 @@ export class BodyCellComponent implements OnInit, OnDestroy {
   };
   public editing: boolean;
   public subscriptions: Subscription[] = [];
+  public hasError: boolean;
   private _column: Column;
   private _row: Row;
 
@@ -130,8 +125,16 @@ export class BodyCellComponent implements OnInit, OnDestroy {
         this.oldValue = this.cellContext.value;
         this.value = this.column.getValueView(this.row);
       }
+      if (this.hasError) {
+        this.validate();
+      }
     }
     this.cd.markForCheck();
+  }
+
+  validate() {
+    const errors = this.column.validate(this.row[this.column.name]);
+    this.hasError = (errors && errors.length > 0);
   }
 
 }

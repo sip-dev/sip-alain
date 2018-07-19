@@ -10,13 +10,16 @@ export class SipTableDataManager extends DataTable {
         settings: SipTableSettings) {
         super(columns, settings);
 
-        let sortName = settings.sortName;
-        if (sortName) {
-            let sortOrder = settings.sortOrder == 'asc' ? 1 : -1;
-            this.sorter.sortMeta.push({ field: sortName, order: sortOrder });
-        }
-
         if (settings) {
+
+            settings.clientSide = true;
+
+            let sortName = settings.sortName;
+            if (sortName) {
+                let sortOrder = settings.sortOrder == 'asc' ? 1 : -1;
+                this.sorter.sortMeta.push({ field: sortName, order: sortOrder });
+            }
+
             this._isEditMode = settings.editMode === 'editProgrammatically';
             if (this._isEditMode) {
                 /**翻页时取消所有cell编辑状态 */
@@ -33,6 +36,14 @@ export class SipTableDataManager extends DataTable {
                 });
             }
         }
+    }
+
+    public get datas(): any[] {
+        let rows:Row[];
+        return !rows ? [] : rows.map(item=>item.$$data);
+    }
+    public set datas(value: any[]) {
+        this.rows = value;
     }
 
     /**

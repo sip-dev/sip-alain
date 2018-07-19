@@ -50,6 +50,7 @@ export class BodyCellEditComponent extends BodyCellComponent implements OnInit {
   switchCellToEditMode() {
     if (this.column.editable) {
       this.editing = true;
+      this.validate();
       this.cd.markForCheck();
     }
   }
@@ -58,6 +59,12 @@ export class BodyCellEditComponent extends BodyCellComponent implements OnInit {
     this.editing = false;
     if (this.row[this.column.name] !== this.tempValue) {
       this.updateValue();
+      this.table.events.onCellValueChanged({
+        columnIndex: this.column.index,
+        rowIndex: this.row.$$index,
+        oldValue: this.row[this.column.name],
+        newValue: this.tempValue,
+      });
     }
   }
 
@@ -76,7 +83,6 @@ export class BodyCellEditComponent extends BodyCellComponent implements OnInit {
 
   onCellEditorKeydown(event: any) {
     if (event.keyCode === Keys.ENTER) {
-      this.table.events.onEdit(this.row);
       this.switchCellToViewMode();
       this.element.nativeElement.focus();
     } else if (event.keyCode === Keys.ESCAPE) {
@@ -95,6 +101,10 @@ export class BodyCellEditComponent extends BodyCellComponent implements OnInit {
     if (this.table.settings.editMode !== Constants.editProgrammatically) {
       this.switchCellToViewMode();
     }
+  }
+
+  onInputFocus() {
+    this.tempValue = this.row[this.column.name];
   }
 
 }

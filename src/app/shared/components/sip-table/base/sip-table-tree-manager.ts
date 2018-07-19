@@ -1,6 +1,6 @@
-import { Injector } from '@angular/core';
+import { EventEmitter, Injector } from '@angular/core';
 import { SipContextMenuService } from 'sip-alain';
-import { DataTable, Row } from '../../ng-data-table';
+import { DataTable, Row, TreeNode } from '../../ng-data-table';
 import { ColumnBase } from '../../ng-data-table/base';
 import { SipTreeDataSource } from '../base';
 import { SipTableTreeSourceService } from '../services/sip-table-tree-source.service';
@@ -9,12 +9,14 @@ import { SipTableSettings } from './sip-table-settings';
 export class SipTableTreeManager extends DataTable {
 
     dataSource:SipTreeDataSource;
+    onSetRows: EventEmitter<TreeNode[]>;
 
     constructor(public injector: Injector, columns: ColumnBase[],
         settings: SipTableSettings, source?: SipTreeDataSource) {
         super(columns, settings);
 
         this.dataSource = source || new SipTableTreeSourceService(this.injector, settings);
+        this.onSetRows = this.dataSource.onSetRows;
 
         let sortName = settings.sortName;
         if (sortName) {
@@ -39,6 +41,14 @@ export class SipTableTreeManager extends DataTable {
                 });
             }
         }
+    }
+
+    public get datas(): any[] {
+        let rows:Row[];
+        return !rows ? [] : rows.map(item=>item.$$data);
+    }
+    public set datas(value: any[]) {
+        this.rows = value;
     }
 
     /**

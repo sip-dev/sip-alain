@@ -1,12 +1,18 @@
-import {Component, OnInit, ViewChild, Input, Output, EventEmitter, ViewEncapsulation, OnDestroy} from '@angular/core';
+import {
+  Component, OnInit, ViewChild, Input, Output, EventEmitter, ViewEncapsulation, OnDestroy,
+  TemplateRef, HostBinding, ElementRef, ChangeDetectionStrategy
+} from '@angular/core';
 import {ModalEditFormComponent} from '../modal-edit-form/modal-edit-form.component';
-import {DataManager, Row} from '../../base';
+import {DataManager, Row, RowMenuEventArgs} from '../../base';
 import {Subscription} from 'rxjs';
+import {RowMenuComponent} from '../row-menu/row-menu.component';
 
 @Component({
   selector: 'app-crud-table',
   templateUrl: './crud-table.component.html',
+  styleUrls: ['../../styles/index.css'],
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class CrudTableComponent implements OnInit, OnDestroy {
@@ -15,9 +21,15 @@ export class CrudTableComponent implements OnInit, OnDestroy {
   @Output() select: EventEmitter<any> = new EventEmitter();
   @Output() rowsChanged: EventEmitter<boolean> = new EventEmitter();
 
-  private subscriptions: Subscription[] = [];
-
   @ViewChild('modalEditForm') modalEditForm: ModalEditFormComponent;
+  @ViewChild('rowActionTemplate') rowActionTemplate: TemplateRef<any>;
+  @ViewChild('rowMenu') rowMenu: RowMenuComponent;
+  @ViewChild('alert') alert: ElementRef;
+  @ViewChild('toolbar') toolbar: any;
+
+  @HostBinding('class') cssClass = 'datatable crud-table';
+
+  private subscriptions: Subscription[] = [];
 
   constructor() {
   }
@@ -27,6 +39,7 @@ export class CrudTableComponent implements OnInit, OnDestroy {
     if (this.dataManager.settings.initLoad) {
       this.dataManager.getItems().then();
     }
+    this.dataManager.settings.rowActionTemplate = this.rowActionTemplate;
 
     const subSelection = this.dataManager.events.selectionSource$.subscribe(() => {
       this.onSelectedRow();
@@ -40,12 +53,6 @@ export class CrudTableComponent implements OnInit, OnDestroy {
     const subPage = this.dataManager.events.pageSource$.subscribe(() => {
       this.onPageChanged();
     });
-    const subEdit = this.dataManager.events.editSource$.subscribe((row) => {
-      this.onEditComplete(row);
-    });
-    const subRowMenu = this.dataManager.events.rowMenuSource$.subscribe((data) => {
-      this.onRowMenu(data);
-    });
     const subRows = this.dataManager.events.rowsChanged$.subscribe(() => {
       this.rowsChanged.emit(true);
     });
@@ -53,8 +60,6 @@ export class CrudTableComponent implements OnInit, OnDestroy {
     this.subscriptions.push(subFilter);
     this.subscriptions.push(subSort);
     this.subscriptions.push(subPage);
-    this.subscriptions.push(subEdit);
-    this.subscriptions.push(subRowMenu);
     this.subscriptions.push(subRows);
   }
 
@@ -63,28 +68,77 @@ export class CrudTableComponent implements OnInit, OnDestroy {
   }
 
   initRowMenu() {
-    this.dataManager.actionMenu = [
-      {
-        label: this.dataManager.messages.titleDetailView,
-        icon: 'icon icon-rightwards',
-        command: 'view',
-        disabled: !this.dataManager.settings.singleRowView
-      },
-      {
-        label: this.dataManager.messages.titleUpdate,
-        icon: 'icon icon-pencil',
-        command: 'update',
-        disabled: !this.dataManager.settings.crud
-      }
-    ];
+    if (this.dataManager.settings.singleRowView) {
+      this.dataManager.actionMenu.push(
+        {
+          label: this.dataManager.messages.titleDetailView,
+          icon: 'icon icon-rightwards',
+          command: (row) => this.viewAction(row),
+        }
+      );
+    }
+    if (this.dataManager.settings.crud) {
+      this.dataManager.actionMenu.push(
+        {
+          label: this.dataManager.messages.titleUpdate,
+          icon: 'icon icon-pencil',
+          command: (row) => this.updateAction(row),
+        },
+        {
+          label: this.dataManager.messages.refresh,
+          icon: 'icon icon-reload',
+          command: (row) => this.dataManager.refreshRow(row, false),
+        },
+        {
+          label: this.dataManager.messages.revertChanges,
+          icon: 'icon icon-return',
+          command: (row) => this.dataManager.revertRowChanges(row),
+          disabled: true,
+        },
+        {
+          label: this.dataManager.messages.save,
+          icon: 'icon icon-ok',
+          command: (row) => this.dataManager.update(row),
+          disabled: true,
+        },
+        {
+          label: this.dataManager.messages.delete,
+          icon: 'icon icon-remove',
+          command: (row) => {
+            if (confirm(this.dataManager.messages.delete + '?')) {
+              this.dataManager.delete(row);
+            }
+          },
+        },
+        {
+          label: this.dataManager.messages.duplicate,
+          icon: 'icon icon-plus',
+          command: (row) => this.duplicateAction(row),
+        },
+      );
+    }
   }
 
-  onRowMenu(data: any) {
-    if (data.menuItem.command === 'view') {
-      this.viewAction(data.row);
-    } else if (data.menuItem.command === 'update') {
-      this.updateAction(data.row);
+  onRowMenuClick(event: any, row: Row) {
+    this.dataManager.selectRow(row.$$index);
+
+    const rowChanged = this.dataManager.rowChanged(row);
+    let menuIndex = this.dataManager.actionMenu.findIndex(x => x.label === this.dataManager.messages.revertChanges);
+    if (menuIndex > -1) {
+      this.dataManager.actionMenu[menuIndex].disabled = !rowChanged;
     }
+    menuIndex = this.dataManager.actionMenu.findIndex(x => x.label === this.dataManager.messages.save);
+    if (menuIndex > -1) {
+      this.dataManager.actionMenu[menuIndex].disabled = !rowChanged;
+    }
+
+    const left = 0;
+    const alertHeight = (this.alert) ? this.alert.nativeElement.offsetHeight : 0;
+    const toolbarHeight = (this.toolbar) ? this.toolbar.getHeight() : 0;
+    let top = alertHeight + toolbarHeight + this.dataManager.dimensions.headerRowHeight;
+    top += (row.$$index + 1) * this.dataManager.dimensions.rowHeight;
+    top -= this.dataManager.offsetY;
+    this.rowMenu.show(<RowMenuEventArgs>{left, top, row});
   }
 
   onCreateAction() {
@@ -106,8 +160,11 @@ export class CrudTableComponent implements OnInit, OnDestroy {
     this.modalEditForm.open();
   }
 
-  onEditComplete(row: Row) {
-    this.dataManager.update(row);
+  duplicateAction(row: Row) {
+    this.dataManager.item = this.dataManager.cloneRow(row);
+    this.dataManager.isNewItem = true;
+    this.dataManager.detailView = false;
+    this.modalEditForm.open();
   }
 
   onPageChanged() {

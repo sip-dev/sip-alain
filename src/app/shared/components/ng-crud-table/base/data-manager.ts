@@ -1,19 +1,20 @@
-import { Filter, Row } from '../../ng-data-table';
-import { ColumnBase } from '../../ng-data-table/base/column-base';
-import { DataTable } from '../../ng-data-table/base/data-table';
-import { Message } from '../../ng-data-table/base/message';
-import { Settings } from '../../ng-data-table/base/settings';
-import { DataSource } from './interface';
+import {DataSource, MenuItem} from './interface';
+import {Row, Filter} from '../../ng-data-table';
+import {DataTable} from '../../ng-data-table/base/data-table';
+import {ColumnBase} from '../../ng-data-table/base/column-base';
+import {Settings} from '../../ng-data-table/base/settings';
+import {Message} from '../../ng-data-table/base/message';
 
 export class DataManager extends DataTable {
 
   public service: DataSource;
   public errors: any;
-  public item: any;
+  public item: Row;
   public isNewItem: boolean;
   public detailView: boolean;
   public formValid: boolean = true;
   public refreshRowOnSave: boolean;
+  public actionMenu: MenuItem[] = [];
 
   constructor(columns: ColumnBase[], settings: Settings, dataSource: DataSource, messages?: Message) {
     super(columns, settings, messages);
@@ -123,27 +124,14 @@ export class DataManager extends DataTable {
     if (this.refreshRowOnSave) {
       this.refreshRow(row, false);
     } else {
-      this.mergeRow(row.$$uid, result);
+      this.mergeRow(row, result);
     }
-    this.events.onRowsChanged();
   }
 
   afterDelete(row: Row, result: boolean) {
     if (result) {
-      const rowIndex: number = this.rows.findIndex(x => x.$$uid === row.$$uid);
-      this.rows.splice(rowIndex, 1);
+      this.deleteRow(row);
     }
-  }
-
-  mergeRow(rowUid: number, result: any) {
-    const rowIndex: number = this.rows.findIndex(x => x.$$uid === rowUid);
-
-    for (const key of Object.keys(result)) {
-      if (key in this.rows[rowIndex]) {
-        this.rows[rowIndex][key] = result[key];
-      }
-    }
-    this.rows[rowIndex] = this.generateRow(this.rows[rowIndex]);
   }
 
   refreshRow(row: any, isNew: boolean) {
@@ -155,7 +143,7 @@ export class DataManager extends DataTable {
         if (isNew) {
           this.addRow(data);
         } else {
-          this.mergeRow(row.$$uid, data);
+          this.mergeRow(row, data);
         }
       })
       .catch(error => {
@@ -172,12 +160,8 @@ export class DataManager extends DataTable {
     }
   }
 
-  deleteRow() {
-    this.delete(this.item);
-  }
-
   clearItem() {
-    this.item = {};
+    this.item = <Row>{};
     this.isNewItem = true;
   }
 

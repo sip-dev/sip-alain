@@ -13,13 +13,10 @@
     <!-- 卡片 -->
     <sip-card [bordered]="false">
       <sip-card-body>
-        <app-tree-table
-          [service]="treeService"
-          [table]="table"
-          (editComplete)="onEditComplete($event)">
-        </app-tree-table>
+        <h2>tree: id and parentId demo</h2>
         <sip-table [manager]="manager"></sip-table>
-        
+        <h2 style="margin-top: 20px;">tree: children demo</h2>
+        <sip-table [manager]="managerChild"></sip-table>
       </sip-card-body>
     </sip-card>
   </sip-page-body>

@@ -1,4 +1,4 @@
-import {MenuItem, Row, CellEventArgs} from '../types';
+import {Row, CellEventArgs} from '../types';
 import {ColumnBase} from './column-base';
 import {Column} from './column';
 import {Settings} from './settings';
@@ -22,7 +22,6 @@ export class DataTable {
   public columns: Column[] = [];
   public frozenColumns: Column[] = [];
   public scrollableColumns: Column[] = [];
-  public actionMenu: MenuItem[];
   public pager: DataPager;
   public sorter: DataSort;
   public dataFilter: DataFilter;
@@ -74,7 +73,6 @@ export class DataTable {
     if (messages) {
       Object.assign(this.messages, messages);
     }
-    this.setShareSettings();
   }
 
   createColumns(columns: ColumnBase[]) {
@@ -98,12 +96,6 @@ export class DataTable {
       }
     });
     this.columns = this.sequence.setColumnIndexes(this.columns);
-  }
-
-  setShareSettings() {
-    if (!this.actionMenu && !this.settings.selectionMode && !this.settings.rowNumber) {
-      this.dimensions.actionColumnWidth = 0;
-    }
   }
 
   getRows() {
@@ -163,9 +155,42 @@ export class DataTable {
       this.getLocalRows();
     } else {
       this.rowGroup.updateRowGroupMetadata(this._rows);
+      this.pager.total += 1;
     }
     this._rows = this.sequence.setRowIndexes(this._rows);
     this.chunkRows(true);
+    this.events.onRowsChanged();
+    setTimeout(() => {
+      this.events.onActivateCell(<CellEventArgs>{columnIndex: 0, rowIndex: newRow.$$index});
+    }, 10);
+  }
+
+  deleteRow(row: Row) {
+    let rowIndex = this.rows.findIndex(x => x.$$uid === row.$$uid);
+    this._rows.splice(rowIndex, 1);
+
+    if (this.settings.clientSide) {
+      rowIndex = this.localRows.findIndex(x => x.$$uid === row.$$uid);
+      this.localRows.splice(rowIndex, 1);
+      this.getLocalRows();
+    } else {
+      this.rowGroup.updateRowGroupMetadata(this._rows);
+      this.pager.total -= 1;
+    }
+    this._rows = this.sequence.setRowIndexes(this._rows);
+    this.chunkRows(true);
+    this.events.onRowsChanged();
+  }
+
+  mergeRow(oldRow: Row, newRow: any) {
+    const rowIndex = this.rows.findIndex(x => x.$$uid === oldRow.$$uid);
+
+    for (const key of Object.keys(newRow)) {
+      if (key in this.rows[rowIndex]) {
+        this.rows[rowIndex][key] = newRow[key];
+      }
+    }
+    this.rows[rowIndex] = this.generateRow(this.rows[rowIndex]);
     this.events.onRowsChanged();
   }
 
@@ -184,6 +209,25 @@ export class DataTable {
     }
     row.$$data = Object.assign({}, row);
     return row;
+  }
+
+  revertRowChanges(row: Row) {
+    this.columns.forEach((column) => {
+      this.rows[row.$$index][column.name] = this.rows[row.$$index].$$data[column.name];
+    });
+    this.events.onRowsChanged();
+  }
+
+  rowChanged(row: Row): boolean {
+    return this.columns.some(x => row[x.name] !== row.$$data[x.name]);
+  }
+
+  cloneRow(row: Row): Row {
+    const newRow = Object.assign({}, row);
+    newRow.$$uid = null;
+    newRow.$$index = null;
+    newRow.$$data = null;
+    return newRow;
   }
 
 }

@@ -1,8 +1,10 @@
+import { EventEmitter } from '@angular/core';
 import { TreeDataSource, TreeNode } from '../../ng-data-table';
 
 export abstract class SipTreeDataSource implements TreeDataSource {
     abstract url: string;
     abstract getNodes(node?: TreeNode): Promise<TreeNode[]>;
     abstract searchNodes(name: string): Promise<any>;
+    abstract onSetRows: EventEmitter<TreeNode[]>;
 }
 

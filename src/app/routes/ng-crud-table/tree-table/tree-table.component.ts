@@ -1,8 +1,7 @@
 import { Component, ViewContainerRef } from '@angular/core';
-import { Column, DataTable, Settings } from '@shared/components/ng-data-table';
+import { Column } from '@shared/components/ng-data-table';
 import { SipTableSettings, SipTableTreeManager } from '@shared/components/sip-table';
 import { SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
-import { TreeDataSourceService } from '../shareds/services/tree-data-source.service';
 
 @Component({
   selector: 'sip-tree-table',
@@ -14,31 +13,84 @@ export class TreeTableComponent extends SipPage {
 
   constructor(vcf: ViewContainerRef) {
     super(vcf);
-    this.treeService = new TreeDataSourceService(vcf.injector);
-    this.table = new DataTable(this.columns, this.settings);
     this.manager = new SipTableTreeManager(vcf.injector, this.columns, new SipTableSettings({
-      treeDatas:[
+      /**id字段, 默认为id */
+      treeIdField: 'id',
+      /**name字段，默认为name */
+      treeNameField: 'name',
+      /**叶子字段，值为false表示有子节点（不是叶子） */
+      treeLeafField: 'leaf',
+      /**ParentId字段，默认为parentId */
+      treeParentIdField: 'parentId',
+      /**children字段, 默认为空，如果有内容表示子节点数据 */
+      // treeChildrenField:'children',
+      treeDatas: [
+        {
+          id: 'MALE',
+          name: 'MALE',
+          data: { column: 'gender' }
+        },
+        {
+          id: 'FEMALE',
+          name: 'FEMALE',
+          data: { column: 'gender' }
+        },
+        {
+          id: 'FEMALE_1',
+          parentId: 'MALE',
+          name: 'FEMALE_1',
+          data: { column: 'gender_1' }
+        },
+        {
+          id: 'FEMALE_1_1',
+          parentId: 'FEMALE_1',
+          name: 'FEMALE_1_1',
+          data: { column: 'gender_1_1' }
+        },
+        {
+          id: 'FEMALE_a',
+          parentId: 'FEMALE',
+          name: 'FEMALE_a',
+          data: { column: 'gender_a' }
+        }]
+    }));
+
+    this.managerChild = new SipTableTreeManager(vcf.injector, this.columns, new SipTableSettings({
+      /**id字段, 默认为id */
+      treeIdField: 'id',
+      /**name字段，默认为name */
+      treeNameField: 'name',
+      /**children字段, 默认为空，如果有内容表示子节点数据 */
+      treeChildrenField: 'children',
+      treeDatas: [
         {
           id: 'MALE',
           name: 'MALE',
           data: { column: 'gender' },
-          leaf:false
+          children: [{
+            id: 'FEMALE_1',
+            name: 'FEMALE_1',
+            data: { column: 'gender_1' },
+            children: [{
+              id: 'FEMALE_1_1',
+              name: 'FEMALE_1_1',
+              data: { column: 'gender_1_1' }
+            }]
+          }]
         },
         {
           id: 'FEMALE',
           name: 'FEMALE',
           data: { column: 'gender' },
-        },
-        {
-          id: 'FEMALE_1',
-          parentId:'MALE',
-          name: 'FEMALE_1',
-          data: { column: 'gender_1' },
-        }]
+          children: [{
+            id: 'FEMALE_a',
+            name: 'FEMALE_a',
+            data: { column: 'gender_a' }
+          }]
+        }
+      ]
     }));
   }
-
-  manager:SipTableTreeManager;
 
   params = { id: '' };
 
@@ -47,15 +99,14 @@ export class TreeTableComponent extends SipPage {
   private _init() {
     this.params = this.$params(this.params);
     console.log('init', this.params);
-    setTimeout(()=>{
-      this.table.rows = [];
-    }, 2000);
+    this.manager.events.selectionSource$.subscribe((p)=>{
+      console.log('selecha', p, this.manager.rows, this.manager.getSelectedFirstRow(), this.manager.selection.selectedRowIndexes);
+    });
   }
+  manager: SipTableTreeManager;
+  managerChild: SipTableTreeManager;
+  managerHttp: SipTableTreeManager;
 
-  
-  public treeService: TreeDataSourceService;
-  public table: DataTable;
-  public settings: Settings;
   public columns: Column[] = <Column[]>[
     {
       title: 'Column',
@@ -90,6 +141,6 @@ export class TreeTableComponent extends SipPage {
   ];
 
   onEditComplete(event) {
-    console.log(event);
+    console.log('onEditComplete', event);
   }
 }
