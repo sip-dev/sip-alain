@@ -1,7 +1,8 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import { Column, DataSource } from '@shared/components/ng-crud-table';
 import { SipTableServerManager, SipTableSettings } from '@shared/components/sip-table';
-import { SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
+import { SipAccessItem, SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
+import { ListFormComponent } from '../../ui-demo/list-form/list-form.component';
 import { getColumnsPlayers } from '../shareds/column';
 
 @Component({
@@ -16,6 +17,11 @@ export class CrudTableComponent extends SipPage {
     super(vcf);
     this.columns = getColumnsPlayers();
     this.tableManager = new SipTableServerManager(vcf.injector, this.columns, this.serverSideSettings);
+
+    this.tableManager.events.selectionSource$.subscribe(()=>{
+      let rows = this.tableManager.getSelectedRows();
+      this.$access.check(rows);
+    });
   }
 
   params = { id: '' };
@@ -37,11 +43,11 @@ export class CrudTableComponent extends SipPage {
     pageSize: 10,
     contextmenuAction: (e, row) => {
       return {
-        width:'100px',
+        width: '100px',
         items: [{
           title: 'test',
           onClick: (p) => {
-            console.log('test',row);
+            console.log('test', row);
           }
         },
         {
@@ -53,6 +59,66 @@ export class CrudTableComponent extends SipPage {
       };
     }
   });
+
+  searchContent = {
+    content: '',
+    search: () => {
+      this.tableManager.search({
+        content: this.searchContent.content
+      });
+    }
+  };
+
+  @SipAccessItem<CrudTableComponent>('create', {
+    multi: false, hasData: false,
+    check: function () {
+      return true;
+    }
+  })
+  create() {
+    let url = 'ui-demo/list-create';
+    this.$navigate(url, { id: '' }).subscribe(r => {
+      if (!r) return;
+      console.log(url, r);
+    });
+  }
+
+  @SipAccessItem<CrudTableComponent>('test', {
+    multi: false, hasData: true,
+    check: function () {
+      return true;
+    }
+  })
+  test() {
+    let rows = this.tableManager.getSelectedRows();
+    console.log('rows', rows);
+    this.$modal(ListFormComponent, { id: '' }).subscribe(r => {
+      if (!r) return;
+      console.log('ListFormComponent', r);
+    });
+  }
+
+  editText = '编辑';
+  @SipAccessItem<CrudTableComponent>('edit', {
+    multi: true, hasData: true,
+    check: function () {
+      this.editText = this.tableManager.isEditing ? '保存' : '编辑';
+      return true;
+    }
+  })
+  edit() {
+
+    let isEditing = !this.tableManager.isEditing;
+    if (isEditing){
+      this.tableManager.getSelectedRows().forEach((row) => {
+        for (let colIndex = 0; colIndex < 6; colIndex++)
+          this.tableManager.editCell(row.$$index, colIndex, isEditing);
+      });
+    } else {
+      this.tableManager.unEditCellAll();
+    }
+    this.editText = this.tableManager.isEditing ? '保存' : '编辑';
+  }
 
 
 }

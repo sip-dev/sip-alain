@@ -1,5 +1,6 @@
 import { Injector } from '@angular/core';
 import { SipContextMenuService } from 'sip-alain';
+import { Lib } from 'sip-lib';
 import { DataManager } from '../../ng-crud-table';
 import { Row } from '../../ng-data-table';
 import { ColumnBase } from '../../ng-data-table/base';
@@ -77,7 +78,8 @@ export class SipTableServerManager extends DataManager {
     }
 
     getSelectedRows(): Row[] {
-        return this.selection.getSelectedRows(this.getRows()) || [];
+        let rows = this.selection.getSelectedRows(this.getRows()) || [];
+        return Lib.isArray(rows) ? rows : [rows];
     }
 
     getSelectedFirstRow(): Row {

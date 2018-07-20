@@ -1,5 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
-import { SipRestService, SipRestSqlRet } from 'sip-alain';
+import { SipRestService, SipRestSqlRet, SipSqlParam } from 'sip-alain';
 import { Lib } from 'sip-lib';
 import { Filter, SortMeta } from '../../ng-data-table';
 import { SipTableDataSource } from '../base/sip-table-data-source';
@@ -22,7 +22,7 @@ export class SipTableServerSourceService extends SipTableDataSource {
   private http: SipRestService;
   private settings: SipTableSettings;
   private rs: SipRestSqlRet;
-  private pageSize:number;
+  private pageSize: number;
 
   constructor(private injector: Injector, settings: SipTableSettings) {
     super();
@@ -31,8 +31,36 @@ export class SipTableServerSourceService extends SipTableDataSource {
     this.pageSize = settings.pageSize || 10;
   }
 
+  private makeSqlParam(page: number, filters: Filter, sortMeta: SortMeta[]): SipSqlParam {
+    let param: SipSqlParam = <SipSqlParam>this.settings;
+    param.pageIndex = page;
+    let searchparams = this.searchparams || {};
+    param.searchparam = searchparams;
+    Lib.eachProp(filters, function (item, name) {
+      searchparams[name] = item.value;
+    });
+    let sortMetaLen = sortMeta.length;
+    if (sortMeta && sortMetaLen > 0) {
+      if (sortMetaLen > 1) {
+        let sortnames = []
+        Lib.each(sortMeta, function (item: SortMeta) {
+          sortnames.push([item.field, item.order < 0 ? 'desc' : 'asc'].join(' '));
+        });
+        param.sortName = sortnames.join(',');
+        param.sortOrder = '';
+      } else {
+        param.sortName = sortMeta[0].field;
+        param.sortOrder = sortMeta[0].order < 0 ? 'desc' : 'asc';
+      }
+
+    }
+    // console.log('param', param, filters, sortMeta);
+    return param;
+  }
+
   getItems(page: number = 1, filters: Filter, sortMeta: SortMeta[], globalFilterValue?: string): Promise<any> {
-    return this.http.sql(this.settings)
+    let param: SipSqlParam = this.makeSqlParam(page, filters, sortMeta);
+    return this.http.sql(param)
       .toPromise()
       .then((rs: SipRestSqlRet) => {
         this.rs = rs;

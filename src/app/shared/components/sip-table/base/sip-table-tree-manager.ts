@@ -1,5 +1,6 @@
 import { EventEmitter, Injector } from '@angular/core';
 import { SipContextMenuService } from 'sip-alain';
+import { Lib } from 'sip-lib';
 import { DataTable, Row, TreeNode } from '../../ng-data-table';
 import { ColumnBase } from '../../ng-data-table/base';
 import { SipTreeDataSource } from '../base';
@@ -62,7 +63,8 @@ export class SipTableTreeManager extends DataTable {
     }
 
     getSelectedRows(): Row[] {
-        return this.selection.getSelectedRows(this.getRows()) || [];
+        let rows = this.selection.getSelectedRows(this.getRows()) || [];
+        return Lib.isArray(rows) ? rows : [rows];
     }
 
     getSelectedFirstRow(): Row {
