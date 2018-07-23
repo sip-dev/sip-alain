@@ -48,6 +48,12 @@
                     "icon": "anticon anticon-appstore-o",
                     "children":[
                         {
+                            "text": "server-table",
+                            "link": "/ng-crud-table/server-table",
+                            "i18n": "server-table",
+                            "description": "server-table"
+                        },
+                        {
                             "text": "data-table",
                             "link": "/ng-crud-table/data-table",
                             "i18n": "data-table",
@@ -64,12 +70,6 @@
                             "link": "/ng-crud-table/tree-table",
                             "i18n": "tree-table",
                             "description": "tree-table"
-                        },
-                        {
-                            "text": "server-table",
-                            "link": "/ng-crud-table/server-table",
-                            "i18n": "server-table",
-                            "description": "server-table"
                         }
                     ]
                 }

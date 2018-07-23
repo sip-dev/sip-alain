@@ -14,11 +14,11 @@
         <div nz-row>
           <div nz-row [nzGutter]="16">
             <div nz-col [nzMd]="16">
-              <sip-card>
-                <sip-card-title>
+              <nz-card [nzTitle]="cardMonitorTitle" [nzExtra]="cardMonitorExtra">
+                <ng-template #cardMonitorTitle>
                   <i class="anticon anticon-area-chart mr-sm"></i>监控指标
-                </sip-card-title>
-                <sip-card-extra>
+                </ng-template>
+                <ng-template #cardMonitorExtra>
                   <button nz-button class="mr-sm">
                     <i class="anticon anticon-reload"></i>
                   </button>
@@ -39,92 +39,89 @@
                       <li nz-menu-item>网络</li>
                     </ul>
                   </nz-dropdown>
-                </sip-card-extra>
-                <sip-card-body>
-                  <div class="mb-lg">
-                    <!-- <bar height="300" title="销售额趋势" [data]="salesData"></bar> -->
-                  </div>
+                </ng-template>
+                <div class="mb-lg">
+                  <!-- <bar height="300" title="销售额趋势" [data]="salesData"></bar> -->
+                </div>
 
-                  <!-- <bar height="300" title="销售额趋势01" [data]="salesData"></bar> -->
-                </sip-card-body>
-              </sip-card>
+                <!-- <bar height="300" title="销售额趋势01" [data]="salesData"></bar> -->
+              </nz-card>
             </div>
             <div nz-col [nzMd]="8">
-              <sip-card>
-                <sip-card-title>
-                  <i class="anticon anticon-credit-card mr-sm"></i>基本信息</sip-card-title>
-                <sip-card-body>
-                  <form nz-form>
-                    <div nz-form-item nz-row>
-                      <div nz-form-label nz-col [nzSpan]="5">
-                        <label>专业</label>
-                      </div>
-                      <div nz-form-control nz-col [nzSpan]="19">
-                        <nz-badge [nzStatus]="'processing'" class="mr-sm"></nz-badge>运行中
-                      </div>
+              <nz-card [nzTitle]="cardBaseTitle">
+                <ng-template #cardBaseTitle>
+                  <i class="anticon anticon-credit-card mr-sm"></i>基本信息
+                </ng-template>
+                <form nz-form>
+                  <div nz-form-item nz-row>
+                    <div nz-form-label nz-col [nzSpan]="5">
+                      <label>专业</label>
                     </div>
-                    <div nz-form-item nz-row>
-                      <div nz-form-label nz-col [nzSpan]="5">
-                        <label>区域</label>
-                      </div>
-                      <div nz-form-control nz-col [nzSpan]="19">
-                        开发云
-                      </div>
+                    <div nz-form-control nz-col [nzSpan]="19">
+                      <nz-badge [nzStatus]="'processing'" class="mr-sm"></nz-badge>运行中
                     </div>
-                    <div nz-form-item nz-row>
-                      <div nz-form-label nz-col [nzSpan]="5">
-                        <label>所属区域</label>
-                      </div>
-                      <div nz-form-control nz-col [nzSpan]="19">
-                        测试集群一
-                      </div>
+                  </div>
+                  <div nz-form-item nz-row>
+                    <div nz-form-label nz-col [nzSpan]="5">
+                      <label>区域</label>
                     </div>
-                    <div nz-form-item nz-row>
-                      <div nz-form-label nz-col [nzSpan]="5">
-                        <label>镜像</label>
-                      </div>
-                      <div nz-form-control nz-col [nzSpan]="19">
-                        SIP
-                      </div>
+                    <div nz-form-control nz-col [nzSpan]="19">
+                      开发云
                     </div>
-                    <nz-divider class="mb-lg"></nz-divider>
-                    <div nz-form-item nz-row>
-                      <div nz-form-label nz-col [nzSpan]="5">
-                        <label>内存/CPU</label>
-                      </div>
-                      <div nz-form-control nz-col [nzSpan]="19">
-                        2核2G
-                      </div>
+                  </div>
+                  <div nz-form-item nz-row>
+                    <div nz-form-label nz-col [nzSpan]="5">
+                      <label>所属区域</label>
                     </div>
-                    <div nz-form-item nz-row>
-                      <div nz-form-label nz-col [nzSpan]="5">
-                        <label>内网IP</label>
-                      </div>
-                      <div nz-form-control nz-col [nzSpan]="19">
-                        10.202.131.39
-                      </div>
+                    <div nz-form-control nz-col [nzSpan]="19">
+                      测试集群一
                     </div>
-                    <div nz-form-item nz-row>
-                      <div nz-form-label nz-col [nzSpan]="5">
-                        <label>外网IP</label>
-                      </div>
-                      <div nz-form-control nz-col [nzSpan]="19">
-                        无
-                        <a class="ml-sm">绑定IP</a>
-                      </div>
+                  </div>
+                  <div nz-form-item nz-row>
+                    <div nz-form-label nz-col [nzSpan]="5">
+                      <label>镜像</label>
                     </div>
-                    <div nz-form-item nz-row>
-                      <div nz-form-label nz-col [nzSpan]="5">
-                        <label>安全组</label>
-                      </div>
-                      <div nz-form-control nz-col [nzSpan]="19">
-                        123
-                        <a class="ml-sm" [sipRouterLink]="['/sip/ui-demo/create']">编辑</a>
-                      </div>
+                    <div nz-form-control nz-col [nzSpan]="19">
+                      SIP
                     </div>
-                  </form>
-                </sip-card-body>
-              </sip-card>
+                  </div>
+                  <nz-divider class="mb-lg"></nz-divider>
+                  <div nz-form-item nz-row>
+                    <div nz-form-label nz-col [nzSpan]="5">
+                      <label>内存/CPU</label>
+                    </div>
+                    <div nz-form-control nz-col [nzSpan]="19">
+                      2核2G
+                    </div>
+                  </div>
+                  <div nz-form-item nz-row>
+                    <div nz-form-label nz-col [nzSpan]="5">
+                      <label>内网IP</label>
+                    </div>
+                    <div nz-form-control nz-col [nzSpan]="19">
+                      10.202.131.39
+                    </div>
+                  </div>
+                  <div nz-form-item nz-row>
+                    <div nz-form-label nz-col [nzSpan]="5">
+                      <label>外网IP</label>
+                    </div>
+                    <div nz-form-control nz-col [nzSpan]="19">
+                      无
+                      <a class="ml-sm">绑定IP</a>
+                    </div>
+                  </div>
+                  <div nz-form-item nz-row>
+                    <div nz-form-label nz-col [nzSpan]="5">
+                      <label>安全组</label>
+                    </div>
+                    <div nz-form-control nz-col [nzSpan]="19">
+                      123
+                      <a class="ml-sm" [sipRouterLink]="['/sip/ui-demo/create']">编辑</a>
+                    </div>
+                  </div>
+                </form>
+              </nz-card>
             </div>
           </div>
         </div>
@@ -134,53 +131,42 @@
         <div nz-row>
           <div nz-row [nzGutter]="16">
             <div nz-col [nzSpan]="16">
-              <sip-card>
-                <sip-card-title>
-                  <i class="anticon anticon-wifi mr-sm"></i>网卡</sip-card-title>
-                <sip-card-extra>
+              <nz-card [nzTitle]="cardNetTitle" [nzExtra]="cardNetExtra">
+                <ng-template #cardNetTitle>
+                  <i class="anticon anticon-wifi mr-sm"></i>网卡
+                </ng-template>
+                <ng-template #cardNetExtra>
                   <button nz-button>
                     <i class="anticon anticon-plus mr-sm"></i>添加网卡</button>
-                </sip-card-extra>
-                <sip-card-body>
-                  <nz-table #nzTable class="simple-table" [nzData]="nzdata" [nzShowPagination]="false" [nzBordered]="true" [nzSize]="'middle'">
-                    <thead nz-thead>
-                      <tr>
-                        <th nz-th class="text-center">网络名称</th>
-                        <th nz-th class="text-center">MAC地址</th>
-                        <th nz-th class="text-center">私有IP</th>
-                        <th nz-th class="text-center">弹性IP</th>
-                        <th nz-th class="text-center">操作</th>
-                      </tr>
-                    </thead>
-                    <tbody nz-tbody>
-                      <tr nz-tbody-tr *ngFor="let i of nzTable.data">
-                        <td>{{i.name}}</td>
-                        <td>{{i.mac}}</td>
-                        <td>{{i.ip}}</td>
-                        <td>{{i.sip}}</td>
-                        <td class="text-center">
-                          <a (click)="customCompModel(i)">编辑</a>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </nz-table>
-                </sip-card-body>
-              </sip-card>
-              <sip-card>
-                <!-- <sip-tabset body="tabbody1">
-                  <sip-tabset-header>
-                    <sip-tabset-title>tab1</sip-tabset-title>
-                    <sip-tabset-title>tab2</sip-tabset-title>
-                  </sip-tabset-header>
-                </sip-tabset> -->
-                <sip-card-title>
-                  <i class="fa fa-inbox mr-sm"></i>存储卷</sip-card-title>
-                <sip-card-extra>
-                  <!-- <sip-tabset-body #tabbody1>
-                    <sip-tabset-content>content1</sip-tabset-content>
-                    <sip-tabset-content>content2</sip-tabset-content>
-                  </sip-tabset-body> -->
-
+                </ng-template>
+                <nz-table #nzTable class="simple-table" [nzData]="nzdata" [nzShowPagination]="false" [nzBordered]="true" [nzSize]="'middle'">
+                  <thead nz-thead>
+                    <tr>
+                      <th nz-th class="text-center">网络名称</th>
+                      <th nz-th class="text-center">MAC地址</th>
+                      <th nz-th class="text-center">私有IP</th>
+                      <th nz-th class="text-center">弹性IP</th>
+                      <th nz-th class="text-center">操作</th>
+                    </tr>
+                  </thead>
+                  <tbody nz-tbody>
+                    <tr nz-tbody-tr *ngFor="let i of nzTable.data">
+                      <td>{{i.name}}</td>
+                      <td>{{i.mac}}</td>
+                      <td>{{i.ip}}</td>
+                      <td>{{i.sip}}</td>
+                      <td class="text-center">
+                        <a (click)="customCompModel(i)">编辑</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </nz-table>
+              </nz-card>
+              <nz-card [nzTitle]="cardVolTitle" [nzExtra]="cardVolExtra">
+                <ng-template #cardVolTitle>
+                  <i class="fa fa-inbox mr-sm"></i>存储卷
+                </ng-template>
+                <ng-template #cardVolExtra>
                   <nz-button-group>
                     <button nz-button (click)="customCompModel()">
                       <i class="anticon anticon-reload"></i>
@@ -188,74 +174,71 @@
                     <button nz-button (click)="customCompModel()">
                       <i class="anticon anticon-plus mr-sm"></i>挂接</button>
                   </nz-button-group>
-                </sip-card-extra>
-                <sip-card-body>
-                  <nz-table #nzTable1 class="simple-table" [nzData]="inboxdata" [nzShowPagination]="false" [nzBordered]="true" [nzSize]="'middle'">
-                    <thead nz-thead>
-                      <tr>
-                        <th nz-th class="text-center">名称</th>
-                        <th nz-th class="text-center">类型</th>
-                        <th nz-th class="text-center">存储设备</th>
-                        <th nz-th class="text-center">状态</th>
-                        <th nz-th class="text-center">大小</th>
-                        <th nz-th class="text-center">操作</th>
-                      </tr>
-                    </thead>
-                    <tbody nz-tbody>
-                      <tr nz-tbody-tr *ngFor="let i of nzTable1.data">
-                        <td>{{i.name}}</td>
-                        <td class="text-center">{{i.type}}</td>
-                        <td class="text-center">{{i.inbox}}</td>
-                        <td class="text-center">
-                          <nz-badge class="mr-sm" [nzStatus]="'success'"></nz-badge>{{i.statusname}}
-                        </td>
-                        <td class="text-center">{{i.size}}</td>
-                        <td class="text-center">
-                          <nz-popconfirm [nzTitle]="'确定要取消挂接吗？'" (nzOnConfirm)="confirm()" (nzOnCancel)="cancel()">
-                            <a nz-popconfirm>取消挂接</a>
-                          </nz-popconfirm>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </nz-table>
-                </sip-card-body>
-              </sip-card>
+                </ng-template>
+                <nz-table #nzTable1 class="simple-table" [nzData]="inboxdata" [nzShowPagination]="false" [nzBordered]="true" [nzSize]="'middle'">
+                  <thead nz-thead>
+                    <tr>
+                      <th nz-th class="text-center">名称</th>
+                      <th nz-th class="text-center">类型</th>
+                      <th nz-th class="text-center">存储设备</th>
+                      <th nz-th class="text-center">状态</th>
+                      <th nz-th class="text-center">大小</th>
+                      <th nz-th class="text-center">操作</th>
+                    </tr>
+                  </thead>
+                  <tbody nz-tbody>
+                    <tr nz-tbody-tr *ngFor="let i of nzTable1.data">
+                      <td>{{i.name}}</td>
+                      <td class="text-center">{{i.type}}</td>
+                      <td class="text-center">{{i.inbox}}</td>
+                      <td class="text-center">
+                        <nz-badge class="mr-sm" [nzStatus]="'success'"></nz-badge>{{i.statusname}}
+                      </td>
+                      <td class="text-center">{{i.size}}</td>
+                      <td class="text-center">
+                        <nz-popconfirm [nzTitle]="'确定要取消挂接吗？'" (nzOnConfirm)="confirm()" (nzOnCancel)="cancel()">
+                          <a nz-popconfirm>取消挂接</a>
+                        </nz-popconfirm>
+                      </td>
+                    </tr>
+                  </tbody>
+                </nz-table>
+              </nz-card>
 
             </div>
             <div nz-col [nzSpan]="8">
-              <sip-card>
-                <sip-card-title>
-                  <i class="anticon anticon-credit-card mr-sm"></i>设备信息</sip-card-title>
-                <sip-card-body>
-                  <form nz-form>
-                    <div nz-form-item nz-row>
-                      <div nz-form-label nz-col [nzSpan]="5">
-                        <label>CPU/内存</label>
-                      </div>
-                      <div nz-form-control nz-col [nzSpan]="19">
-                        1核 / 256M
-                        <a class="ml-sm" href="">变更</a>
-                      </div>
+              <nz-card [nzTitle]="cardInfoTitle">
+                <ng-template #cardInfoTitle>
+                  <i class="anticon anticon-credit-card mr-sm"></i>设备信息
+                </ng-template>
+                <form nz-form>
+                  <div nz-form-item nz-row>
+                    <div nz-form-label nz-col [nzSpan]="5">
+                      <label>CPU/内存</label>
                     </div>
-                    <div nz-form-item nz-row>
-                      <div nz-form-label nz-col [nzSpan]="5">
-                        <label>系统盘</label>
-                      </div>
-                      <div nz-form-control nz-col [nzSpan]="19">
-                        40G
-                      </div>
+                    <div nz-form-control nz-col [nzSpan]="19">
+                      1核 / 256M
+                      <a class="ml-sm" href="">变更</a>
                     </div>
-                    <div nz-form-item nz-row>
-                      <div nz-form-label nz-col [nzSpan]="5">
-                        <label>物理节点</label>
-                      </div>
-                      <div nz-form-control nz-col [nzSpan]="19">
-                        10.202.131.101
-                      </div>
+                  </div>
+                  <div nz-form-item nz-row>
+                    <div nz-form-label nz-col [nzSpan]="5">
+                      <label>系统盘</label>
                     </div>
-                  </form>
-                </sip-card-body>
-              </sip-card>
+                    <div nz-form-control nz-col [nzSpan]="19">
+                      40G
+                    </div>
+                  </div>
+                  <div nz-form-item nz-row>
+                    <div nz-form-label nz-col [nzSpan]="5">
+                      <label>物理节点</label>
+                    </div>
+                    <div nz-form-control nz-col [nzSpan]="19">
+                      10.202.131.101
+                    </div>
+                  </div>
+                </form>
+              </nz-card>
             </div>
           </div>
         </div>
@@ -263,41 +246,39 @@
       <nz-tab>
         <ng-template #nzTabHeading>消费情况</ng-template>
         <div nz-row>
-          <sip-card [bordered]="false">
-            <sip-card-body>
-              <div nz-row [nzGutter]="16">
-                <div nz-col [nzSpan]="12">
-                  <div class="page-header">
-                    <div class="avatar">
-                      <nz-avatar nzSrc="https://gw.alipayobjects.com/zos/rmsportal/lctvVCLfRpYCkYxAsiVQ.png"></nz-avatar>
-                    </div>
-                    <div class="desc">
-                      <div class="desc-title">早安，山治，我要吃肉！</div>
-                      <p>假砖家 | 地球－伟大航道－黄金梅丽号－厨房－小强部门</p>
-                    </div>
+          <nz-card [nzBordered]="false">
+            <div nz-row [nzGutter]="16">
+              <div nz-col [nzSpan]="12">
+                <div class="page-header">
+                  <div class="avatar">
+                    <nz-avatar nzSrc="https://gw.alipayobjects.com/zos/rmsportal/lctvVCLfRpYCkYxAsiVQ.png"></nz-avatar>
                   </div>
-                </div>
-                <div nz-col [nzSpan]="12">
-                  <div class="page-extra">
-                    <div>
-                      <p>项目数</p>
-                      <p>56</p>
-                    </div>
-                    <div>
-                      <p>团队内排名</p>
-                      <p>8
-                        <span> / 24</span>
-                      </p>
-                    </div>
-                    <div>
-                      <p>项目访问</p>
-                      <p>2,223</p>
-                    </div>
+                  <div class="desc">
+                    <div class="desc-title">早安，山治，我要吃肉！</div>
+                    <p>假砖家 | 地球－伟大航道－黄金梅丽号－厨房－小强部门</p>
                   </div>
                 </div>
               </div>
-            </sip-card-body>
-          </sip-card>
+              <div nz-col [nzSpan]="12">
+                <div class="page-extra">
+                  <div>
+                    <p>项目数</p>
+                    <p>56</p>
+                  </div>
+                  <div>
+                    <p>团队内排名</p>
+                    <p>8
+                      <span> / 24</span>
+                    </p>
+                  </div>
+                  <div>
+                    <p>项目访问</p>
+                    <p>2,223</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </nz-card>
         </div>
       </nz-tab>
       <nz-tab>

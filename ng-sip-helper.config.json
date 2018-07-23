@@ -473,7 +473,7 @@
                     "active": true,
                     "className": "@{#fileName}",
                     "fileName": "@{input}.@{type}",
-                    "htmlContent": "<sip-page>\n  <sip-page-header navigator=\"页面\">\n    <ng-template #title>@{input} page</ng-template>\n    <ng-template #desc>\n      页面\n      <nz-tooltip [nzTitle]=\"'了解更多实例介绍'\">\n        <a nz-tooltip [sipRouterLink]>更多…</a>\n      </nz-tooltip>\n    </ng-template>\n  </sip-page-header>\n\n  <sip-page-body>\n    <!-- 卡片 -->\n    <sip-card [bordered]=\"false\">\n      <sip-card-body>\n          @{input} body\n      </sip-card-body>\n    </sip-card>\n  </sip-page-body>\n</sip-page>",
+                    "htmlContent": "<sip-page>\n  <sip-page-header navigator=\"页面\">\n    <ng-template #title>@{input} page</ng-template>\n    <ng-template #desc>\n      页面\n      <nz-tooltip [nzTitle]=\"'了解更多实例介绍'\">\n        <a nz-tooltip [sipRouterLink]>更多…</a>\n      </nz-tooltip>\n    </ng-template>\n  </sip-page-header>\n\n  <sip-page-body>\n    <!-- 卡片 -->\n    <nz-card [nzBordered]=\"false\">\n        @{input} body\n    </nz-card>\n  </sip-page-body>\n</sip-page>",
                     "importToModue": "",
                     "input": "row-group",
                     "path": "@{input}",
