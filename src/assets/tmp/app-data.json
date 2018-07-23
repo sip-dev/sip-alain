@@ -66,10 +66,10 @@
                             "description": "tree-table"
                         },
                         {
-                            "text": "crud-table",
-                            "link": "/ng-crud-table/crud-table",
-                            "i18n": "crud-table",
-                            "description": "crud-table"
+                            "text": "server-table",
+                            "link": "/ng-crud-table/server-table",
+                            "i18n": "server-table",
+                            "description": "server-table"
                         }
                     ]
                 }

@@ -1,8 +1,8 @@
 <sip-page>
-  <sip-page-header navigator="列表">
-    <ng-template #title>列表</ng-template>
+  <sip-page-header navigator="页面">
+    <ng-template #title>crud-table page</ng-template>
     <ng-template #desc>
-      列表
+      页面
       <nz-tooltip [nzTitle]="'了解更多实例介绍'">
         <a nz-tooltip [sipRouterLink]>更多…</a>
       </nz-tooltip>
@@ -12,7 +12,6 @@
   <sip-page-body>
     <!-- 卡片 -->
     <nz-card [nzBordered]="false">
-
       <!-- 操作栏 -->
       <sip-page-toolbar>
         <button nz-button [nzType]="'default'" class="mr-sm">
@@ -61,7 +60,7 @@
           </ul>
         </nz-dropdown>
 
-        <!-- <sip-search-conent [params]="searchContent"></sip-search-conent> -->
+        <sip-search-conent [params]="searchContent"></sip-search-conent>
       </sip-page-toolbar>
 
       <div class="mb-md">
@@ -71,7 +70,8 @@
           </span>
         </nz-alert>
       </div>
-      <sip-table [manager]="manager"></sip-table>
+
+      <sip-table [manager]="tableManager"></sip-table>
 
     </nz-card>
   </sip-page-body>

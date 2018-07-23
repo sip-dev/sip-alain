@@ -7,11 +7,11 @@ import { getColumnsPlayers } from '../shareds/column';
 
 @Component({
   selector: 'sip-crud-table',
-  templateUrl: './crud-table.component.html',
-  styleUrls: ['./crud-table.component.less'],
-  providers: [...SipProvidePages(CrudTableComponent)]
+  templateUrl: './server-table.component.html',
+  styleUrls: ['./server-table.component.less'],
+  providers: [...SipProvidePages(ServerTableComponent)]
 })
-export class CrudTableComponent extends SipPage {
+export class ServerTableComponent extends SipPage {
 
   constructor(private vcf: ViewContainerRef) {
     super(vcf);
@@ -41,6 +41,7 @@ export class CrudTableComponent extends SipPage {
     sqlId: 'iaas.instlist', connstr: 'iaas',
     sortName: 'name', sortOrder: 'asc',
     pageSize: 10,
+    editMode: 'editProgrammatically',
     contextmenuAction: (e, row) => {
       return {
         width: '100px',
@@ -69,7 +70,7 @@ export class CrudTableComponent extends SipPage {
     }
   };
 
-  @SipAccessItem<CrudTableComponent>('create', {
+  @SipAccessItem<ServerTableComponent>('create', {
     multi: false, hasData: false,
     check: function () {
       return true;
@@ -83,7 +84,7 @@ export class CrudTableComponent extends SipPage {
     });
   }
 
-  @SipAccessItem<CrudTableComponent>('test', {
+  @SipAccessItem<ServerTableComponent>('test', {
     multi: false, hasData: true,
     check: function () {
       return true;
@@ -99,7 +100,7 @@ export class CrudTableComponent extends SipPage {
   }
 
   editText = '编辑';
-  @SipAccessItem<CrudTableComponent>('edit', {
+  @SipAccessItem<ServerTableComponent>('edit', {
     multi: true, hasData: true,
     check: function () {
       this.editText = this.tableManager.isEditing ? '保存' : '编辑';

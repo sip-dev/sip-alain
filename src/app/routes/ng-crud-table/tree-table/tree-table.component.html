@@ -11,13 +11,13 @@
 
   <sip-page-body>
     <!-- 卡片 -->
-    <sip-card [bordered]="false">
-      <sip-card-body>
-        <h2>tree: id and parentId demo</h2>
-        <sip-table [manager]="manager"></sip-table>
-        <h2 style="margin-top: 20px;">tree: children demo</h2>
-        <sip-table [manager]="managerChild"></sip-table>
-      </sip-card-body>
-    </sip-card>
+    <nz-card [nzBordered]="false">
+
+      <h2>tree: id and parentId demo</h2>
+      <sip-table [manager]="manager"></sip-table>
+      <h2 style="margin-top: 20px;">tree: children demo</h2>
+      <sip-table [manager]="managerChild"></sip-table>
+
+    </nz-card>
   </sip-page-body>
 </sip-page>
