@@ -99,7 +99,6 @@ export class SipTableTreeSourceService extends SipTreeDataSource {
     if (treeDatas) {
       return new Promise((resolve) => {
         let treeNodes: TreeNode[] = this.makeTreeNodes(this.getChildrenDatas(node));
-        console.log('treeNodes', treeNodes);
         resolve(treeNodes);
       });
     } else {
