@@ -1,6 +1,5 @@
 import { Component, ViewContainerRef } from '@angular/core';
-import { SipValidators } from '@core/sip/sip-validators';
-import { ISipFormGroup, SipFormGroup, SipFormSubmit, SipModal, SipNgInit, SipOnShow, SipProvideModals } from 'sip-alain';
+import { SipFormSubmit, SipModal, SipNgInit, SipOnShow, SipProvideModals } from 'sip-alain';
 
 @Component({
     selector: 'sip-list-form',
@@ -21,8 +20,8 @@ export class ListFormComponent extends SipModal {
     @SipNgInit()
     private _init() {
         this.params = this.$params(this.params);
-        if (this.params.datas)
-            this.form.$model = this.params.datas;
+        // if (this.params.datas)
+        //     this.form.$model = this.params.datas;
     }
 
     @SipOnShow()
@@ -30,41 +29,15 @@ export class ListFormComponent extends SipModal {
         console.log('_show');
     }
 
-    @SipFormGroup({
-        "num": "",
-        "name": "",
-        "status": "success",
-        "region": "测试云",
-        "ip": "",
-        "spec": "2核2G",
-        "user": "test",
-        "date": "2017-11-15"
-    }, {
-            num: [SipValidators.rangeLength(1, 20)],
-            name: [SipValidators.required]
-        })
-    form: ISipFormGroup<any>;
-
-    statuList = [
-        { text: '成功', value: 'success' },
-        { text: '处理中', value: 'processing' },
-        { text: '失败', value: 'error' }
-    ];
-
-    versionList = [
-        { version: '1.0' },
-        { version: '2.0' }
-    ];
-
     @SipFormSubmit('this.form')
     save() {
-        let datas = this.form.$toJSONObject();
-        this.loading = true;
-        console.log('datas', datas);
-        setTimeout(() => {
-            this.loading = false;
-            this.$close(true);
-        }, 400);
+        // let datas = this.form.$toJSONObject();
+        // this.loading = true;
+        // console.log('datas', datas);
+        // setTimeout(() => {
+        //     this.loading = false;
+        //     this.$close(true);
+        // }, 400);
     }
 
 }

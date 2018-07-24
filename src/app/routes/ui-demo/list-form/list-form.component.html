@@ -3,96 +3,10 @@
     <span>{{form?.$name.value || '新建'}}</span>
   </sip-modal-header>
   <sip-modal-body>
-    <form nz-form [formGroup]="form">
-      <div nz-form-item nz-row>
-        <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
-          <label nz-form-item-required>num</label>
-        </div>
-        <div nz-form-control nz-col [nzSm]="18" [nzXs]="24">
-          <input nz-input formControlName="num">
-          <ng-container *ngIf="form?.$num.dirty || form?.$num.touched">
-            <span nz-form-explain *ngIf="form.$num.errors?.rangeLength">{{form.$num.errors.rangeLengthText}}</span>
-          </ng-container>
-        </div>
-      </div>
-      <div nz-form-item nz-row>
-        <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
-          <label nz-form-item-required>name</label>
-        </div>
-        <div nz-form-control nz-col [nzSm]="18" [nzXs]="24">
-          <input nz-input formControlName="name">
-          <span nz-form-explain *ngIf="(form?.$name.dirty || form?.$name.touched) && form?.$name.errors?.required">
-            {{form.$name.errors.requiredText}}
-          </span>
-        </div>
-      </div>
-      <div nz-form-item nz-row>
-        <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
-          <label>status</label>
-        </div>
-        <div nz-form-control nz-col [nzSm]="18" [nzXs]="24">
-          <nz-select formControlName="status" [nzAllowClear]="false" nzShowSearch>
-            <nz-option *ngFor="let item of statuList" [nzLabel]="item.text" [nzValue]="item.value">
-            </nz-option>
-          </nz-select>
-        </div>
-			</div>
-
-      <div nz-form-item nz-row>
-        <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
-          <label>region</label>
-        </div>
-        <div nz-form-control nz-col [nzSm]="18" [nzXs]="24">
-          <nz-radio-group formControlName="region">
-            <label nz-radio-button [nzValue]="'开发云'">
-              <span>开发云</span>
-            </label>
-            <label nz-radio-button [nzValue]="'测试云'">
-              <span>测试云</span>
-            </label>
-          </nz-radio-group>
-        </div>
-      </div>
-      <nz-divider nzTitle="" nzDashed></nz-divider>
-      <div nz-form-item nz-row>
-        <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
-          <label>ip</label>
-        </div>
-        <div nz-form-control nz-col [nzSm]="18" [nzXs]="24">
-          <input nz-input formControlName="ip" type="text">
-        </div>
-      </div>
-      <div nz-form-item nz-row>
-        <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
-          <label>spec</label>
-        </div>
-        <div nz-form-control nz-col [nzSm]="18" [nzXs]="24">
-          <nz-radio-group formControlName="spec">
-            <label nz-radio [nzValue]="'2核2G'">
-              <span>2核2G</span>
-            </label>
-            <label nz-radio [nzValue]="'2核4G'">
-              <span>2核4G</span>
-            </label>
-            <label nz-radio [nzValue]="'4核4G'">
-              <span>4核4G</span>
-            </label>
-          </nz-radio-group>
-        </div>
-      </div>
-      <div nz-form-item nz-row>
-        <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
-          <label>date</label>
-        </div>
-        <div nz-form-control nz-col [nzSm]="18" [nzXs]="24">
-          <!-- <nz-datepicker formControlName="date"></nz-datepicker> -->
-        </div>
-      </div>
-    </form>
+    <sip-form></sip-form>
   </sip-modal-body>
   <sip-modal-footer>
-    <button nz-button (click)="save()" [nzType]="'primary'" [nzSize]="'large'"
-      [disabled]="loading" [nzLoading]="loading">
+    <button nz-button (click)="save()" [nzType]="'primary'" [nzSize]="'large'" [disabled]="loading" [nzLoading]="loading">
       提 交
     </button>
     <button nz-button (click)="$close()">取消</button>

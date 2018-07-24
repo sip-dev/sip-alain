@@ -1,1 +1,70 @@
+<form nz-form [formGroup]="form">
+    <nz-form-item>
+        <nz-form-label nzXs="24" nzSm="4" nzRequired>num</nz-form-label>
+        <nz-form-control nzXs="24" nzSm="18">
+            <input nz-input formControlName="num">
+            <nz-form-explain *ngIf="form.get('num').dirty && form.get('num').errors">请输入num</nz-form-explain>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label nzXs="24" nzSm="4" nzRequired>name</nz-form-label>
+        <nz-form-control nzXs="24" nzSm="18">
+            <input nz-input formControlName="name">
+            <nz-form-explain *ngIf="form.get('name').dirty && form.get('name').errors">请输入name</nz-form-explain>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label nzXs="24" nzSm="4" nzRequired>status</nz-form-label>
+        <nz-form-control nzXs="24" nzSm="18">
+            <nz-select formControlName="status" [nzAllowClear]="false" nzShowSearch>
+                <nz-option *ngFor="let item of statuList" [nzLabel]="item.text" [nzValue]="item.value" [nzDisabled]="item.disabled">
+                </nz-option>
+            </nz-select>
+            <nz-form-explain *ngIf="form.get('status').dirty && form.get('status').errors">请输入status</nz-form-explain>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label nzXs="24" nzSm="4">region</nz-form-label>
+        <nz-form-control nzXs="24" nzSm="18">
+            <nz-radio-group formControlName="region">
+                <label nz-radio-button [nzValue]="'开发云'">
+                    <span>开发云</span>
+                </label>
+                <label nz-radio-button [nzValue]="'测试云'">
+                    <span>测试云</span>
+                </label>
+            </nz-radio-group>
+        </nz-form-control>
+    </nz-form-item>
 
+    <nz-divider nzTitle="" nzDashed></nz-divider>
+    <nz-form-item>
+        <nz-form-label nzXs="24" nzSm="4">ip</nz-form-label>
+        <nz-form-control nzXs="24" nzSm="18">
+            <input nz-input formControlName="ip" type="text">
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label nzXs="24" nzSm="4">spec</nz-form-label>
+        <nz-form-control nzXs="24" nzSm="18">
+            <nz-radio-group formControlName="spec">
+                <label nz-radio [nzValue]="'2核2G'">
+                    <span>2核2G</span>
+                </label>
+                <label nz-radio [nzValue]="'2核4G'">
+                    <span>2核4G</span>
+                </label>
+                <label nz-radio [nzValue]="'4核4G'">
+                    <span>4核4G</span>
+                </label>
+            </nz-radio-group>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label nzXs="24" nzSm="4">spec</nz-form-label>
+        <nz-form-control nzXs="24" nzSm="18">
+            <!-- <nz-datepicker formControlName="date"></nz-datepicker> -->
+        </nz-form-control>
+    </nz-form-item>
+
+</form>
