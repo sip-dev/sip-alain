@@ -3,7 +3,7 @@
     <span>{{form?.$name.value || '新建'}}</span>
   </sip-modal-header>
   <sip-modal-body>
-    <sip-form></sip-form>
+    <sip-form #form1></sip-form>
   </sip-modal-body>
   <sip-modal-footer>
     <button nz-button (click)="save()" [nzType]="'primary'" [nzSize]="'large'" [disabled]="loading" [nzLoading]="loading">

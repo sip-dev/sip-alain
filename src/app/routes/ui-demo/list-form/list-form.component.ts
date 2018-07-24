@@ -1,5 +1,6 @@
-import { Component, ViewContainerRef } from '@angular/core';
-import { SipFormSubmit, SipModal, SipNgInit, SipOnShow, SipProvideModals } from 'sip-alain';
+import { Component, ViewChild, ViewContainerRef } from '@angular/core';
+import { SipModal, SipNgInit, SipOnShow, SipProvideModals } from 'sip-alain';
+import { FormComponent } from '../ui-demo-shared/components/form/form.component';
 
 @Component({
     selector: 'sip-list-form',
@@ -15,13 +16,14 @@ export class ListFormComponent extends SipModal {
 
     params = { id: '', datas: null };
     loading = false;
+    @ViewChild('form1') form1:FormComponent;
 
     //等效于ngOnInit, 但可以多次使用
     @SipNgInit()
     private _init() {
         this.params = this.$params(this.params);
         // if (this.params.datas)
-        //     this.form.$model = this.params.datas;
+            this.form1.form.$model = this.params.datas;
     }
 
     @SipOnShow()
@@ -29,15 +31,16 @@ export class ListFormComponent extends SipModal {
         console.log('_show');
     }
 
-    @SipFormSubmit('this.form')
     save() {
-        // let datas = this.form.$toJSONObject();
-        // this.loading = true;
-        // console.log('datas', datas);
-        // setTimeout(() => {
-        //     this.loading = false;
-        //     this.$close(true);
-        // }, 400);
+        let datas = this.form1.getSaveData();
+        if (!datas) return;
+        this.loading = true;
+        console.log('datas', datas);
+        setTimeout(() => {
+            this.loading = false;
+            this.$close(true);
+        }, 400);
+        return;
     }
 
 }

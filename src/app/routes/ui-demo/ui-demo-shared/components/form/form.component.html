@@ -1,30 +1,37 @@
 <form nz-form [formGroup]="form">
     <nz-form-item>
-        <nz-form-label nzXs="24" nzSm="4" nzRequired>num</nz-form-label>
+        <nz-form-label nzXs="24" nzSm="4" nzRequired>编号</nz-form-label>
         <nz-form-control nzXs="24" nzSm="18">
-            <input nz-input formControlName="num">
-            <nz-form-explain *ngIf="form.get('num').dirty && form.get('num').errors">请输入num</nz-form-explain>
+            <input nz-input formControlName="num" placeholder="给目标起个编号">
+            <nz-form-explain *ngIf="form.get('num').dirty && form.get('num').errors">请输入编号</nz-form-explain>
         </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-        <nz-form-label nzXs="24" nzSm="4" nzRequired>name</nz-form-label>
+        <nz-form-label nzXs="24" nzSm="4" nzRequired>名称</nz-form-label>
         <nz-form-control nzXs="24" nzSm="18">
-            <input nz-input formControlName="name">
-            <nz-form-explain *ngIf="form.get('name').dirty && form.get('name').errors">请输入name</nz-form-explain>
+            <input nz-input formControlName="name" placeholder="给目标起个名字">
+            <nz-form-explain *ngIf="form.get('name').dirty && form.get('name').errors">请输入名称</nz-form-explain>
         </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-        <nz-form-label nzXs="24" nzSm="4" nzRequired>status</nz-form-label>
+        <nz-form-label nzXs="24" nzSm="4">权重</nz-form-label>
+        <nz-form-control nzXs="24" nzSm="18">
+            <nz-input-number formControlName="weight" placeholder="请输入"></nz-input-number>
+            <em>%</em>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label nzXs="24" nzSm="4" nzRequired>状态</nz-form-label>
         <nz-form-control nzXs="24" nzSm="18">
             <nz-select formControlName="status" [nzAllowClear]="false" nzShowSearch>
                 <nz-option *ngFor="let item of statuList" [nzLabel]="item.text" [nzValue]="item.value" [nzDisabled]="item.disabled">
                 </nz-option>
             </nz-select>
-            <nz-form-explain *ngIf="form.get('status').dirty && form.get('status').errors">请输入status</nz-form-explain>
+            <nz-form-explain *ngIf="form.get('status').dirty && form.get('status').errors">请输入状态</nz-form-explain>
         </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-        <nz-form-label nzXs="24" nzSm="4">region</nz-form-label>
+        <nz-form-label nzXs="24" nzSm="4">区域</nz-form-label>
         <nz-form-control nzXs="24" nzSm="18">
             <nz-radio-group formControlName="region">
                 <label nz-radio-button [nzValue]="'开发云'">
@@ -39,13 +46,13 @@
 
     <nz-divider nzTitle="" nzDashed></nz-divider>
     <nz-form-item>
-        <nz-form-label nzXs="24" nzSm="4">ip</nz-form-label>
+        <nz-form-label nzXs="24" nzSm="4">IP</nz-form-label>
         <nz-form-control nzXs="24" nzSm="18">
             <input nz-input formControlName="ip" type="text">
         </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-        <nz-form-label nzXs="24" nzSm="4">spec</nz-form-label>
+        <nz-form-label nzXs="24" nzSm="4">规格</nz-form-label>
         <nz-form-control nzXs="24" nzSm="18">
             <nz-radio-group formControlName="spec">
                 <label nz-radio [nzValue]="'2核2G'">
@@ -61,10 +68,16 @@
         </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-        <nz-form-label nzXs="24" nzSm="4">spec</nz-form-label>
+        <nz-form-label nzXs="24" nzSm="4">起止日期</nz-form-label>
         <nz-form-control nzXs="24" nzSm="18">
-            <!-- <nz-datepicker formControlName="date"></nz-datepicker> -->
+            <!-- <nz-range-picker formControlName="date"></nz-range-picker> -->
         </nz-form-control>
     </nz-form-item>
-
+    <nz-form-item>
+        <nz-form-label nzXs="24" nzSm="4" nzRequired>目标描述</nz-form-label>
+        <nz-form-control nzXs="24" nzSm="18">
+            <textarea nz-input formControlName="remark" [nzAutosize]="{minRows: 4}" placeholder="请输入你的阶段性工作目标"></textarea>
+            <nz-form-explain *ngIf="form.get('remark').dirty && form.get('remark').errors">请输入目标描述</nz-form-explain>
+        </nz-form-control>
+    </nz-form-item>
 </form>

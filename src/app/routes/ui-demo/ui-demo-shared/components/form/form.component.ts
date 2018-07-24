@@ -1,6 +1,6 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import { SipValidators } from '@core/sip/sip-validators';
-import { ISipFormGroup, SipComponent, SipFormGroup, SipNgInit } from 'sip-alain';
+import { ISipFormGroup, SipComponent, SipFormGroup, SipFormSubmit } from 'sip-alain';
 
 @Component({
 	selector: 'sip-form',
@@ -11,26 +11,28 @@ export class FormComponent extends SipComponent {
 
 	constructor(vcf: ViewContainerRef) {
 		super(vcf);
-	}
-
-	@SipNgInit()
-	private _init() {
-	}
-
-    @SipFormGroup({
-        "num": "",
-        "name": "",
-        "status": "success",
-        "region": "测试云",
-        "ip": "",
-        "spec": "2核2G",
-        "user": "test",
-        "date": "2017-11-15"
-    }, {
+    }
+    
+    @SipFormGroup<object>(function () {
+        return {
+            "num": "",
+            "name": "",
+            "status": "success",
+            "region": "测试云",
+            "ip": "",
+            "spec": "2核2G",
+            "user": "test",
+            "date": "2017-11-15",
+            "remark":"",
+            "weight":""
+        };
+    }, function () {
+        return {
             num: [SipValidators.rangeLength(1, 20)],
             name: [SipValidators.required]
-        })
-    form: ISipFormGroup<any>;
+        };
+    })
+    form: ISipFormGroup<object>;
 
     statuList = [
         { text: '成功', value: 'success' },
@@ -43,6 +45,7 @@ export class FormComponent extends SipComponent {
         { version: '2.0' }
     ];
 
+    @SipFormSubmit('this.form')
 	getSaveData():object{
 		return this.form.$toJSONObject();
 	}

@@ -730,6 +730,7 @@ export function SipFormSubmit(...forms: string[]) {
                 Lib.each(formList, function (form) {
                     for (const i in form.controls) {
                         form.controls[i].markAsDirty();
+                        form.controls[i].updateValueAndValidity();
                     }
                     if (!form.valid) {
                         valid = false;
@@ -737,7 +738,7 @@ export function SipFormSubmit(...forms: string[]) {
                     }
                 });
                 if (!valid) return;
-                oldFn.apply(this, arguments);
+                return oldFn.apply(this, arguments);
             };
         });
     };
@@ -776,6 +777,7 @@ export function SipFormGroup<T>(model: ((this: T) => any) | object, validators?:
             }, this);
             let extraTemp = Lib.isFunction(extra) ? (extra as Function).call(this) : extra;
             let formGroup: FormGroup = this.$formBuilder.group(valids, extraTemp);
+            this[propKey] = formGroup;
             Lib.eachProp(modelThis, function (item, name) {
                 Object.defineProperty(formGroup, '$' + name, {
                     enumerable: true, configurable: false,
@@ -801,7 +803,6 @@ export function SipFormGroup<T>(model: ((this: T) => any) | object, validators?:
                     return obj;
                 }
             });
-            this[propKey] = formGroup;
 
         });
         _pushEvent(target, 'ngOnDestroy', function () {
