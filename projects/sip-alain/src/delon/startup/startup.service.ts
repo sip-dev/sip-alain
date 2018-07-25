@@ -3,7 +3,7 @@ import { ReuseTabService } from '@delon/abc';
 import { ACLService } from '@delon/acl';
 import { ALAIN_I18N_TOKEN, MenuService, SettingsService, TitleService } from '@delon/theme';
 import { TranslateService } from '@ngx-translate/core';
-import { zip } from 'rxjs/observable/zip';
+import { zip } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { SipAlainConfig } from '../../sip/base/sip-alain-config';
 import { SipRestService } from '../../sip/services/sip-rest.service';

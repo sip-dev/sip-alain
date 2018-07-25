@@ -7,7 +7,7 @@ import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { CountdownModule } from 'ngx-countdown';
 import { NgxTinymceModule } from 'ngx-tinymce';
 import { UEditorModule } from 'ngx-ueditor';
-import { SipAlainModule } from 'sip-alain';
+import { SipAlainSharedModule } from 'sip-alain';
 import { SipTableModule } from './components/sip-table';
 
 const THIRDMODULES = [
@@ -30,7 +30,8 @@ const DIRECTIVES = [];
     FormsModule,
     RouterModule,
     ReactiveFormsModule,
-    SipAlainModule,
+    SipAlainSharedModule,
+    // SipAlainModule,
     // third libs
     ...THIRDMODULES
   ],
@@ -44,7 +45,7 @@ const DIRECTIVES = [];
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    SipAlainModule,
+    SipAlainSharedModule,
     // third libs
     ...THIRDMODULES,
     // your components

@@ -11,7 +11,7 @@ const routes: Routes = [
     path: '',
     component: LayoutDefaultComponent,
     children: [
-      { path: '', redirectTo: 'ui-demo/list', pathMatch: 'full' },
+      { path: '', redirectTo: 'ng-crud-table/server-table', pathMatch: 'full' },
       {
         path: 'ui-demo',
         loadChildren: './ui-demo/ui-demo.module#UiDemoModule'

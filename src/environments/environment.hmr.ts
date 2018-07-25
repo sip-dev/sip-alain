@@ -1,8 +1,6 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-
-// mock
 import { DelonMockModule } from '@delon/mock';
 import * as MOCKDATA from '../../_mock';
 const MOCKMODULE = [DelonMockModule.forRoot({ data: MOCKDATA })];
@@ -11,7 +9,7 @@ export const environment = {
   SERVER_URL: `./`,
   production: false,
   useHash: true,
-  hmr: false,
+  hmr: true,
   MOCKMODULE: MOCKMODULE
 };
 
@@ -22,4 +20,3 @@ export const environment = {
  * because it will have performance impact when throw error
  */
 // import 'zone.js/dist/zone-error';  // Included with Angular CLI.
-

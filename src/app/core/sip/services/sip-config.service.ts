@@ -7,8 +7,7 @@ import { _HttpClient } from '@delon/theme';
 import { environment } from '@env/environment';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NzMessageService } from 'ng-zorro-antd';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { Observable, of } from 'rxjs';
 import { catchError, mergeMap } from 'rxjs/operators';
 import { IConfigResetMapRet, SipAlainConfig } from 'sip-alain';
 

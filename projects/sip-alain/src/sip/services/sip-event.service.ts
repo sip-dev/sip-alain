@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 let _notEvent = '[SipEventService] => Subscription method must get event name.';
 let _ownerEventKey = '_$sipEvents';

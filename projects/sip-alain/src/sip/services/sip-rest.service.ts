@@ -1,10 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { breakOff, cacheToObject, Lib } from 'sip-lib';
 import { SipAlainConfig } from '../base/sip-alain-config';
 
@@ -161,7 +158,7 @@ export class SipRestService {
         if (rs.url && /\/sso\//i.test(rs.url))
             window.location.href = this.config.site.loginUrl;
 
-        return Observable.of({
+        return of({
             isSucc: false,
             status: rs.status,
             statusText: rs.statusText,
@@ -220,9 +217,11 @@ export class SipRestService {
         url = this.absolutelyUrl(url);
         url = this.queryString(url, params);
         return this.getHttp(this.http.get(url, p && p.httpOptions), url, 'get', p)
-            .map(this.mapRestData)
-            .map(mapData)
-            .catch(this.makeCatchData);
+            .pipe(
+                map(this.mapRestData),
+                map(mapData),
+                catchError(this.makeCatchData)
+            )
     }
 
     /**
@@ -245,9 +244,11 @@ export class SipRestService {
 
         }
         return this.getHttp(this.http.post(url, formData, p && p.httpOptions), url, 'post', p)
-            .map(this.mapRestData)
-            .map(mapData)
-            .catch(this.makeCatchData);
+        .pipe(
+            map(this.mapRestData),
+            map(mapData),
+            catchError(this.makeCatchData)
+        );
     }
 
     /**
@@ -262,9 +263,11 @@ export class SipRestService {
         url = this.absolutelyUrl(url);
         url = this.queryString(url, params);
         return this.getHttp(this.http.delete(url, p && p.httpOptions), url, 'delete', p)
-            .map(this.mapRestData)
-            .map(mapData)
-            .catch(this.makeCatchData);
+        .pipe(
+            map(this.mapRestData),
+            map(mapData),
+            catchError(this.makeCatchData)
+        );
     }
 
     /**
@@ -279,9 +282,11 @@ export class SipRestService {
         url = this.absolutelyUrl(url);
         url = this.queryString(url, params);
         return this.getHttp(this.http.delete(url, p && p.httpOptions), url, 'put', p)
-            .map(this.mapRestData)
-            .map(mapData)
-            .catch(this.makeCatchData);
+        .pipe(
+            map(this.mapRestData),
+            map(mapData),
+            catchError(this.makeCatchData)
+        );
     }
 
     dict(code: string, conStr?: string, p?: SipRestParam): Observable<SipRestRet<ISipRestDict[]>> {
@@ -311,7 +316,9 @@ export class SipRestService {
             params: param,
             owner: p.owner, cache: p.cache,
             httpOptions: p.httpOptions
-        }).map(mapSqlData);
+        }).pipe(
+            map(mapSqlData)
+        );
     }
 
     /**
