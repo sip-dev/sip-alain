@@ -2,7 +2,7 @@
 // angular i18n
 import { registerLocaleData } from '@angular/common';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import localeZhHans from '@angular/common/locales/zh-Hans';
+import localeZhHans from '@angular/common/locales/zh';
 import { APP_INITIALIZER, LOCALE_ID, ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
 import { AdPageHeaderConfig } from '@delon/abc';
 import { DelonAuthConfig, SimpleInterceptor } from '@delon/auth';

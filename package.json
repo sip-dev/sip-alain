@@ -23,6 +23,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start-hmr": "ng serve -c=hmr",
     "start-prod": "ng serve --prod",
     "start-proxy": "ng serve -pc=\"proxy.conf.js\"",
     "build": "ng build --prod --build-optimizer",

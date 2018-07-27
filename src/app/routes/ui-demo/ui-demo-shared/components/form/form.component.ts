@@ -22,7 +22,8 @@ export class FormComponent extends SipComponent {
             "ip": "",
             "spec": "2核2G",
             "user": "test",
-            "date": "2017-11-15",
+            "date": new Date(),
+            "dateRang":"",
             "remark":"",
             "weight":""
         };
