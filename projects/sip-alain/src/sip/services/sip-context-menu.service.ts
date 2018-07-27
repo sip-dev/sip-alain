@@ -1,5 +1,4 @@
 import { Injectable, Injector, ViewRef } from '@angular/core';
-import { Lib } from 'sip-lib';
 import { ISipContextMenu } from '../base/i-sip-context-menu';
 import { SipAppContainerService } from './sip-app-container.service';
 
@@ -15,9 +14,10 @@ export class SipContextMenuService {
     e.preventDefault();
     e.stopPropagation();
 
-    let offset = Lib.offset(document.body);
-    let left = e.pageX - offset.left;
-    let top = e.pageY - offset.top;
+    // let offset = Lib.offset(document.body);
+    let offset = document.documentElement.getBoundingClientRect();
+    let left = e.pageX + offset.left;
+    let top = e.pageY + offset.top;
 
     return this.showByPos(contextmenu, top, left);
 
