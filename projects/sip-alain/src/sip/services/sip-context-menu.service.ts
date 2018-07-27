@@ -29,6 +29,7 @@ export class SipContextMenuService {
 
     this.hide();
     document.documentElement.addEventListener('mousedown', this._doc_mousedown);
+    // document.documentElement.addEventListener('mousewheel', this._doc_mousedown);
     this._container = this._appCTS.appendTemplate(this._appCTS._contextmenu, {
       left: left + 'px',
       top: top + 'px',
@@ -61,6 +62,7 @@ export class SipContextMenuService {
   hide() {
     if (this._container) {
       document.documentElement.removeEventListener('mousedown', this._doc_mousedown);
+      // document.documentElement.removeEventListener('mousewheel', this._doc_mousedown);
       this._container.destroy();
       this._container = null;
     }
