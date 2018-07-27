@@ -1,6 +1,6 @@
 import {
   Component, OnInit, ViewChild, Input, Output, EventEmitter, ViewEncapsulation, OnDestroy,
-  TemplateRef, HostBinding, ElementRef, ChangeDetectionStrategy
+  TemplateRef, HostBinding, ElementRef, ChangeDetectionStrategy, ChangeDetectorRef
 } from '@angular/core';
 import {ModalEditFormComponent} from '../modal-edit-form/modal-edit-form.component';
 import {DataManager, Row, RowMenuEventArgs} from '../../base';
@@ -31,7 +31,7 @@ export class CrudTableComponent implements OnInit, OnDestroy {
 
   private subscriptions: Subscription[] = [];
 
-  constructor() {
+  constructor(private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -56,11 +56,17 @@ export class CrudTableComponent implements OnInit, OnDestroy {
     const subRows = this.dataManager.events.rowsChanged$.subscribe(() => {
       this.rowsChanged.emit(true);
     });
+    const subScroll = this.dataManager.events.scrollSource$.subscribe(() => {
+      requestAnimationFrame(() => {
+        this.cd.detectChanges();
+      });
+    });
     this.subscriptions.push(subSelection);
     this.subscriptions.push(subFilter);
     this.subscriptions.push(subSort);
     this.subscriptions.push(subPage);
     this.subscriptions.push(subRows);
+    this.subscriptions.push(subScroll);
   }
 
   ngOnDestroy() {
@@ -129,41 +135,45 @@ export class CrudTableComponent implements OnInit, OnDestroy {
     }
     menuIndex = this.dataManager.actionMenu.findIndex(x => x.label === this.dataManager.messages.save);
     if (menuIndex > -1) {
-      this.dataManager.actionMenu[menuIndex].disabled = !rowChanged;
+      const rowIsValid = this.dataManager.rowIsValid(row);
+      this.dataManager.actionMenu[menuIndex].disabled = !rowChanged || !rowIsValid;
     }
 
     const left = 0;
     const alertHeight = (this.alert) ? this.alert.nativeElement.offsetHeight : 0;
     const toolbarHeight = (this.toolbar) ? this.toolbar.getHeight() : 0;
     let top = alertHeight + toolbarHeight + this.dataManager.dimensions.headerRowHeight;
-    top += (row.$$index + 1) * this.dataManager.dimensions.rowHeight;
-    top -= this.dataManager.offsetY;
+    top += (row.$$offset + row.$$height);
+    top -= this.dataManager.dimensions.offsetY;
     this.rowMenu.show(<RowMenuEventArgs>{left, top, row});
   }
 
   onCreateAction() {
-    this.dataManager.clearItem();
-    this.dataManager.detailView = false;
+    this.dataManager.item = <Row>{};
+    this.modalEditForm.isNewItem = true;
+    this.modalEditForm.detailView = false;
     this.modalEditForm.open();
   }
 
   viewAction(row: Row) {
     this.dataManager.errors = null;
-    this.dataManager.setItem(row);
-    this.dataManager.detailView = true;
+    this.dataManager.item = Object.assign({}, row);
+    this.modalEditForm.isNewItem = false;
+    this.modalEditForm.detailView = true;
     this.modalEditForm.open();
   }
 
   updateAction(row: Row) {
-    this.dataManager.setItem(row);
-    this.dataManager.detailView = false;
+    this.dataManager.item = Object.assign({}, row);
+    this.modalEditForm.isNewItem = false;
+    this.modalEditForm.detailView = false;
     this.modalEditForm.open();
   }
 
   duplicateAction(row: Row) {
     this.dataManager.item = this.dataManager.cloneRow(row);
-    this.dataManager.isNewItem = true;
-    this.dataManager.detailView = false;
+    this.modalEditForm.isNewItem = true;
+    this.modalEditForm.detailView = false;
     this.modalEditForm.open();
   }
 

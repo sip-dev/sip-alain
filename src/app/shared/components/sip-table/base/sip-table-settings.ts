@@ -32,7 +32,6 @@ export class SipTableSettings extends Settings {
     constructor(init?: Partial<SipTableSettings>) {
         super(init);
         this.api || (this.api = this.url);
-        this.primaryKeys || (this.primaryKeys = ['id']);
         this.contextmenuAction && (this.contextMenu = true);
     }
 }

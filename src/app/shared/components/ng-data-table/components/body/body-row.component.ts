@@ -40,7 +40,7 @@ export class BodyRowComponent implements OnInit, OnDestroy {
 
   @HostBinding('style.height.px')
   get rowHeight(): number {
-    return this.table.dimensions.rowHeight;
+    return this.row.$$height;
   }
 
   constructor(private differs: KeyValueDiffers, private cd: ChangeDetectorRef) {
@@ -83,7 +83,7 @@ export class BodyRowComponent implements OnInit, OnDestroy {
   }
 
   stylesByGroup() {
-    return translate(this.table.offsetX, 0);
+    return translate(this.table.dimensions.offsetX, 0);
   }
 
 }

@@ -7,7 +7,7 @@ export class ColumnBase {
   public name: string;
   public sortable?: boolean = true;
   public filter?: boolean = true;
-  public options?: SelectOption[] | Function;
+  public options?: SelectOption[];
   public optionsUrl?: string;
   public width?: number = null;
   public frozen?: boolean;
@@ -17,13 +17,16 @@ export class ColumnBase {
   public resizeable?: boolean = true;
   public dependsColumn?: string;
   public cellTemplate?: TemplateRef<any>;
+  public headerCellTemplate?: TemplateRef<any>;
   public formHidden?: boolean;
   public tableHidden?: boolean;
   public cellClass?: string | Function;
+  public isPrimaryKey?: boolean;
   public keyColumn?: string;
   public selectionLimit?: number = 1;
   public minWidth?: number = 50;
   public maxWidth?: number = 500;
   public aggregation?: AggregateType;
+  public filterValuesFunc?: (columnName: string) => Promise<SelectOption[]>;
 
 }

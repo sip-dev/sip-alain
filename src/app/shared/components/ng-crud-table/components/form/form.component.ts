@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild, ViewContainerRef, OnInit, OnDestroy} from '@angular/core';
+import {Component, Input, ViewChild, ViewContainerRef, OnInit, OnDestroy, Output, EventEmitter} from '@angular/core';
 import {DataManager, Column} from '../../base';
 
 @Component({
@@ -9,6 +9,9 @@ import {DataManager, Column} from '../../base';
 export class FormComponent implements OnInit, OnDestroy {
 
   @Input() public dataManager: DataManager;
+  @Input() public isNewItem: boolean = true;
+
+  @Output() valid: EventEmitter<boolean> = new EventEmitter();
 
   @ViewChild('cellTemplate', {read: ViewContainerRef}) cellTemplate: ViewContainerRef;
   private validElements: any = {};
@@ -29,14 +32,10 @@ export class FormComponent implements OnInit, OnDestroy {
     if (column.formHidden) {
       return false;
     }
-    const name = column.name;
-    if (this.dataManager.settings.primaryKeys &&
-      this.dataManager.settings.primaryKeys.length &&
-      !this.dataManager.isNewItem) {
-      return (this.dataManager.settings.primaryKeys.indexOf(name) === -1);
-    } else {
-      return true;
+    if (!this.isNewItem && column.isPrimaryKey) {
+      return false;
     }
+    return true;
   }
 
   onValid(event: any, column: Column) {
@@ -52,7 +51,7 @@ export class FormComponent implements OnInit, OnDestroy {
         break;
       }
     }
-    this.dataManager.formValid = result;
+    this.valid.emit(result);
   }
 
   onKeyColumnChange(event) {
@@ -60,11 +59,11 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   isDisabled(column: Column) {
-    if (column.keyColumn && !this.dataManager.isNewItem) {
-      return (this.dataManager.settings.primaryKeys.indexOf(column.keyColumn) !== -1);
-    } else {
-      return false;
+    if (column.keyColumn && !this.isNewItem) {
+      const fkColumn = this.dataManager.columns.find(x => x.name === column.keyColumn);
+      return (fkColumn.isPrimaryKey === true);
     }
+    return false;
   }
 
 }

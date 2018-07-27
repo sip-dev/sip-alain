@@ -6,6 +6,7 @@ import { Events } from './events';
 
 export class RowVirtual {
 
+    public virtualRows: Row[] = [];
     private start: number;
     private end: number;
     private previousStart: number;
@@ -17,7 +18,8 @@ export class RowVirtual {
         private events: Events) {
     }
 
-    chunkRows(rows: Row[], offsetY: number, force: boolean = false) {
+    chunkRows(rows: Row[], force: boolean = false) {
+        this.dimensions.initRowHeightCache(rows);
         if (this.settings.virtualScroll && !this.dimensions.bodyHeight) {
             this.dimensions.calcBodyHeight(this.pager.perPage);
         }
@@ -26,14 +28,17 @@ export class RowVirtual {
             const totalRecords = this.pager.total;
             this.dimensions.calcScrollHeight(totalRecords);
 
-            this.start = Math.floor(offsetY / this.dimensions.rowHeight);
+            this.start = this.dimensions.calcRowIndex(this.dimensions.offsetY);
             this.end = Math.min(totalRecords, this.start + this.pager.perPage + 1);
+            if ((this.end - this.start) < 3) {
+                this.start = this.end - this.pager.perPage;
+            }
 
             if (this.start !== this.previousStart || this.end !== this.previousEnd || force === true) {
                 const virtualRows = rows.slice(this.start, this.end);
                 this.previousStart = this.start;
                 this.previousEnd = this.end;
-                return virtualRows;
+                this.virtualRows = virtualRows;
             }
         }
     }
@@ -59,6 +64,11 @@ export class RowVirtual {
         this.end = 0;
         this.previousStart = 0;
         this.previousEnd = 0;
+    }
+
+    calcPageOffsetY(page: number) {
+        const rowIndex = this.pager.perPage * (page - 1);
+        return this.dimensions.getRowOffset(rowIndex - 1);
     }
 
 }
