@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
-import { SipAppContainerService } from '../services/sip-app-container.service';
 
 @Component({
   selector: 'sip-app-container',
@@ -13,19 +12,17 @@ import { SipAppContainerService } from '../services/sip-app-container.service';
 export class SipAppContainerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
-    let destroy = this._contain.onDestroy;
-    destroy.emit();
-    destroy.unsubscribe();
-    destroy.complete();
+    // let destroy = this._contain.onDestroy;
+    // destroy.emit();
+    // destroy.unsubscribe();
   }
 
   @ViewChild('contextmenu') contextmenu: TemplateRef<any>;
 
-  constructor(private _contain: SipAppContainerService,
-    private _vcRef: ViewContainerRef) {
+  constructor(public vcRef: ViewContainerRef) {
   }
 
   ngOnInit() {
-    this._contain._init(this._vcRef, this.contextmenu);
+    // this._contain._init(this._vcRef, this.contextmenu);
   }
 }

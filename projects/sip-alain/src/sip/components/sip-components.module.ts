@@ -76,9 +76,8 @@ import { SipTabsetComponent } from './tabset/sip-tabset.component';
         SipTabsetTitleComponent,
         SipTabsetHeaderComponent,
         SipTabsetContentComponent,
-        SipTabsetBodyComponent,
-        SipAppContainerComponent
+        SipTabsetBodyComponent
     ],
-    entryComponents:[SipModalComponent]
+    entryComponents:[SipModalComponent, SipAppContainerComponent]
 })
 export class SipComponentsModule { }

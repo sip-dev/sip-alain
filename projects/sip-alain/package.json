@@ -25,6 +25,7 @@
     "@angular/platform-browser": "^6.0.0",
     "@angular/platform-browser-dynamic": "^6.0.0",
     "@angular/router": "^6.0.0",
+    "@angular/cdk": "^6.0.0",
     "@delon/abc": "^1.1.5",
     "@delon/acl": "^1.1.5",
     "@delon/auth": "^1.1.5",
@@ -38,7 +39,6 @@
     "@antv/g2-plugin-slider": "^2.0.2",
     "@ngx-translate/core": "^10.0.1",
     "@ngx-translate/http-loader": "^3.0.1",
-
     "@types/node": "~8.9.4",
     "core-js": "^2.5.4",
     "rxjs": "^6.0.0",

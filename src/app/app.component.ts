@@ -5,7 +5,7 @@ import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
-  template: `<router-outlet></router-outlet><sip-app-container></sip-app-container>`,
+  template: `<router-outlet></router-outlet>`,
 })
 export class AppComponent implements OnInit {
   @HostBinding('class.layout-fixed')
