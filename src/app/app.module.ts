@@ -7,7 +7,7 @@ import { environment } from '@env/environment';
 import { NgxTinymceModule } from 'ngx-tinymce';
 // third
 import { UEditorModule } from 'ngx-ueditor';
-import { SipAlainConfig, SipAlainModule } from 'sip-alain';
+import { SipAlainModule } from 'sip-alain';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { SipConfigService } from './core/sip/services/sip-config.service';
@@ -21,7 +21,7 @@ import { SharedModule } from './shared/shared.module';
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    SipAlainModule,
+    SipAlainModule.forRoot(SipConfigService),
     CoreModule,
     SharedModule,
     LayoutModule,
@@ -43,7 +43,6 @@ import { SharedModule } from './shared/shared.module';
     })
   ],
   providers: [
-    { provide: SipAlainConfig, useClass: SipConfigService }
   ],
   bootstrap: [AppComponent]
 })
