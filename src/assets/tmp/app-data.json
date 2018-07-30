@@ -28,12 +28,6 @@
                             "description": ""
                         },
                         {
-                            "text": "表格",
-                            "link": "/ui-demo/list",
-                            "i18n": "表格",
-                            "description": ""
-                        },
-                        {
                             "text": "基本表单",
                             "link": "/ui-demo/list-create",
                             "i18n": "基本表单",
