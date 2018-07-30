@@ -2,10 +2,10 @@ import { Component, OnDestroy, OnInit, TemplateRef, ViewChild, ViewContainerRef 
 
 @Component({
   selector: 'sip-app-container',
-  template: `<ng-template #contextmenu let-left="left" let-top="top" let-mousedown="mousedown" let-click="click" let-menu="menu"><div class="sip-contextmenu"
+  template: `<ng-template #contextmenu let-left="left" let-tmpl="tmpl" let-top="top" let-mousedown="mousedown" let-click="click" let-menu="menu"><div class="sip-contextmenu"
     [style.left]="left" [style.top]="top" (mousedown)="mousedown($event)" (click)="click($event)">
-  <ng-content *ngIf="!menu" ></ng-content>
-  <sip-menu *ngIf="menu" [width]="menu.width" [datas]="menu.items"></sip-menu>
+  <ng-container *ngIf="tmpl" [ngTemplateOutlet]="tmpl"></ng-container>
+  <sip-menu *ngIf="!tmpl" [width]="menu.width" [datas]="menu.items"></sip-menu>
   </div></ng-template>`,
   styles: [`.sip-contextmenu {position: absolute;z-index:10000;}`]
 })

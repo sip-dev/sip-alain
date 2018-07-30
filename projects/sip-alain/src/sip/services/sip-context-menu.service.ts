@@ -1,4 +1,4 @@
-import { Injectable, Injector, ViewRef } from '@angular/core';
+import { Injectable, Injector, TemplateRef, ViewRef } from '@angular/core';
 import { ISipContextMenu } from '../base/i-sip-context-menu';
 import { SipAppContainerService } from './sip-app-container.service';
 
@@ -10,7 +10,7 @@ export class SipContextMenuService {
     this._appCTS = injector.get(SipAppContainerService);
   }
 
-  show(contextmenu: ISipContextMenu, e: MouseEvent): boolean {
+  show(contextmenu: ISipContextMenu, e: MouseEvent, tmpl?:TemplateRef<any>): boolean {
     e.preventDefault();
     e.stopPropagation();
 
@@ -19,12 +19,12 @@ export class SipContextMenuService {
     let left = e.pageX + offset.left;
     let top = e.pageY + offset.top;
 
-    return this.showByPos(contextmenu, top, left);
+    return this.showByPos(contextmenu, top, left, tmpl);
 
   }
 
-  showByPos(contextmenu: ISipContextMenu, top: number, left: number): boolean {
-    if (!contextmenu.items || !contextmenu.items.length) return false;
+  showByPos(contextmenu: ISipContextMenu, top: number, left: number, tmpl?:TemplateRef<any>): boolean {
+    if (!tmpl && (!contextmenu.items || !contextmenu.items.length)) return false;
     if (!contextmenu.width) contextmenu.width = 'auto';
 
     this.hide();
@@ -35,7 +35,8 @@ export class SipContextMenuService {
       top: top + 'px',
       menu: contextmenu,
       mousedown: this._mousedown,
-      click: this._click
+      click: this._click,
+      tmpl:tmpl
     });
     return false;
   }
