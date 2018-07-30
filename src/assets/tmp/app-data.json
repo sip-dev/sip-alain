@@ -32,6 +32,12 @@
                             "link": "/ui-demo/list-create",
                             "i18n": "基本表单",
                             "description": "基本表单 description"
+                        },
+                        {
+                            "text": "详情页面",
+                            "link": "/ui-demo/list-detail",
+                            "i18n": "详情页面",
+                            "description": "详情页面 description"
                         }
                     ]
                 },
