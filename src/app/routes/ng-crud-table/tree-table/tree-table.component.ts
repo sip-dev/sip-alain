@@ -99,8 +99,8 @@ export class TreeTableComponent extends SipPage {
   private _init() {
     this.params = this.$params(this.params);
     console.log('init', this.params);
-    this.manager.events.selectionSource$.subscribe((p)=>{
-      console.log('selecha', p, this.manager.rows, this.manager.getSelectedFirstRow(), this.manager.selection.selectedRowIndexes);
+    this.manager.events.selectionSource$.subscribe(()=>{
+      console.log('selecha', this.manager.selectedNode.data);
     });
   }
   manager: SipTableTreeManager;

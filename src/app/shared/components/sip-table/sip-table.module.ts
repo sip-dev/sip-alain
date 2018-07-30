@@ -7,15 +7,15 @@ import { SipTableComponent } from './components/sip-table/sip-table.component';
 @NgModule({
   imports: [
     CommonModule,
-    CrudTableModule,
-    DataTableModule
+    DataTableModule,
+    CrudTableModule
   ],
   declarations: [
     SipTableComponent
   ],
   exports: [
-    CrudTableModule,
     DataTableModule,
+    CrudTableModule,
     SipTableComponent
   ]
 })

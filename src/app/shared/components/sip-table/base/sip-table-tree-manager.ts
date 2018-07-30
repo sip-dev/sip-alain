@@ -1,22 +1,22 @@
 import { EventEmitter, Injector } from '@angular/core';
 import { SipContextMenuService } from 'sip-alain';
 import { Lib } from 'sip-lib';
-import { DataTable, Row, TreeNode } from '../../ng-data-table';
+import { Row, TreeNode, TreeTable } from '../../ng-data-table';
 import { ColumnBase } from '../../ng-data-table/base';
 import { SipTreeDataSource } from '../base';
 import { SipTableTreeSourceService } from '../services/sip-table-tree-source.service';
 import { SipTableSettings } from './sip-table-settings';
 
-export class SipTableTreeManager extends DataTable {
+export class SipTableTreeManager extends TreeTable {
 
     dataSource:SipTreeDataSource;
     onSetRows: EventEmitter<TreeNode[]>;
 
     constructor(public injector: Injector, columns: ColumnBase[],
         settings: SipTableSettings, source?: SipTreeDataSource) {
-        super(columns, settings);
+        super(columns, settings, source = source || new SipTableTreeSourceService(injector, settings));
 
-        this.dataSource = source || new SipTableTreeSourceService(this.injector, settings);
+        this.dataSource = source;
         this.onSetRows = this.dataSource.onSetRows;
 
         let sortName = settings.sortName;

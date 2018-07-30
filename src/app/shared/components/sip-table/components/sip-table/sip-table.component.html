@@ -5,6 +5,6 @@
     <app-datatable [table]="dataManager"></app-datatable>
 </ng-template>
 <ng-template [ngIf]="treeMananger">
-    <app-tree-table #tree [service]="treeMananger.dataSource" [table]="treeMananger" (editComplete)="onEditComplete($event)">
+    <app-tree-table #tree [treeTable]="treeMananger">
     </app-tree-table>
 </ng-template>
