@@ -15,7 +15,7 @@ export class DataTableComponent extends SipPage {
   constructor(vcf: ViewContainerRef) {
     super(vcf);
     this.columns = getColumnsPlayers();
-    this.manager = new SipTableDataManager(vcf.injector, this.columns, this.settings);
+    this.tableManager = new SipTableDataManager(vcf.injector, this.columns, this.settings);
   }
 
   params = { id: '' };
@@ -27,13 +27,13 @@ export class DataTableComponent extends SipPage {
   @SipNgInit()
   private _init() {
     this.params = this.$params(this.params);
-    this.manager.events.onLoading(true);
+    this.tableManager.events.onLoading(true);
     this.$httpSrv.get('api/demo/data-table/players').subscribe(rs => {
-      this.manager.rows = rs.datas;
-      this.manager.events.onLoading(false);
+      this.tableManager.rows = rs.datas;
+      this.tableManager.events.onLoading(false);
     });
-    this.manager.events.selectionSource$.subscribe(() => {
-      var rows = this.manager.selection.getSelectedRows(this.manager.getRows());
+    this.tableManager.events.selectionSource$.subscribe(() => {
+      var rows = this.tableManager.selection.getSelectedRows(this.tableManager.getRows());
       this.$access.check(rows);
     });
     console.log('init', this.params);
@@ -44,7 +44,7 @@ export class DataTableComponent extends SipPage {
     console.log('_destroy test in list');
   }
 
-  public manager: SipTableDataManager;
+  public tableManager: SipTableDataManager;
   public columns: Column[];
 
   public settings: Settings = <Settings>{
@@ -77,7 +77,7 @@ export class DataTableComponent extends SipPage {
     }
   })
   test() {
-    let rows = this.manager.getSelectedRows();
+    let rows = this.tableManager.getSelectedRows();
     console.log('rows', rows);
     this.$modal(ListFormComponent, { id: '' }).subscribe(r => {
       if (!r) return;
@@ -89,22 +89,22 @@ export class DataTableComponent extends SipPage {
   @SipAccessItem<DataTableComponent>('edit', {
     multi: true, hasData: true,
     check: function () {
-      this.editText = this.manager.isEditing ? '保存' : '编辑';
+      this.editText = this.tableManager.isEditing ? '保存' : '编辑';
       return true;
     }
   })
   edit() {
 
-    let isEditing = !this.manager.isEditing;
+    let isEditing = !this.tableManager.isEditing;
     if (isEditing){
-      this.manager.getSelectedRows().forEach((row) => {
+      this.tableManager.getSelectedRows().forEach((row) => {
         for (let colIndex = 0; colIndex < 6; colIndex++)
-          this.manager.editCell(row.$$index, colIndex, isEditing);
+          this.tableManager.editCell(row.$$index, colIndex, isEditing);
       });
     } else {
-      this.manager.unEditCellAll();
+      this.tableManager.unEditCellAll();
     }
-    this.editText = this.manager.isEditing ? '保存' : '编辑';
+    this.editText = this.tableManager.isEditing ? '保存' : '编辑';
   }
 
 }

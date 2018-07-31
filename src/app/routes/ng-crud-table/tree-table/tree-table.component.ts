@@ -13,7 +13,7 @@ export class TreeTableComponent extends SipPage {
 
   constructor(vcf: ViewContainerRef) {
     super(vcf);
-    this.manager = new SipTableTreeManager(vcf.injector, this.columns, new SipTableSettings({
+    this.tableManager = new SipTableTreeManager(vcf.injector, this.columns, new SipTableSettings({
       /**id字段, 默认为id */
       treeIdField: 'id',
       /**name字段，默认为name */
@@ -55,7 +55,7 @@ export class TreeTableComponent extends SipPage {
         }]
     }));
 
-    this.managerChild = new SipTableTreeManager(vcf.injector, this.columns, new SipTableSettings({
+    this.tableManagerChild = new SipTableTreeManager(vcf.injector, this.columns, new SipTableSettings({
       /**id字段, 默认为id */
       treeIdField: 'id',
       /**name字段，默认为name */
@@ -99,13 +99,13 @@ export class TreeTableComponent extends SipPage {
   private _init() {
     this.params = this.$params(this.params);
     console.log('init', this.params);
-    this.manager.events.selectionSource$.subscribe(()=>{
-      console.log('selecha', this.manager.selectedNode.data);
+    this.tableManager.events.selectionSource$.subscribe(()=>{
+      console.log('selecha', this.tableManager.selectedNode.data);
     });
   }
-  manager: SipTableTreeManager;
-  managerChild: SipTableTreeManager;
-  managerHttp: SipTableTreeManager;
+  tableManager: SipTableTreeManager;
+  tableManagerChild: SipTableTreeManager;
+  tableManagerHttp: SipTableTreeManager;
 
   public columns: Column[] = <Column[]>[
     {

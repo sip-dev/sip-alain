@@ -15,10 +15,10 @@ export class RowGroupComponent extends SipPage {
   constructor(vcf: ViewContainerRef) {
     super(vcf);
     this.columns = getColumnsPlayers();
-    this.manager = new SipTableDataManager(vcf.injector, this.columns, this.settings);
+    this.tableManager = new SipTableDataManager(vcf.injector, this.columns, this.settings);
   }
 
-  public manager: SipTableDataManager;
+  public tableManager: SipTableDataManager;
   public columns: Column[];
 
   public settings: Settings = <Settings>{
@@ -28,11 +28,11 @@ export class RowGroupComponent extends SipPage {
   //等效于ngOnInit, 但可以多次使用
   @SipNgInit()
   private _init() {
-    this.manager.events.onLoading(true);
-    this.manager.pager.perPage = 50;
+    this.tableManager.events.onLoading(true);
+    this.tableManager.pager.perPage = 50;
     this.$httpSrv.get('api/demo/data-table/players').subscribe(rs => {
-      this.manager.rows = rs.datas;
-      this.manager.events.onLoading(false);
+      this.tableManager.rows = rs.datas;
+      this.tableManager.events.onLoading(false);
     });
   }
 
