@@ -1,9 +1,10 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import { Column, Settings } from '@shared/components/ng-crud-table';
 import { SipTableDataManager } from '@shared/components/sip-table';
-import { SipAccess, SipAccessItem, SipAccessManager, SipNgDestroy, SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
+import { SipAccess, SipAccessItem, SipAccessManager, SipInject, SipNgDestroy, SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
 import { ListFormComponent } from '../../ui-demo/list-form/list-form.component';
-import { getColumnsPlayers } from '../shareds/column';
+import { getColumnsPlayers } from '../shared/base/column';
+import { PlayerService } from '../shared/services/player.service';
 @Component({
   selector: 'sip-data-table',
   templateUrl: './data-table.component.html',
@@ -23,12 +24,15 @@ export class DataTableComponent extends SipPage {
   @SipAccess<DataTableComponent>()
   accessManager: SipAccessManager;
 
+  @SipInject(PlayerService)
+  private _playerSrv:PlayerService;
+
   //等效于ngOnInit, 但可以多次使用
   @SipNgInit()
   private _init() {
     this.params = this.$params(this.params);
     this.tableManager.events.onLoading(true);
-    this.$httpSrv.get('api/demo/data-table/players').subscribe(rs => {
+    this._playerSrv.getList().subscribe(rs => {
       this.tableManager.rows = rs.datas;
       this.tableManager.events.onLoading(false);
     });

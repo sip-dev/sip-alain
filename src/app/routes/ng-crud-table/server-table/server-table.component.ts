@@ -3,7 +3,7 @@ import { Column, DataSource } from '@shared/components/ng-crud-table';
 import { SipTableServerManager, SipTableSettings } from '@shared/components/sip-table';
 import { SipAccessItem, SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
 import { ListFormComponent } from '../../ui-demo/list-form/list-form.component';
-import { getColumnsPlayers } from '../shareds/column';
+import { getColumnsPlayers } from '../shared/base/column';
 
 @Component({
   selector: 'sip-crud-table',

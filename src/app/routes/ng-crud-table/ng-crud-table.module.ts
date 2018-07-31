@@ -7,6 +7,7 @@ import { NgCrudTableRoutingModule } from './ng-crud-table-routing.module';
 import { RowGroupComponent } from './row-group/row-group.component';
 import { TreeTableComponent } from './tree-table/tree-table.component';
 import { ServerTableComponent } from './server-table/server-table.component';
+import { CurdTableSharedModule } from './shared/curd-table-shared.module';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { ServerTableComponent } from './server-table/server-table.component';
         CommonModule,
         SharedModule,
         UiDemoModule,
-        NgCrudTableRoutingModule
+        NgCrudTableRoutingModule,
+        CurdTableSharedModule
     ],
     declarations: [
         DataTableComponent,
@@ -26,7 +28,8 @@ import { ServerTableComponent } from './server-table/server-table.component';
         DataTableComponent,
         RowGroupComponent,
         TreeTableComponent,
-        ServerTableComponent
+        ServerTableComponent,
+        CurdTableSharedModule
     ]
 })
 export class NgCrudTableModule { }

@@ -2,7 +2,7 @@ import { Component, ViewContainerRef } from '@angular/core';
 import { Column, Settings } from '@shared/components/ng-crud-table';
 import { SipTableDataManager } from '@shared/components/sip-table';
 import { SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
-import { getColumnsPlayers } from '../shareds/column';
+import { getColumnsPlayers } from '../shared/base/column';
 
 @Component({
   selector: 'sip-row-group',

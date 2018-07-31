@@ -430,30 +430,6 @@
                 {
                     "active": true,
                     "className": "@{#fileName}",
-                    "fileName": "@{input}.model",
-                    "htmlContent": "",
-                    "importToModue": "",
-                    "input": "settings",
-                    "path": "",
-                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  it('should create an instance', () => {\n    expect(new @{className}()).toBeTruthy();\n  });\n});\n",
-                    "styleContent": "",
-                    "tsContent": "export class @{className} {\n\n  constructor(init?: Partial<@{className}>) {\n    if (init) {\n      Object.assign(this, init);\n    }\n  }\n\n}\n",
-                    "type": "class",
-                    "typeInfo": {
-                        "spec": false,
-                        "ts": true
-                    }
-                }
-            ],
-            "index": 10,
-            "title": "model"
-        },
-        {
-            "active": false,
-            "files": [
-                {
-                    "active": true,
-                    "className": "@{#fileName}",
                     "fileName": "@{input}.@{type}",
                     "htmlContent": "",
                     "importToModue": "",
@@ -468,7 +444,7 @@
                     }
                 }
             ],
-            "index": 11,
+            "index": 10,
             "title": "enum"
         },
         {
@@ -499,8 +475,58 @@
                     }
                 }
             ],
-            "index": 12,
+            "index": 11,
             "title": "page_base"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "player",
+                    "path": "",
+                    "specContent": "import { TestBed, inject } from '@angular/core/testing';\n\nimport { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  beforeEach(() => {\n    TestBed.configureTestingModule({\n      providers: [@{className}]\n    });\n  });\n\n  it('should be created', inject([@{className}], (service: @{className}) => {\n    expect(service).toBeTruthy();\n  }));\n});",
+                    "styleContent": "",
+                    "tsContent": "import { Injectable, Injector } from '@angular/core';\nimport { SipService } from 'sip-alain';\n\n@Injectable()\nexport class @{className} extends SipService {\n\n  constructor(injector: Injector) {\n    super(injector);\n  }\n\n}\n",
+                    "type": "service",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "moduleProvider": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 12,
+            "title": "sip-service"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.model",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "user",
+                    "path": "",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  it('should create an instance', () => {\n    expect(new @{className}()).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "export interface @{className} {\n\n}\n",
+                    "type": "class",
+                    "typeInfo": {
+                        "spec": false,
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 13,
+            "title": "sip-model"
         }
     ]
 }
