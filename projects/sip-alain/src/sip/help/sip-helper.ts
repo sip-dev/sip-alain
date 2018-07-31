@@ -569,7 +569,7 @@ export interface ISipRestDefParamsBase<T> {
     /**是否缓存，必须设置owner */
     cache?: boolean;
     //改造数据
-    map?: (rs: SipRestRet<T>) => SipRestRet<T>;
+    map?: (datas:T, rs: SipRestRet<T>) => T;
 }
 
 export interface ISipRestDefParams<T=any> extends ISipRestDefParamsBase<T> {
@@ -610,7 +610,7 @@ export function SipRestDef<T=any>(params: ISipRestDefParams<T>) {
                             break;
                     }
                     if (tempParams.map)
-                        return obs.pipe(map(tempParams.map));
+                        return obs.pipe(map((rs)=>{ rs.datas = tempParams.map(rs.datas, rs); return rs; }));
                     else
                         return obs;
                 }.bind(this);
@@ -670,7 +670,7 @@ export function SipRestSqlDef<T=any>(params: ISipRestSqlDefParams<T>) {
                             break;
                     }
                     if (tempParams.map)
-                        return obs.pipe(map(tempParams.map));
+                        return obs.pipe(map((rs)=>{ rs.datas = tempParams.map(rs.datas, rs); return rs; }));
                     else
                         return obs;
                 }.bind(this);
@@ -918,7 +918,7 @@ export class SipParent {
      * @example this.$navigate('/sip/test-create', {id:1});
      */
     public $navigate(url: string, queryParams?: object): SipUiLink {
-        let params = queryParams ? Object.assign({}, queryParams) : {};
+        let params = Object.assign({}, queryParams);
         let link = _createNavigateLink(this, params);
         if (this._$navigateChildren && this.$config.page.onceChild) {
             this._$navigateChildren.forEach(function (item) { item.close() });

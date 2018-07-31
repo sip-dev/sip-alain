@@ -1,6 +1,11 @@
 
 # 更新
 
+## 0.5.0 (none)
+
+* update ng-alain 1.1.5
+* update angular 6.0.9
+
 ## 0.4.0
 
 * update ng-alain 1.1.1

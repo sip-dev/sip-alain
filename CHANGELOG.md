@@ -4,6 +4,8 @@
 ## 0.7.0
 
 * ADD: ng-crud-table
+* update ng-alain 1.1.5
+* update angular 6.0.9
 
 ## 0.6.0
 
