@@ -70,7 +70,9 @@
           </span>
         </nz-alert>
       </div>
-
+      <ng-template #templateName let-row="row" let-value="value">
+        <a [sipRouterLink]="['/ui-demo/list-detail', {id:row.$$data.id}]">{{value}}</a>
+      </ng-template>
       <sip-table [manager]="tableManager"></sip-table>
 
     </nz-card>

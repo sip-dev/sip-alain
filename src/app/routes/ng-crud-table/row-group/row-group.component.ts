@@ -14,8 +14,6 @@ export class RowGroupComponent extends SipPage {
 
   constructor(vcf: ViewContainerRef) {
     super(vcf);
-    this.columns = getColumnsPlayers();
-    this.tableManager = new SipTableDataManager(vcf.injector, this.columns, this.settings);
   }
 
   public tableManager: SipTableDataManager;
@@ -28,6 +26,8 @@ export class RowGroupComponent extends SipPage {
   //等效于ngOnInit, 但可以多次使用
   @SipNgInit()
   private _init() {
+    this.columns = getColumnsPlayers();
+    this.tableManager = new SipTableDataManager(this.$injector(), this.columns, this.settings);
     this.tableManager.events.onLoading(true);
     this.tableManager.pager.perPage = 50;
     this.$httpSrv.get('api/demo/data-table/players').subscribe(rs => {

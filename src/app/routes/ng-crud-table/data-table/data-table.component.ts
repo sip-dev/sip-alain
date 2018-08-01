@@ -16,8 +16,6 @@ export class DataTableComponent extends SipPage {
 
   constructor(vcf: ViewContainerRef) {
     super(vcf);
-    this.columns = getColumnsPlayers();
-    this.tableManager = new SipTableDataManager(vcf.injector, this.columns, this.settings);
   }
 
   params = { id: '' };
@@ -32,6 +30,8 @@ export class DataTableComponent extends SipPage {
   @SipNgInit()
   private _init() {
     this.params = this.$params(this.params);
+    this.columns = getColumnsPlayers();
+    this.tableManager = new SipTableDataManager(this.$injector(), this.columns, this.settings);
     this.tableManager.events.onLoading(true);
     this._playerSrv.getList().subscribe(rs => {
       this.tableManager.rows = rs.datas;

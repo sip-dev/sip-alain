@@ -13,7 +13,17 @@ export class TreeTableComponent extends SipPage {
 
   constructor(vcf: ViewContainerRef) {
     super(vcf);
-    this.tableManager = new SipTableTreeManager(vcf.injector, this.columns, new SipTableSettings({
+
+  }
+
+  params = { id: '' };
+
+  /**等效于ngOnInit, 但可以多次使用 */
+  @SipNgInit()
+  private _init() {
+    this.params = this.$params(this.params);
+    console.log('init', this.params);
+    this.tableManager = new SipTableTreeManager(this.$injector(), this.columns, new SipTableSettings({
       /**id字段, 默认为id */
       treeIdField: 'id',
       /**name字段，默认为name */
@@ -55,7 +65,7 @@ export class TreeTableComponent extends SipPage {
         }]
     }));
 
-    this.tableManagerChild = new SipTableTreeManager(vcf.injector, this.columns, new SipTableSettings({
+    this.tableManagerChild = new SipTableTreeManager(this.$injector(), this.columns, new SipTableSettings({
       /**id字段, 默认为id */
       treeIdField: 'id',
       /**name字段，默认为name */
@@ -90,16 +100,7 @@ export class TreeTableComponent extends SipPage {
         }
       ]
     }));
-  }
-
-  params = { id: '' };
-
-  /**等效于ngOnInit, 但可以多次使用 */
-  @SipNgInit()
-  private _init() {
-    this.params = this.$params(this.params);
-    console.log('init', this.params);
-    this.tableManager.events.selectionSource$.subscribe(()=>{
+    this.tableManager.events.selectionSource$.subscribe(() => {
       console.log('selecha', this.tableManager.selectedNode.data);
     });
   }

@@ -1,4 +1,4 @@
-import { Component, ViewContainerRef } from '@angular/core';
+import { Component, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Column, DataSource } from '@shared/components/ng-crud-table';
 import { SipTableServerManager, SipTableSettings } from '@shared/components/sip-table';
 import { SipAccessItem, SipInject, SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
@@ -16,13 +16,6 @@ export class ServerTableComponent extends SipPage {
 
   constructor(private vcf: ViewContainerRef) {
     super(vcf);
-    this.columns = getColumnsPlayers();
-    this.tableManager = new SipTableServerManager(vcf.injector, this.columns, this.tableSettings);
-
-    this.tableManager.events.selectionSource$.subscribe(()=>{
-      let rows = this.tableManager.getSelectedRows();
-      this.$access.check(rows);
-    });
   }
 
   params = { id: '' };
@@ -32,6 +25,15 @@ export class ServerTableComponent extends SipPage {
   private _init() {
     this.params = this.$params(this.params);
     console.log('init', this.params);
+    this.columns = getColumnsPlayers();
+    this.columns[1].cellTemplate= this.templateName;
+    this.columns[1].editable = false;
+    this.tableManager = new SipTableServerManager(this.$injector(), this.columns, this.tableSettings);
+
+    this.tableManager.events.selectionSource$.subscribe(()=>{
+      let rows = this.tableManager.getSelectedRows();
+      this.$access.check(rows);
+    });
   }
 
   public service: DataSource;
@@ -40,6 +42,8 @@ export class ServerTableComponent extends SipPage {
 
   @SipInject(PlayerService)
   private _playerSrv:PlayerService;
+
+  @ViewChild('templateName') templateName: TemplateRef<any>;
 
   public tableSettings: SipTableSettings = new SipTableSettings({
     sqlId: 'iaas.instlist', connstr: 'iaas',
