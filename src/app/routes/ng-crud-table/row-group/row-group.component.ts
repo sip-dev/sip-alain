@@ -1,6 +1,6 @@
 import { Component, ViewContainerRef } from '@angular/core';
-import { Column, Settings } from '@shared/components/ng-crud-table';
-import { SipTableDataManager } from '@shared/components/sip-table';
+import { Column } from '@shared/components/ng-crud-table';
+import { SipTableDataManager, SipTableSettings } from '@shared/components/sip-table';
 import { SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
 import { getColumnsPlayers } from '../shared/base/column';
 
@@ -21,9 +21,9 @@ export class RowGroupComponent extends SipPage {
   public tableManager: SipTableDataManager;
   public columns: Column[];
 
-  public settings: Settings = <Settings>{
+  public settings: SipTableSettings = new SipTableSettings({
     groupRowsBy: ['race']
-  };
+  });
 
   //等效于ngOnInit, 但可以多次使用
   @SipNgInit()

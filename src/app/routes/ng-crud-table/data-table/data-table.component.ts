@@ -1,7 +1,8 @@
 import { Component, ViewContainerRef } from '@angular/core';
-import { Column, Settings } from '@shared/components/ng-crud-table';
+import { Column } from '@shared/components/ng-crud-table';
 import { SipTableDataManager } from '@shared/components/sip-table';
 import { SipAccess, SipAccessItem, SipAccessManager, SipInject, SipNgDestroy, SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
+import { SipTableSettings } from '../../../shared/components/sip-table/base/sip-table-settings';
 import { ListFormComponent } from '../../ui-demo/list-form/list-form.component';
 import { getColumnsPlayers } from '../shared/base/column';
 import { PlayerService } from '../shared/services/player.service';
@@ -51,14 +52,14 @@ export class DataTableComponent extends SipPage {
   public tableManager: SipTableDataManager;
   public columns: Column[];
 
-  public settings: Settings = <Settings>{
+  public settings: SipTableSettings = new SipTableSettings({
     clientSide: true,
     columnResizeMode: 'aminated',
     selectionType: 'multiple',
     selectionMode: 'checkbox',
     contextMenu: true,
     editMode: 'editProgrammatically'
-  };
+  });
 
   @SipAccessItem<DataTableComponent>('create', {
     multi: false, hasData: false,

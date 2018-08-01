@@ -1,9 +1,10 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import { Column, DataSource } from '@shared/components/ng-crud-table';
 import { SipTableServerManager, SipTableSettings } from '@shared/components/sip-table';
-import { SipAccessItem, SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
+import { SipAccessItem, SipInject, SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
 import { ListFormComponent } from '../../ui-demo/list-form/list-form.component';
 import { getColumnsPlayers } from '../shared/base/column';
+import { PlayerService } from '../shared/services/player.service';
 
 @Component({
   selector: 'sip-crud-table',
@@ -16,7 +17,7 @@ export class ServerTableComponent extends SipPage {
   constructor(private vcf: ViewContainerRef) {
     super(vcf);
     this.columns = getColumnsPlayers();
-    this.tableManager = new SipTableServerManager(vcf.injector, this.columns, this.serverSideSettings);
+    this.tableManager = new SipTableServerManager(vcf.injector, this.columns, this.tableSettings);
 
     this.tableManager.events.selectionSource$.subscribe(()=>{
       let rows = this.tableManager.getSelectedRows();
@@ -37,11 +38,17 @@ export class ServerTableComponent extends SipPage {
   public columns: Column[];
   public tableManager: SipTableServerManager;
 
-  public serverSideSettings: SipTableSettings = new SipTableSettings({
+  @SipInject(PlayerService)
+  private _playerSrv:PlayerService;
+
+  public tableSettings: SipTableSettings = new SipTableSettings({
     sqlId: 'iaas.instlist', connstr: 'iaas',
     sortName: 'name', sortOrder: 'asc',
     pageSize: 10,
     editMode: 'editProgrammatically',
+    restSrv:(param) => this._playerSrv.getPageList(null, param),
+    // selectionType: 'multiple',
+    // selectionMode: 'checkbox',
     contextmenuAction: (e, row) => {
       return {
         width: '100px',

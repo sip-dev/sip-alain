@@ -12,6 +12,7 @@ export class FormComponent implements OnInit, OnDestroy {
   @Input() public isNewItem: boolean = true;
 
   @Output() valid: EventEmitter<boolean> = new EventEmitter();
+  @Output() loaded: EventEmitter<any> = new EventEmitter();
 
   @ViewChild('cellTemplate', {read: ViewContainerRef}) cellTemplate: ViewContainerRef;
   private validElements: any = {};
@@ -64,6 +65,12 @@ export class FormComponent implements OnInit, OnDestroy {
       return (fkColumn.isPrimaryKey === true);
     }
     return false;
+  }
+
+  onSelectPopupNameChanged(value: any, column: Column) {
+    if (column.keyColumn) {
+      this.dataManager.item[column.name] = value;
+    }
   }
 
 }

@@ -60,7 +60,8 @@ export class SipTableServerSourceService extends SipTableDataSource {
 
   getItems(page: number = 1, filters: Filter, sortMeta: SortMeta[], globalFilterValue?: string): Promise<any> {
     let param: SipSqlParam = this.makeSqlParam(page, filters, sortMeta);
-    return this.http.sql(param)
+    let restSrv = this.settings.restSrv;
+    return (restSrv ? restSrv(param) : this.http.sql(param))
       .toPromise()
       .then((rs: SipRestSqlRet) => {
         this.rs = rs;

@@ -1,4 +1,5 @@
-import { ISipContextMenu } from 'sip-alain';
+import { Observable } from 'rxjs';
+import { ISipContextMenu, ISipRestSqlDefParams } from 'sip-alain';
 import { CellEventArgs, Row, Settings, TreeNode } from '../../ng-data-table';
 
 export class SipTableSettings extends Settings {
@@ -11,6 +12,7 @@ export class SipTableSettings extends Settings {
     sortName?: string;
     sortOrder?: '' | 'asc' | 'desc';
     searchparam?: object;
+    restSrv?:(param: ISipRestSqlDefParams<any>)=>Observable<any>;
 
     /**id字段, 默认为id */
     treeIdField?: string;

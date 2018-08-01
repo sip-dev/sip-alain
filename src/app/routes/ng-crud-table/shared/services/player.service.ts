@@ -1,5 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
-import { SipRestDef, SipRestFunction, SipRestMethod, SipService } from 'sip-alain';
+import { SipRestDef, SipRestFunction, SipRestMethod, SipRestSqlDef, SipRestSqlFunction, SipRestSqlType, SipService } from 'sip-alain';
 import { PlayerModel } from '../models/player.model';
 
 @Injectable()
@@ -9,13 +9,28 @@ export class PlayerService extends SipService {
     super(injector);
   }
 
-  @SipRestDef<PlayerModel[]>({
-      url: 'api/demo/data-table/players',
-      method: SipRestMethod.GET,
+  @SipRestSqlDef<PlayerModel[]>({
+      sqlType: SipRestSqlType.List,
+      sqlId: 'iaas.instlist', connstr: 'iaas',
+      sortName: 'name', sortOrder: 'asc',
+      pageSize: 10,
+        searchparam: { "content": "" },
       cache: true,
       map: function (datas, rs) {
           return datas;
       }
+  })
+  getPageList: SipRestSqlFunction<{
+      "content"?: string
+  }, PlayerModel[]>;
+  
+  @SipRestDef<PlayerModel[]>({
+    url: 'api/demo/data-table/players',
+    method: SipRestMethod.GET,
+    cache: true,
+    map: function (datas, rs) {
+      return datas;
+    }
   })
   getList: SipRestFunction<PlayerModel, PlayerModel[]>;
 
