@@ -1,6 +1,5 @@
 import { Component, ViewContainerRef } from '@angular/core';
-import { Column } from '@shared/components/ng-crud-table';
-import { SipTableDataManager } from '@shared/components/sip-table';
+import { SipTableColumn, SipTableDataManager } from '@shared/components/sip-table';
 import { SipAccess, SipAccessItem, SipAccessManager, SipInject, SipNgDestroy, SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
 import { SipTableSettings } from '../../../shared/components/sip-table/base/sip-table-settings';
 import { ListFormComponent } from '../../ui-demo/list-form/list-form.component';
@@ -50,7 +49,7 @@ export class DataTableComponent extends SipPage {
   }
 
   public tableManager: SipTableDataManager;
-  public columns: Column[];
+  public columns: SipTableColumn[];
 
   public settings: SipTableSettings = new SipTableSettings({
     clientSide: true,

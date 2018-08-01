@@ -381,10 +381,10 @@
                 {
                     "active": true,
                     "className": "@{#fileName}",
-                    "fileName": "i-@{input}",
+                    "fileName": "@{input}",
                     "htmlContent": "",
                     "importToModue": "",
-                    "input": "sip-data-table",
+                    "input": "i-sip-column",
                     "path": "",
                     "specContent": "",
                     "styleContent": "",

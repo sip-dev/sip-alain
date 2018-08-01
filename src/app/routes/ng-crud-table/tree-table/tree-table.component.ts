@@ -1,7 +1,7 @@
 import { Component, ViewContainerRef } from '@angular/core';
-import { Column } from '@shared/components/ng-data-table';
 import { SipTableSettings, SipTableTreeManager } from '@shared/components/sip-table';
 import { SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
+import { SipTableColumn } from '../../../shared/components/sip-table/base/sip-table-column';
 
 @Component({
   selector: 'sip-tree-table',
@@ -108,7 +108,7 @@ export class TreeTableComponent extends SipPage {
   tableManagerChild: SipTableTreeManager;
   tableManagerHttp: SipTableTreeManager;
 
-  public columns: Column[] = <Column[]>[
+  public columns: SipTableColumn[] = <SipTableColumn[]>[
     {
       title: 'Column',
       name: 'column',

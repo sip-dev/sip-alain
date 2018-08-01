@@ -1,6 +1,5 @@
 import { Component, ViewContainerRef } from '@angular/core';
-import { Column } from '@shared/components/ng-crud-table';
-import { SipTableDataManager, SipTableSettings } from '@shared/components/sip-table';
+import { SipTableColumn, SipTableDataManager, SipTableSettings } from '@shared/components/sip-table';
 import { SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
 import { getColumnsPlayers } from '../shared/base/column';
 
@@ -17,7 +16,7 @@ export class RowGroupComponent extends SipPage {
   }
 
   public tableManager: SipTableDataManager;
-  public columns: Column[];
+  public columns: SipTableColumn[];
 
   public settings: SipTableSettings = new SipTableSettings({
     groupRowsBy: ['race']

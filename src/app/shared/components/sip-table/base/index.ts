@@ -1,3 +1,4 @@
+export * from "./sip-table-column";
 export * from './sip-table-data-manager';
 export * from "./sip-table-data-source";
 export * from './sip-table-server-manager';

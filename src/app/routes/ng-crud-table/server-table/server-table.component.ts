@@ -5,6 +5,7 @@ import { SipAccessItem, SipInject, SipNgInit, SipPage, SipProvidePages } from 's
 import { ListFormComponent } from '../../ui-demo/list-form/list-form.component';
 import { getColumnsPlayers } from '../shared/base/column';
 import { PlayerService } from '../shared/services/player.service';
+import { SipTableColumn } from '../../../shared/components/sip-table/base/sip-table-column';
 
 @Component({
   selector: 'sip-crud-table',
@@ -37,7 +38,7 @@ export class ServerTableComponent extends SipPage {
   }
 
   public service: DataSource;
-  public columns: Column[];
+  public columns: SipTableColumn[];
   public tableManager: SipTableServerManager;
 
   @SipInject(PlayerService)

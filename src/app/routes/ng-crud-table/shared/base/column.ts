@@ -1,7 +1,7 @@
-import { Column } from "@shared/components/ng-crud-table";
+import { SipTableColumn } from "../../../../shared/components/sip-table/base/sip-table-column";
 
-export function getColumnsPlayers(): Column[] {
-    const columnsPlayers: Column[] = [
+export function getColumnsPlayers(): SipTableColumn[] {
+    const columnsPlayers: SipTableColumn[] = [
         {
             title: 'Id',
             name: 'id',
@@ -119,8 +119,8 @@ export function getColumnsPlayers(): Column[] {
     return columnsPlayers;
 }
 
-export function getColumnsRank(): Column[] {
-    const columnsRank: Column[] = [
+export function getColumnsRank(): SipTableColumn[] {
+    const columnsRank: SipTableColumn[] = [
         { title: 'player_id', name: 'player_id', width: 100 },
         { title: 'daily_ap', name: 'daily_ap', width: 100 },
         { title: 'weekly_ap', name: 'weekly_ap', width: 100 },
@@ -139,8 +139,8 @@ export function getColumnsRank(): Column[] {
     return columnsRank;
 }
 
-export function getColumnsInventory(): Column[] {
-    const columnsInventory: Column[] = [
+export function getColumnsInventory(): SipTableColumn[] {
+    const columnsInventory: SipTableColumn[] = [
         { title: 'itemUniqueId', name: 'itemUniqueId', width: 100 },
         { title: 'itemId', name: 'itemId', width: 100 },
         { title: 'itemCount', name: 'itemCount', width: 100 },
