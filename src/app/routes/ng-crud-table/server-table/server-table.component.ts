@@ -32,6 +32,9 @@ export class ServerTableComponent extends SipPage {
       let rows = this.tableManager.getSelectedRows();
       this.$access.check(rows);
     });
+    this.tableManager.events.cellEditModeSource$.subscribe((p) => {
+      this.editText = this.tableManager.isEditing ? '保存' : '编辑';
+    });
   }
 
   public columns: SipTableColumn[];
@@ -111,7 +114,6 @@ export class ServerTableComponent extends SipPage {
   @SipAccessItem<ServerTableComponent>('edit', {
     multi: true, hasData: true,
     check: function () {
-      this.editText = this.tableManager.isEditing ? '保存' : '编辑';
       return true;
     }
   })
@@ -126,7 +128,6 @@ export class ServerTableComponent extends SipPage {
     } else {
       this.tableManager.unEditCellAll();
     }
-    this.editText = this.tableManager.isEditing ? '保存' : '编辑';
   }
 
 

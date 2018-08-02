@@ -1,6 +1,7 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import { SipValidators } from '@core/sip/sip-validators';
 import { ISipFormGroup, SipComponent, SipFormGroup, SipFormSubmit } from 'sip-alain';
+import { DemoModel } from '../../model/demo.model';
 
 @Component({
 	selector: 'sip-form',
@@ -13,8 +14,8 @@ export class FormComponent extends SipComponent {
 		super(vcf);
     }
     
-    @SipFormGroup<object>(function () {
-        return {
+    @SipFormGroup<FormComponent>(function () {
+        let model:DemoModel = {
             "num": "",
             "name": "",
             "status": "success",
@@ -27,13 +28,15 @@ export class FormComponent extends SipComponent {
             "remark":"",
             "weight":""
         };
+        return model;
     }, function () {
         return {
             num: [SipValidators.rangeLength(1, 20)],
             name: [SipValidators.required]
         };
+    }, (p) => {
     })
-    form: ISipFormGroup<object>;
+    form: ISipFormGroup<DemoModel>;
 
     statuList = [
         { text: '成功', value: 'success' },
