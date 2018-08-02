@@ -14,9 +14,6 @@ export * from './page/sip-page-header.component';
 export * from './page/sip-page-toolbar.component';
 export * from './page/sip-page.component';
 export * from './sip-app-container.component';
-export * from './sip-components.module';
+// export * from './sip-components.module';
 export * from './sip-search-conent.component';
-
-
-
-
+export * from './sip-table/sip-table';

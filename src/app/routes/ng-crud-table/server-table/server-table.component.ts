@@ -1,11 +1,8 @@
 import { Component, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
-import { Column, DataSource } from '@shared/components/ng-crud-table';
-import { SipTableServerManager, SipTableSettings } from '@shared/components/sip-table';
-import { SipAccessItem, SipInject, SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
+import { SipAccessItem, SipInject, SipNgInit, SipPage, SipProvidePages, SipTableColumn, SipTableServerManager, SipTableSettings } from 'sip-alain';
 import { ListFormComponent } from '../../ui-demo/list-form/list-form.component';
 import { getColumnsPlayers } from '../shared/base/column';
 import { PlayerService } from '../shared/services/player.service';
-import { SipTableColumn } from '../../../shared/components/sip-table/base/sip-table-column';
 
 @Component({
   selector: 'sip-crud-table',
@@ -37,7 +34,6 @@ export class ServerTableComponent extends SipPage {
     });
   }
 
-  public service: DataSource;
   public columns: SipTableColumn[];
   public tableManager: SipTableServerManager;
 

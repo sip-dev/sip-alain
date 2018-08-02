@@ -1,7 +1,5 @@
 import { Component, ViewContainerRef } from '@angular/core';
-import { SipTableColumn, SipTableDataManager } from '@shared/components/sip-table';
-import { SipAccess, SipAccessItem, SipAccessManager, SipInject, SipNgDestroy, SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
-import { SipTableSettings } from '../../../shared/components/sip-table/base/sip-table-settings';
+import { SipAccess, SipAccessItem, SipAccessManager, SipInject, SipNgDestroy, SipNgInit, SipPage, SipProvidePages, SipTableColumn, SipTableDataManager, SipTableSettings } from 'sip-alain';
 import { ListFormComponent } from '../../ui-demo/list-form/list-form.component';
 import { getColumnsPlayers } from '../shared/base/column';
 import { PlayerService } from '../shared/services/player.service';

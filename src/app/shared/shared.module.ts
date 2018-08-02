@@ -8,14 +8,12 @@ import { CountdownModule } from 'ngx-countdown';
 import { NgxTinymceModule } from 'ngx-tinymce';
 import { UEditorModule } from 'ngx-ueditor';
 import { SipAlainSharedModule } from 'sip-alain';
-import { SipTableModule } from './components/sip-table';
 
 const THIRDMODULES = [
   NgZorroAntdModule,
   CountdownModule,
   UEditorModule,
-  NgxTinymceModule,
-  SipTableModule
+  NgxTinymceModule
 ];
 // endregion
 

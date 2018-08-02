@@ -1,6 +1,5 @@
 import { Component, ViewContainerRef } from '@angular/core';
-import { SipTableColumn, SipTableDataManager, SipTableSettings } from '@shared/components/sip-table';
-import { SipNgInit, SipPage, SipProvidePages } from 'sip-alain';
+import { SipNgInit, SipPage, SipProvidePages, SipTableColumn, SipTableDataManager, SipTableSettings } from 'sip-alain';
 import { getColumnsPlayers } from '../shared/base/column';
 
 @Component({

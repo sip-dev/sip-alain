@@ -18,19 +18,19 @@ import { SipPageToolbarComponent } from './page/sip-page-toolbar.component';
 import { SipPageComponent } from './page/sip-page.component';
 import { SipAppContainerComponent } from './sip-app-container.component';
 import { SipSearchConentComponent } from './sip-search-conent.component';
+import { SipTableModule } from './sip-table/sip-table/sip-table.module';
 import { SipTabsetBodyComponent } from './tabset/sip-tabset-body.component';
 import { SipTabsetContentComponent } from './tabset/sip-tabset-content.component';
 import { SipTabsetHeaderComponent } from './tabset/sip-tabset-header.component';
 import { SipTabsetTitleComponent } from './tabset/sip-tabset-title.component';
 import { SipTabsetComponent } from './tabset/sip-tabset.component';
 
-
-
 @NgModule({
     imports: [
         CommonModule,
         DelonSharedModule,
-        SipDirectivesModule
+        SipDirectivesModule,
+        SipTableModule
     ],
     declarations: [
         SipContextmenuComponent,
@@ -76,7 +76,8 @@ import { SipTabsetComponent } from './tabset/sip-tabset.component';
         SipTabsetTitleComponent,
         SipTabsetHeaderComponent,
         SipTabsetContentComponent,
-        SipTabsetBodyComponent
+        SipTabsetBodyComponent,
+        SipTableModule
     ],
     entryComponents:[SipModalComponent, SipAppContainerComponent]
 })

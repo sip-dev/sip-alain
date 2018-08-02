@@ -1,4 +1,4 @@
-import { SipTableColumn } from "../../../../shared/components/sip-table/base/sip-table-column";
+import { SipTableColumn } from "sip-alain";
 
 export function getColumnsPlayers(): SipTableColumn[] {
     const columnsPlayers: SipTableColumn[] = [

@@ -8,10 +8,10 @@
 
 | package | version | git | document |
 | ------- | ------- | ------- | ------- |
-| `sip-alain` | 0.4.0 | [git](https://github.com/sip-dev/sip-alain/) | [文档](https://github.com/sip-dev/sip-alain/wiki) |
-| `ng-alain` | 1.1.5 | [git](https://github.com/cipchk/ng-alain/) | [文档](http://ng-alain.com/) |
-| `ng-zorro-antd` | 1.0.0 | [git](https://github.com/NG-ZORRO/ng-zorro-antd) | [文档](https://ng.ant.design/) |
-| `@angular` | 6.0.9 | [git](https://github.com/angular/angular) | [文档](https://angular.cn/) |
+| `sip-alain` | 0.5.0 | [git](https://github.com/sip-dev/sip-alain/) | [文档](https://github.com/sip-dev/sip-alain/wiki) |
+| `ng-alain` | 1.2.0 | [git](https://github.com/cipchk/ng-alain/) | [文档](http://ng-alain.com/) |
+| `ng-zorro-antd` | 1.2.0 | [git](https://github.com/NG-ZORRO/ng-zorro-antd) | [文档](https://ng.ant.design/) |
+| `@angular` | 6.1.0 | [git](https://github.com/angular/angular) | [文档](https://angular.cn/) |
 
 ## Quick start
 
