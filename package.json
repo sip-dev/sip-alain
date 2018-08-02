@@ -38,6 +38,7 @@
     "test-coverage": "ng test --code-coverage --watch=false",
     "copy-sip-alain-css":"cpy ./projects/sip-alain/src/sip/components/sip-table/ng-crud-table/styles/** ./dist/sip-alain/styles/ng-crud-table && cpy ./projects/sip-alain/src/sip/components/sip-table/ng-data-table/styles/** ./dist/sip-alain/styles/ng-data-table && cpy ./projects/sip-alain/src/sip/components/sip-table/styles/** ./dist/sip-alain/styles",
     "copy-sip-alain": "cpy ./** ../../node_modules/sip-alain --cwd=./dist/sip-alain --parents",
+    "build-sip-alain-css": "cpy ./projects/sip-alain/src/sip/components/sip-table/ng-crud-table/styles/** ./node_modules/sip-alain/styles/ng-crud-table && cpy ./projects/sip-alain/src/sip/components/sip-table/ng-data-table/styles/** ./node_modules/sip-alain/styles/ng-data-table && cpy ./projects/sip-alain/src/sip/components/sip-table/styles/** ./node_modules/sip-alain/styles",
     "build-sip-alain": "ng build sip-alain --prod && npm run copy-sip-alain-css && npm run copy-sip-alain",
     "publish-sip-alain": "ng build sip-alain --prod && npm run copy-sip-alain-css && npm pu ./dist/sip-alain"
   },
