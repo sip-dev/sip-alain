@@ -27,39 +27,6 @@ export class SipAppContainerService {
         return cmp && cmp.contextmenu;
     };
 
-    // _init(vcRef: ViewContainerRef, contextmenu?: TemplateRef<any>) {
-    //     if (this._vcRef) return;
-    //     this._vcRef = vcRef;
-    //     this._contextmenu = contextmenu;
-    // }
-
-    // /**
-    //  * 
-    //  * @param tmpl TemplateRef内容
-    //  */
-    // appendTemplate(tmpl: TemplateRef<any>, context?: any, viewContainerRef?: ViewContainerRef): EmbeddedViewRef<any> {
-    //     let overlayRef = this._overlay.create();
-    //     let viewRef: EmbeddedViewRef<any> = overlayRef.attach(new TemplatePortal(tmpl, viewContainerRef && this._vcRef, context))
-    //     return viewRef;
-    // }
-
-    // /**
-    //  * 
-    //  * @param type 组件类名
-    //  * @param params 传入参数
-    //  */
-    // appendComponent<T=any>(type: Type<T>, params?: Object, viewContainerRef?: ViewContainerRef, injector?: Injector): ComponentRef<T> {
-    //     let overlayRef = this._overlay.create();
-    //     let compRef = overlayRef.attach(new ComponentPortal(type, viewContainerRef, injector));
-
-    //     if (params) {
-    //         let instance: any = compRef.instance;
-    //         Object.assign(instance, params);
-    //     }
-
-    //     return compRef;
-    // }
-
     /**
      * 
      * @param tmpl TemplateRef内容
