@@ -1,4 +1,4 @@
-import { Component, ViewContainerRef, forwardRef } from '@angular/core';
+import { Component, forwardRef, ViewContainerRef } from '@angular/core';
 import { SipBusinessComponent, SipNgInit, SipPage } from 'sip-alain';
         
 @Component({
@@ -17,6 +17,7 @@ export class ListDetailComponent extends SipPage {
 	@SipNgInit()
 	private _init() {
 		this.params = this.$params(this.params);
+		console.log('poener', this.$opener);
 	}
 
 	nzdata = [

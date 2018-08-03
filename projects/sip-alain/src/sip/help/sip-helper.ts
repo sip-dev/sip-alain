@@ -1059,7 +1059,7 @@ export class SipUiBase extends SipParent implements OnInit, OnDestroy, OnChanges
             routeParams = p;
         })
         let params;
-        this.$activatedRoute.queryParams.subscribe((p) => {
+        this.$activatedRoute.params.subscribe((p) => {
             params = p;
         })
         routeParams = this._$routeParams =
