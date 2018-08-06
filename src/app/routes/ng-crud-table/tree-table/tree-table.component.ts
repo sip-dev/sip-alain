@@ -35,31 +35,26 @@ export class TreeTableComponent extends SipPage {
       treeDatas: [
         {
           id: 'MALE',
-          name: 'MALE',
-          data: { column: 'gender' }
+          name: 'MALE'
         },
         {
           id: 'FEMALE',
-          name: 'FEMALE',
-          data: { column: 'gender' }
+          name: 'FEMALE'
         },
         {
           id: 'FEMALE_1',
           parentId: 'MALE',
-          name: 'FEMALE_1',
-          data: { column: 'gender_1' }
+          name: 'FEMALE_1'
         },
         {
           id: 'FEMALE_1_1',
           parentId: 'FEMALE_1',
-          name: 'FEMALE_1_1',
-          data: { column: 'gender_1_1' }
+          name: 'FEMALE_1_1'
         },
         {
           id: 'FEMALE_a',
           parentId: 'FEMALE',
-          name: 'FEMALE_a',
-          data: { column: 'gender_a' }
+          name: 'FEMALE_a'
         }]
     }));
 
@@ -70,36 +65,37 @@ export class TreeTableComponent extends SipPage {
       treeNameField: 'name',
       /**children字段, 默认为空，如果有内容表示子节点数据 */
       treeChildrenField: 'children',
+      // selectionMultiple: true,
+      // selectionMode: 'checkbox',
       treeDatas: [
         {
           id: 'MALE',
           name: 'MALE',
-          data: { column: 'gender' },
+          column: 'MALE',
+          "gender": "gender",
+          "cube_size": "1",
+          "exp": 777777,
           children: [{
             id: 'FEMALE_1',
             name: 'FEMALE_1',
-            data: { column: 'gender_1' },
             children: [{
               id: 'FEMALE_1_1',
-              name: 'FEMALE_1_1',
-              data: { column: 'gender_1_1' }
+              name: 'FEMALE_1_1'
             }]
           }]
         },
         {
           id: 'FEMALE',
           name: 'FEMALE',
-          data: { column: 'gender' },
           children: [{
             id: 'FEMALE_a',
-            name: 'FEMALE_a',
-            data: { column: 'gender_a' }
+            name: 'FEMALE_a'
           }]
         }
       ]
     }));
     this.tableManager.events.selectionSource$.subscribe(() => {
-      console.log('selecha', this.tableManager.selectedNode.data);
+      console.log('selecha', this.tableManager.getSelectedRows());
     });
   }
   tableManager: SipTableTreeManager;
@@ -107,6 +103,14 @@ export class TreeTableComponent extends SipPage {
   tableManagerHttp: SipTableTreeManager;
 
   public columns: SipTableColumn[] = <SipTableColumn[]>[
+    {
+      title: 'Node',
+      name: 'node',
+      sortable: false,
+      filter: false,
+      frozen: true,
+      width: 250,
+    },
     {
       title: 'Column',
       name: 'column',

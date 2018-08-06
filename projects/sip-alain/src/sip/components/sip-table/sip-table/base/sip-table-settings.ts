@@ -1,7 +1,8 @@
 import { Observable } from 'rxjs';
 import { ISipContextMenu } from '../../../../base/i-sip-context-menu';
 import { ISipRestSqlDefParams } from '../../../../help/sip-helper';
-import { CellEventArgs, Row, Settings, TreeNode } from '../../ng-data-table';
+import { CellEventArgs, Row, Settings } from '../../ng-data-table';
+import { TreeNode } from '../../ng-tree-table';
 
 export class SipTableSettings extends Settings {
 

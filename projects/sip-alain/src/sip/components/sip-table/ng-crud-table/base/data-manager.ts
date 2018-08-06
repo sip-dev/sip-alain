@@ -1,9 +1,9 @@
-import { Filter, Row } from '../../ng-data-table';
-import { ColumnBase } from '../../ng-data-table/base/column-base';
-import { DataTable } from '../../ng-data-table/base/data-table';
-import { Message } from '../../ng-data-table/base/message';
-import { Settings } from '../../ng-data-table/base/settings';
-import { DataSource, MenuItem } from './interface';
+import {DataSource, MenuItem} from './interface';
+import {Row, Filter} from '../../ng-data-table';
+import {DataTable} from '../../ng-data-table/base/data-table';
+import {ColumnBase} from '../../ng-data-table/base/column-base';
+import {Settings} from '../../ng-data-table/base/settings';
+import {Message} from '../../ng-data-table/base/message';
 
 export class DataManager extends DataTable {
 

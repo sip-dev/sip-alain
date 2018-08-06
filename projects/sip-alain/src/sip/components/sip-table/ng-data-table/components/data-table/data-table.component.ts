@@ -1,12 +1,15 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DoCheck, ElementRef, EventEmitter, HostBinding, Input, KeyValueDiffer, KeyValueDiffers, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { Constants, DataTable } from '../../base';
-import { BodyScrollDirective } from '../../directives/body-scroll.directive';
+import {
+  Component, OnInit, ViewChild, Input, Output, ViewEncapsulation, EventEmitter, ElementRef, HostBinding,
+  ChangeDetectionStrategy, DoCheck, KeyValueDiffers, KeyValueDiffer, ChangeDetectorRef, OnDestroy
+} from '@angular/core';
+import {DataTable, Constants} from '../../base';
+import {Subscription} from 'rxjs';
+import {BodyScrollDirective} from '../../directives/body-scroll.directive';
 
 @Component({
   selector: 'app-datatable',
   templateUrl: './data-table.component.html',
-  // styleUrls: ['../../styles/index.css'],
+  styleUrls: ['../../styles/index.css'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

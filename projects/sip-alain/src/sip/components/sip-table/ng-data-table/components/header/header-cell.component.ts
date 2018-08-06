@@ -5,7 +5,7 @@ import { ColumnMenuEventArgs } from '../../types';
 
   @Component({
     selector: 'app-datatable-header-cell',
-    templateUrl: './header-cell.component.html',
+    templateUrl: 'header-cell.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
   })
 

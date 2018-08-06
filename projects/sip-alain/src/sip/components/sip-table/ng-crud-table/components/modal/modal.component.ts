@@ -1,8 +1,11 @@
-import { AfterViewChecked, Component, ElementRef, EventEmitter, HostBinding, HostListener, Input, NgZone, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  Component, ElementRef, ViewChild, Input, Output, OnInit, AfterViewChecked, NgZone,
+  HostListener, HostBinding, EventEmitter
+} from '@angular/core';
 
 @Component({
   selector: 'app-modal',
-  templateUrl: './modal.component.html',
+  templateUrl: 'modal.component.html',
   styleUrls: ['modal.component.css']
 })
 export class ModalComponent implements OnInit, AfterViewChecked {

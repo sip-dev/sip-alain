@@ -1,13 +1,16 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { DataManager, Row, RowMenuEventArgs } from '../../base';
-import { ModalEditFormComponent } from '../modal-edit-form/modal-edit-form.component';
-import { RowMenuComponent } from '../row-menu/row-menu.component';
+import {
+  Component, OnInit, ViewChild, Input, Output, EventEmitter, ViewEncapsulation, OnDestroy,
+  TemplateRef, HostBinding, ElementRef, ChangeDetectionStrategy, ChangeDetectorRef
+} from '@angular/core';
+import {ModalEditFormComponent} from '../modal-edit-form/modal-edit-form.component';
+import {DataManager, Row, RowMenuEventArgs} from '../../base';
+import {Subscription} from 'rxjs';
+import {RowMenuComponent} from '../row-menu/row-menu.component';
 
 @Component({
   selector: 'app-crud-table',
   templateUrl: './crud-table.component.html',
-  // styleUrls: ['../../styles/index.css'],
+  styleUrls: ['../../styles/index.css'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -201,7 +204,7 @@ export class CrudTableComponent implements OnInit, OnDestroy {
   }
 
   onSelectedRow() {
-    this.select.emit(this.dataManager.selection.getSelectedRows(this.dataManager.rows));
+    this.select.emit(this.dataManager.getSelection());
   }
 
   onLoadedForm() {

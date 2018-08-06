@@ -1,5 +1,4 @@
-import { Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { TreeTableComponent } from '../../../ng-data-table/components/tree-table/tree-table.component';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { SipTableDataManager } from '../../base/sip-table-data-manager';
 import { SipTableServerManager } from '../../base/sip-table-server-manager';
 import { SipTableTreeManager } from '../../base/sip-table-tree-manager';
@@ -21,7 +20,6 @@ export class SipTableComponent implements OnInit {
   serverManager: SipTableServerManager;
 
   treeMananger: SipTableTreeManager;
-  @ViewChild(TreeTableComponent) treeTable: TreeTableComponent;
 
   private _manager: any;
   @Input()
@@ -37,9 +35,9 @@ export class SipTableComponent implements OnInit {
       this.serverManager = value;
     } else if (value instanceof SipTableTreeManager) {
       this.treeMananger = value;
-      value.onSetRows.subscribe((nodes) => {
-        this.treeMananger.nodes = nodes;
-      });
+      // value.onSetRows.subscribe((nodes) => {
+      //   this.treeMananger.nodes = nodes;
+      // });
     }
   }
 

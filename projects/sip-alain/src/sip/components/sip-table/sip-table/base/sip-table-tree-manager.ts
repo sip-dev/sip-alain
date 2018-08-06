@@ -1,8 +1,9 @@
-import { EventEmitter, Injector } from '@angular/core';
+import { Injector } from '@angular/core';
 import { Lib } from 'sip-lib';
 import { SipContextMenuService } from '../../../../services/sip-context-menu.service';
-import { Row, TreeNode, TreeTable } from '../../ng-data-table';
+import { Row } from '../../ng-data-table';
 import { ColumnBase } from '../../ng-data-table/base';
+import { TreeTable } from '../../ng-tree-table';
 import { SipTreeDataSource } from '../base';
 import { SipTableTreeSourceService } from '../services/sip-table-tree-source.service';
 import { SipTableSettings } from './sip-table-settings';
@@ -10,14 +11,14 @@ import { SipTableSettings } from './sip-table-settings';
 export class SipTableTreeManager extends TreeTable {
 
     dataSource:SipTreeDataSource;
-    onSetRows: EventEmitter<TreeNode[]>;
+    // onSetRows: EventEmitter<TreeNode[]>;
 
     constructor(public injector: Injector, columns: ColumnBase[],
         settings: SipTableSettings, source?: SipTreeDataSource) {
         super(columns, settings, source = source || new SipTableTreeSourceService(injector, settings));
 
         this.dataSource = source;
-        this.onSetRows = this.dataSource.onSetRows;
+        // this.onSetRows = this.dataSource.onSetRows;
 
         let sortName = settings.sortName;
         if (sortName) {

@@ -1,19 +1,21 @@
-import {SelectionType, Row} from '../types';
+import {Row} from '../types';
 import {Settings} from './settings';
 import {Events} from './events';
 
 export class DataSelection {
 
-  public type: SelectionType = 'single';
   public selectedRowIndexes: number[] = [];
   public selectedRowIndex: number;
 
+  get multiple(): boolean {
+    return this.settings.selectionMultiple;
+  }
+
   constructor(private settings: Settings, private events: Events) {
-    this.type = this.settings.selectionType;
   }
 
   selectRow(rowIndex: number) {
-    if (this.type === 'multiple') {
+    if (this.multiple) {
       const index = this.selectedRowIndexes.indexOf(rowIndex);
       if (index === -1) {
         this.selectedRowIndexes.push(rowIndex);
@@ -48,7 +50,7 @@ export class DataSelection {
   }
 
   isRowSelected(rowIndex: number): boolean {
-    if (this.type === 'multiple') {
+    if (this.multiple) {
       return this.selectedRowIndexes.indexOf(rowIndex) !== -1;
     } else {
       return rowIndex === this.selectedRowIndex;
@@ -56,7 +58,7 @@ export class DataSelection {
   }
 
   getSelection() {
-    if (this.type === 'multiple') {
+    if (this.multiple) {
       return this.selectedRowIndexes;
     } else {
       return this.selectedRowIndex;
@@ -64,7 +66,7 @@ export class DataSelection {
   }
 
   getSelectedRows(rows: any[]) {
-    if (this.type === 'multiple') {
+    if (this.multiple) {
       const selectedRows = [];
       if (this.selectedRowIndexes.length) {
         for (const idx of this.selectedRowIndexes) {
@@ -74,6 +76,37 @@ export class DataSelection {
       return selectedRows;
     } else {
       return rows[this.selectedRowIndex];
+    }
+  }
+
+  allRowsSelected(rows: Row[]): boolean {
+    return(rows &&
+      this.selectedRowIndexes &&
+      this.selectedRowIndexes.length === rows.length &&
+      rows.length !== 0);
+  }
+
+  select(...rows: Row[]): void {
+    rows.forEach(value => this._markSelected(value.$$index));
+    this.events.onSelectionChange();
+  }
+
+  deselect(...rows: Row[]): void {
+    rows.forEach(value => this._unmarkSelected(value.$$index));
+    this.events.onSelectionChange();
+  }
+
+  private _markSelected(rowIndex: number) {
+    const index = this.selectedRowIndexes.indexOf(rowIndex);
+    if (index === -1) {
+      this.selectedRowIndexes.push(rowIndex);
+    }
+  }
+
+  private _unmarkSelected(rowIndex: number) {
+    const index = this.selectedRowIndexes.indexOf(rowIndex);
+    if (index !== -1) {
+      this.selectedRowIndexes.splice(index, 1);
     }
   }
 

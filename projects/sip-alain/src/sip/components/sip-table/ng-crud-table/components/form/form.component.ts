@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
-import { Column, DataManager } from '../../base';
+import {Component, Input, ViewChild, ViewContainerRef, OnInit, OnDestroy, Output, EventEmitter} from '@angular/core';
+import {DataManager, Column} from '../../base';
 
 @Component({
   selector: 'app-row-form',
-  templateUrl: './form.component.html'
+  templateUrl: 'form.component.html'
 })
+
 export class FormComponent implements OnInit, OnDestroy {
 
   @Input() public dataManager: DataManager;

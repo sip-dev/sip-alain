@@ -1,11 +1,14 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, Input, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { Constants, DataTable } from '../../base';
-import { translate } from '../../base/util';
+import {
+  Component, OnInit, Input, HostBinding, OnDestroy, ChangeDetectorRef, ChangeDetectionStrategy,
+  ViewChild, ViewContainerRef
+} from '@angular/core';
+import {DataTable, Constants} from '../../base';
+import {translate} from '../../base/util';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-datatable-header',
-  templateUrl: './header.component.html',
+  templateUrl: 'header.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 

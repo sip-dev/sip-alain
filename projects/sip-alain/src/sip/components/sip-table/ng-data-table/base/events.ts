@@ -1,5 +1,5 @@
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { CellEventArgs, ColumnMenuEventArgs } from '../types';
+import { Subject, BehaviorSubject } from 'rxjs';
+import { ColumnMenuEventArgs, CellEventArgs } from '../types';
 
 export class Events {
 
@@ -23,8 +23,9 @@ export class Events {
   private contextMenuSource = new Subject<CellEventArgs>();
   private loadingSource = new BehaviorSubject<boolean>(false);
   private cellEditModeSource = new Subject<CellEventArgs>();
+  private checkboxSource = new Subject<any>();
 
-  sortSource$:Observable<any> = this.sortSource.asObservable();
+  sortSource$ = this.sortSource.asObservable();
   filterSource$ = this.filterSource.asObservable();
   selectionSource$ = this.selectionSource.asObservable();
   pageSource$ = this.pageSource.asObservable();
@@ -44,6 +45,7 @@ export class Events {
   contextMenuSource$ = this.contextMenuSource.asObservable();
   loadingSource$ = this.loadingSource.asObservable();
   cellEditModeSource$ = this.cellEditModeSource.asObservable();
+  checkboxSource$ = this.checkboxSource.asObservable();
 
   onSort() {
     this.sortSource.next();
@@ -123,6 +125,10 @@ export class Events {
 
   onCellEditMode(data: CellEventArgs) {
     this.cellEditModeSource.next(data);
+  }
+
+  onCheckbox(data: any) {
+    this.checkboxSource.next(data);
   }
 
 }

@@ -93,7 +93,7 @@ export class BodyCellEditComponent extends BodyCellComponent implements OnInit {
     }
   }
 
-  getOptions(row: Row):SelectOption[] {
+  getOptions(row: Row): SelectOption[] {
     return this.column.getOptions(row[this.column.dependsColumn]);
   }
 

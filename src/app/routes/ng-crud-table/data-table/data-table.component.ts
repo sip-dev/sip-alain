@@ -52,7 +52,7 @@ export class DataTableComponent extends SipPage {
   public settings: SipTableSettings = new SipTableSettings({
     clientSide: true,
     columnResizeMode: 'aminated',
-    selectionType: 'multiple',
+    selectionMultiple: true,
     selectionMode: 'checkbox',
     contextMenu: true,
     editMode: 'editProgrammatically'

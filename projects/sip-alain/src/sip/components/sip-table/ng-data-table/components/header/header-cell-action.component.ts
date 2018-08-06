@@ -1,10 +1,12 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { DataTable } from '../../base';
+import {
+  Component, Input, HostBinding, ChangeDetectionStrategy, ChangeDetectorRef, OnInit, OnDestroy
+} from '@angular/core';
+import {DataTable} from '../../base';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-datatable-header-cell-action',
-  templateUrl: './header-cell-action.component.html',
+  templateUrl: 'header-cell-action.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
@@ -23,16 +25,11 @@ export class HeaderCellActionComponent implements OnInit, OnDestroy {
   }
 
   get isCheckboxable(): boolean {
-    return this.table.settings.selectionType === 'multiple';
+    return this.table.selection.multiple;
   }
 
   get allRowsSelected(): boolean {
-    const allRowsSelected = (this.table.rows &&
-      this.table.selection.selectedRowIndexes &&
-      this.table.selection.selectedRowIndexes.length === this.table.rows.length &&
-      this.table.rows.length !== 0);
-
-    return allRowsSelected;
+    return this.table.selection.allRowsSelected(this.table.rows);
   }
 
   private subscriptions: Subscription[] = [];

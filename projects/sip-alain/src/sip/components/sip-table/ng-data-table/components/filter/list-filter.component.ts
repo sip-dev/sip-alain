@@ -1,10 +1,13 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { Column, DataFilter, DataTable } from '../../base';
-import { SelectOption } from '../../types';
+import {
+  Component, OnInit, Input, Output, EventEmitter, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef,
+  OnChanges, SimpleChanges, ViewChild
+} from '@angular/core';
+import {SelectOption} from '../../types';
+import {Column, DataTable, DataFilter} from '../../base';
 
 @Component({
   selector: 'app-list-filter',
-  templateUrl: './list-filter.component.html',
+  templateUrl: 'list-filter.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListFilterComponent implements OnInit, AfterViewInit, OnChanges {

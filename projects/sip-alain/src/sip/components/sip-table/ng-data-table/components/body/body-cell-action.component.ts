@@ -1,11 +1,14 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, Input, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { DataTable } from '../../base';
-import { Row } from '../../types';
+import {
+  Component, Input, HostBinding, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef,
+  ViewChild, ViewContainerRef
+} from '@angular/core';
+import {DataTable} from '../../base';
+import {Row} from '../../types';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-datatable-body-cell-action',
-  templateUrl: './body-cell-action.component.html',
+  templateUrl: 'body-cell-action.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BodyCellActionComponent implements OnInit, OnDestroy {
@@ -56,6 +59,7 @@ export class BodyCellActionComponent implements OnInit, OnDestroy {
 
   onCheckboxClick(event) {
     this.table.selectRow(this.row.$$index);
+    this.table.events.onCheckbox(this.row);
   }
 
 }

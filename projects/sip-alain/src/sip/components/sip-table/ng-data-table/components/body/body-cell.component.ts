@@ -1,12 +1,15 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { Column, DataTable } from '../../base';
-import { addClass } from '../../base/util';
-import { CellEventArgs, Row } from '../../types';
+import {
+  Component, Input, HostBinding, ViewContainerRef, ViewChild, OnInit, OnDestroy, ElementRef,
+  ChangeDetectionStrategy, ChangeDetectorRef
+} from '@angular/core';
+import {Column, DataTable} from '../../base';
+import {Subscription} from 'rxjs';
+import {addClass} from '../../base/util';
+import {Row, CellEventArgs} from '../../types';
 
 @Component({
   selector: 'app-datatable-body-cell',
-  templateUrl: './body-cell.component.html',
+  templateUrl: 'body-cell.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BodyCellComponent implements OnInit, OnDestroy {

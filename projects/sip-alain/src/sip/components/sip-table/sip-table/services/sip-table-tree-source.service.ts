@@ -1,7 +1,6 @@
-import { EventEmitter, Injectable, Injector } from '@angular/core';
-import { Lib } from 'sip-lib';
+import { Injectable, Injector } from '@angular/core';
 import { SipRestService } from '../../../../services/sip-rest.service';
-import { TreeNode } from '../../ng-data-table/types/interface';
+import { TreeNode } from '../../ng-tree-table';
 import { SipTableSettings } from '../base/sip-table-settings';
 import { SipTreeDataSource } from '../base/sip-tree-data-source';
 
@@ -11,7 +10,7 @@ import { SipTreeDataSource } from '../base/sip-tree-data-source';
 export class SipTableTreeSourceService extends SipTreeDataSource {
 
   public url: string;
-  onSetRows: EventEmitter<TreeNode[]> = new EventEmitter<TreeNode[]>();
+  // onSetRows: EventEmitter<TreeNode[]> = new EventEmitter<TreeNode[]>();
 
   http: SipRestService;
   private settings: SipTableSettings;
@@ -35,62 +34,42 @@ export class SipTableTreeSourceService extends SipTreeDataSource {
     this.childrenFiled = settings.treeChildrenField;
   }
 
-  private getChildrenDatas(node?: TreeNode): any[] {
-    if (this.childrenFiled) {
-      return node ? (node.data[this.childrenFiled] || []) : this.treeDatas;
-    } else {
-      let datas = this.treeDatas;
-      let parentId = node ? node.id : '';
-      return datas.filter((item) => {
-        return !parentId ? !item[this.parentIdField] : item[this.parentIdField] == parentId;
-      });
-    }
+  private makeTreeNodes(datas: any[]): TreeNode[] {
+    if (!datas) return [];
+    let treeNodes = datas.map((data) => {
+      let node: TreeNode = this.makeTreeNodeItem(data);
+      return node;
+    });
+
+    return treeNodes;
   }
 
-  private hasChild(data): boolean {
-    if (this.childrenFiled) {
-      return (data[this.childrenFiled] || []).lenght > 0;
-    } else {
-      let has = false;
-      let datas = this.treeDatas;
-      let parentId = data[this.idField];
-      Lib.each(datas, (item) => {
-        has = !parentId ? !item[this.parentIdField] : item[this.parentIdField] == parentId;
-        return !has;
-      });
-      return has;
-    }
-  }
-
-  private checkLeaf(data: any): boolean {
-    if (this.leafField in data)
-      return data[this.leafField];
-    else if (this.childrenFiled) {
-      let children = data[this.childrenFiled];
-      return !(children && children.length > 0);
-    } else
-      return !this.hasChild(data);
-  }
-
-  private makeTreeNodeItem(data: any): TreeNode {
-    if (!data) return null;
-    let idField = this.idField;
-    let nameField = this.nameField;
-    return <TreeNode>{
-      id: data ? data[idField] : '',
-      name: data ? data[nameField] : '',
-      leaf: data ? this.checkLeaf(data) : true,
+  private makeTreeNodeItem(data): TreeNode {
+    let node: TreeNode = {
+      id: data ? data[this.idField] : '',
+      name: data ? data[this.nameField] : '',
+      leaf: data ? data[this.leafField] : true,
       data: data || {},
       expanded: false,
       icon: ''
     };
+    let children = this.getChildrenNodes(data, node.id);
+    if (children && children.length > 0)
+      node.children = children;
+    return node;
   }
 
-  makeTreeNodes(datas: any[]): TreeNode[] {
-    if (!datas) return [];
-    return datas.map((item) => {
-      return this.makeTreeNodeItem(item);
-    });
+  private getChildrenNodes(data, parentId):TreeNode[]{
+    let children:any[];
+    if (this.childrenFiled) {
+      children = data[this.childrenFiled] || [];
+    } else {
+      let datas = this.treeDatas;
+      children = datas.filter((item) => {
+        return !parentId ? !item[this.parentIdField] : item[this.parentIdField] == parentId;
+      });
+    }
+    return this.makeTreeNodes(children);
   }
 
   getNodes(node: TreeNode): Promise<TreeNode[]> {
@@ -98,7 +77,11 @@ export class SipTableTreeSourceService extends SipTreeDataSource {
     let treeDatas = this.treeDatas;
     if (treeDatas) {
       return new Promise((resolve) => {
-        let treeNodes: TreeNode[] = this.makeTreeNodes(this.getChildrenDatas(node));
+        let data = {};
+        if (this.childrenFiled)
+          data[this.childrenFiled] = treeDatas;
+        let treeNodes: TreeNode[] = this.getChildrenNodes(data, '');
+        // console.log('treeNodes', treeNodes);
         resolve(treeNodes);
       });
     } else {

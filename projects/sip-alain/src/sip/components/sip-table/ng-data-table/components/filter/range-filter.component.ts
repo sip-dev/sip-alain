@@ -1,9 +1,12 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { Column, DataFilter, DataTable } from '../../base';
+import {
+  Component, OnInit, Input, Output, EventEmitter, AfterViewInit, ChangeDetectionStrategy,
+  OnChanges, SimpleChanges, ViewChild
+} from '@angular/core';
+import {Column, DataTable, DataFilter} from '../../base';
 
 @Component({
   selector: 'app-range-filter',
-  templateUrl: './range-filter.component.html',
+  templateUrl: 'range-filter.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RangeFilterComponent implements OnInit, AfterViewInit, OnChanges {
