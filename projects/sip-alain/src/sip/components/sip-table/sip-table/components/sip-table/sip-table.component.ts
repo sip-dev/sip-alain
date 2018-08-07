@@ -35,9 +35,6 @@ export class SipTableComponent implements OnInit {
       this.serverManager = value;
     } else if (value instanceof SipTableTreeManager) {
       this.treeMananger = value;
-      // value.onSetRows.subscribe((nodes) => {
-      //   this.treeMananger.nodes = nodes;
-      // });
     }
   }
 

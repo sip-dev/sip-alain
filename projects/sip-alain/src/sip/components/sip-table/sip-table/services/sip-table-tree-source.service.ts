@@ -34,7 +34,7 @@ export class SipTableTreeSourceService extends SipTreeDataSource {
     this.childrenFiled = settings.treeChildrenField;
   }
 
-  public makeTreeNodes(datas: any[]): TreeNode[] {
+  private makeTreeNodes(datas: any[]): TreeNode[] {
     if (!datas) return [];
     let treeNodes = datas.map((data) => {
       let node: TreeNode = this.makeTreeNodeItem(data);
@@ -64,12 +64,23 @@ export class SipTableTreeSourceService extends SipTreeDataSource {
     if (this.childrenFiled) {
       children = data[this.childrenFiled] || [];
     } else {
-      let datas = this.treeDatas;
-      children = datas.filter((item) => {
+      children = this._allTempDatas.filter((item) => {
         return !parentId ? !item[this.parentIdField] : item[this.parentIdField] == parentId;
       });
     }
     return this.makeTreeNodes(children);
+  }
+
+  private _allTempDatas:any[];
+  toTreeNodes(datas: any[]): TreeNode[]{
+    if (!datas) return [];
+    let rootData = {};
+    if (this.childrenFiled)
+      rootData[this.childrenFiled] = datas;
+    this._allTempDatas = datas;
+    let treeNodes: TreeNode[] = this.getChildrenNodes(rootData, '');
+    this._allTempDatas = null;
+    return treeNodes;
   }
 
   getNodes(node: TreeNode): Promise<TreeNode[]> {
@@ -77,11 +88,7 @@ export class SipTableTreeSourceService extends SipTreeDataSource {
     let treeDatas = this.treeDatas;
     if (treeDatas) {
       return new Promise((resolve) => {
-        let data = {};
-        if (this.childrenFiled)
-          data[this.childrenFiled] = treeDatas;
-        let treeNodes: TreeNode[] = this.getChildrenNodes(data, '');
-        // console.log('treeNodes', treeNodes);
+        let treeNodes: TreeNode[] = this.toTreeNodes(treeDatas);
         resolve(treeNodes);
       });
     } else {

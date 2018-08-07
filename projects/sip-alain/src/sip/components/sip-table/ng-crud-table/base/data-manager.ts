@@ -1,11 +1,12 @@
-import {DataSource, MenuItem} from './interface';
-import {Row, Filter} from '../../ng-data-table';
-import {DataTable} from '../../ng-data-table/base/data-table';
-import {ColumnBase} from '../../ng-data-table/base/column-base';
-import {Settings} from '../../ng-data-table/base/settings';
-import {Message} from '../../ng-data-table/base/message';
+import { Injector } from '@angular/core';
+import { Filter, Row } from '../../ng-data-table';
+import { ColumnBase } from '../../ng-data-table/base/column-base';
+import { Message } from '../../ng-data-table/base/message';
+import { Settings } from '../../ng-data-table/base/settings';
+import { SipDataTable } from '../../sip-table/base/sip-data-table';
+import { DataSource, MenuItem } from './interface';
 
-export class DataManager extends DataTable {
+export class DataManager<T=object> extends SipDataTable<T> {
 
   public service: DataSource;
   public errors: any;
@@ -13,8 +14,8 @@ export class DataManager extends DataTable {
   public refreshRowOnSave: boolean;
   public actionMenu: MenuItem[] = [];
 
-  constructor(columns: ColumnBase[], settings: Settings, dataSource: DataSource, messages?: Message) {
-    super(columns, settings, messages);
+  constructor(columns: ColumnBase[], settings: Settings, dataSource: DataSource, messages?: Message, injector?:Injector) {
+    super(columns, settings, messages, injector);
     this.settings.clientSide = false;
     this.setService(dataSource);
   }

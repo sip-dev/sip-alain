@@ -1,13 +1,14 @@
-import {DataTable} from '../../ng-data-table/base/data-table';
-import {ColumnBase} from '../../ng-data-table/base/column-base';
-import {Settings} from '../../ng-data-table/base/settings';
-import {Message} from '../../ng-data-table/base/message';
-import {TreeNode, TreeDataSource} from './interface';
-import {Tree} from './tree';
-import {TreeFlattener} from './tree-flattener';
-import {Row} from './index';
+import { Injector } from '@angular/core';
+import { ColumnBase } from '../../ng-data-table/base/column-base';
+import { Message } from '../../ng-data-table/base/message';
+import { Settings } from '../../ng-data-table/base/settings';
+import { SipDataTable } from '../../sip-table/base/sip-data-table';
+import { Row } from './index';
+import { TreeDataSource, TreeNode } from './interface';
+import { Tree } from './tree';
+import { TreeFlattener } from './tree-flattener';
 
-export class TreeTable extends DataTable {
+export class TreeTable<T=object> extends SipDataTable<T> {
 
   set service(val: TreeDataSource) {
     this.tree.service = val;
@@ -36,8 +37,8 @@ export class TreeTable extends DataTable {
   public tree: Tree;
   public treeFlattener: TreeFlattener;
 
-  constructor(columns: ColumnBase[], settings: Settings, dataSource: TreeDataSource, messages?: Message) {
-    super(columns, settings, messages);
+  constructor(columns: ColumnBase[], settings: Settings, dataSource: TreeDataSource, messages?: Message, injector?:Injector) {
+    super(columns, settings, messages, injector);
     this.tree = new Tree();
     this.tree.service = dataSource;
     this.treeFlattener = new TreeFlattener(this.transformer);
