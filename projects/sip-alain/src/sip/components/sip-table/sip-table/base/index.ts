@@ -1,3 +1,6 @@
+export { Filter, SortMeta } from '../../ng-data-table/types/interface';
+export { TreeNode } from '../../ng-tree-table/base/interface';
+export * from './sip-row';
 export * from "./sip-table-column";
 export * from './sip-table-data-manager';
 export * from "./sip-table-data-source";

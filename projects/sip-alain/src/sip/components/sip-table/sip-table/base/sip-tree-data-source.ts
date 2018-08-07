@@ -4,5 +4,6 @@ export abstract class SipTreeDataSource implements TreeDataSource {
     abstract url: string;
     abstract getNodes(node?: TreeNode): Promise<TreeNode[]>;
     abstract searchNodes(name: string): Promise<any>;
+    abstract makeTreeNodes(datas: any[]): TreeNode[];
 }
 

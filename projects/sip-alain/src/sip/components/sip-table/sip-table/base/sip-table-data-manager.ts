@@ -1,13 +1,14 @@
 import { Injector } from '@angular/core';
 import { Lib } from 'sip-lib';
 import { SipContextMenuService } from '../../../../services/sip-context-menu.service';
-import { DataTable, Row } from '../../ng-data-table';
-import { ColumnBase } from '../../ng-data-table/base';
+import { DataTable } from '../../ng-data-table';
+import { SipRow } from './sip-row';
+import { SipTableColumn } from './sip-table-column';
 import { SipTableSettings } from './sip-table-settings';
 
-export class SipTableDataManager extends DataTable {
+export class SipTableDataManager<T=object> extends DataTable {
 
-    constructor(public injector: Injector, columns: ColumnBase[],
+    constructor(public injector: Injector, columns: SipTableColumn[],
         settings: SipTableSettings) {
         super(columns, settings);
 
@@ -39,11 +40,11 @@ export class SipTableDataManager extends DataTable {
         }
     }
 
-    public get datas(): any[] {
-        let rows:Row[];
+    public get datas(): T[] {
+        let rows:SipRow<T>[] = this.rows;
         return !rows ? [] : rows.map(item=>item.$$data);
     }
-    public set datas(value: any[]) {
+    public set datas(value: T[]) {
         this.rows = value;
     }
 
@@ -53,16 +54,18 @@ export class SipTableDataManager extends DataTable {
      * @param value 
      * @example getRow('id', '1111');
      */
-    getRow(propName: string, value: any): Row {
-        return this.getRows().find((item) => { return item.$$data[propName] == value; });
+    getRow(propName: string, value: any): SipRow<T> {
+        let rows:SipRow<T>[] = <any[]>this.getRows();
+
+        return rows.find((item) => { return item.$$data[propName] == value; });
     }
 
-    getSelectedRows(): Row[] {
+    getSelectedRows(): SipRow<T>[] {
         let rows = this.selection.getSelectedRows(this.getRows()) || [];
         return Lib.isArray(rows) ? rows : [rows];
     }
 
-    getSelectedFirstRow(): Row {
+    getSelectedFirstRow(): SipRow<T> {
         let rows = this.getSelectedRows();
         return rows && rows.length > 0 ? rows[0] : null;
     }

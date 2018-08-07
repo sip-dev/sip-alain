@@ -20,7 +20,7 @@ export class TreeTableComponent extends SipPage {
   @SipNgInit()
   private _init() {
     this.params = this.$params(this.params);
-    console.log('init', this.params);
+    // console.log('init', this.params);
     this.tableManager = new SipTableTreeManager(this.$injector(), this.columns, new SipTableSettings({
       /**id字段, 默认为id */
       treeIdField: 'id',
@@ -32,6 +32,8 @@ export class TreeTableComponent extends SipPage {
       treeParentIdField: 'parentId',
       /**children字段, 默认为空，如果有内容表示子节点数据 */
       // treeChildrenField:'children',
+      selectionMultiple: true,
+      selectionMode: 'checkbox',
       treeDatas: [
         {
           id: 'MALE',
@@ -65,8 +67,8 @@ export class TreeTableComponent extends SipPage {
       treeNameField: 'name',
       /**children字段, 默认为空，如果有内容表示子节点数据 */
       treeChildrenField: 'children',
-      // selectionMultiple: true,
-      // selectionMode: 'checkbox',
+      selectionMultiple: true,
+      selectionMode: 'checkbox',
       treeDatas: [
         {
           id: 'MALE',
@@ -102,7 +104,7 @@ export class TreeTableComponent extends SipPage {
   tableManagerChild: SipTableTreeManager;
   tableManagerHttp: SipTableTreeManager;
 
-  public columns: SipTableColumn[] = <SipTableColumn[]>[
+  public columns: SipTableColumn[] = [
     {
       title: 'Node',
       name: 'node',
@@ -112,13 +114,29 @@ export class TreeTableComponent extends SipPage {
       width: 250,
     },
     {
-      title: 'Column',
-      name: 'column',
+      title: 'Name',
+      name: 'name',
       sortable: false,
       filter: false,
       frozen: false,
       resizeable: true,
       editable: true,
+      validation: {required: true, minLength: 2, pattern: '^[a-zA-Z ]+$'},
+      width: 250,
+    },
+    {
+      title: 'Gender',
+      name: 'gender',
+      sortable: false,
+      filter: false,
+      frozen: false,
+      resizeable: true,
+      editable: true,
+      type: 'radio',
+      options: [
+        {id: 'MALE', name: 'MALE'},
+        {id: 'FEMALE', name: 'FEMALE'},
+      ],
       width: 250,
     },
     {

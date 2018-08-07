@@ -1,6 +1,6 @@
 import { Injectable, Injector } from '@angular/core';
-import { SipRestService } from '../../../../services/sip-rest.service';
-import { TreeNode } from '../../ng-tree-table';
+import { SipRestService, SipSqlParam } from '../../../../services/sip-rest.service';
+import { TreeNode } from '../../ng-tree-table/base/interface';
 import { SipTableSettings } from '../base/sip-table-settings';
 import { SipTreeDataSource } from '../base/sip-tree-data-source';
 
@@ -34,7 +34,7 @@ export class SipTableTreeSourceService extends SipTreeDataSource {
     this.childrenFiled = settings.treeChildrenField;
   }
 
-  private makeTreeNodes(datas: any[]): TreeNode[] {
+  public makeTreeNodes(datas: any[]): TreeNode[] {
     if (!datas) return [];
     let treeNodes = datas.map((data) => {
       let node: TreeNode = this.makeTreeNodeItem(data);
@@ -59,8 +59,8 @@ export class SipTableTreeSourceService extends SipTreeDataSource {
     return node;
   }
 
-  private getChildrenNodes(data, parentId):TreeNode[]{
-    let children:any[];
+  private getChildrenNodes(data, parentId): TreeNode[] {
+    let children: any[];
     if (this.childrenFiled) {
       children = data[this.childrenFiled] || [];
     } else {
@@ -85,7 +85,11 @@ export class SipTableTreeSourceService extends SipTreeDataSource {
         resolve(treeNodes);
       });
     } else {
-      return this.http.sqlList(this.settings)
+      let param: SipSqlParam = <SipSqlParam>this.settings;
+      let searchparams = this.searchparams || {};
+      param.searchparam = searchparams;
+      let restSrv = this.settings.restSrv;
+      return (restSrv ? restSrv(param) : this.http.sqlList(param))
         .toPromise()
         .then((rs) => {
           const datas: any[] = rs.datas || [];
@@ -100,4 +104,13 @@ export class SipTableTreeSourceService extends SipTreeDataSource {
       setTimeout(() => resolve([]), 500);
     });
   }
+
+  public get searchparams(): object {
+    return this.settings.searchparam;
+  }
+
+  public set searchparams(value: object) {
+    this.settings.searchparam = value;
+  }
+
 }

@@ -1,19 +1,19 @@
 import { Injector } from '@angular/core';
 import { Lib } from 'sip-lib';
 import { SipContextMenuService } from '../../../../services/sip-context-menu.service';
-import { Row } from '../../ng-data-table';
-import { ColumnBase } from '../../ng-data-table/base';
 import { TreeTable } from '../../ng-tree-table';
 import { SipTreeDataSource } from '../base';
 import { SipTableTreeSourceService } from '../services/sip-table-tree-source.service';
+import { SipRow } from './sip-row';
+import { SipTableColumn } from './sip-table-column';
 import { SipTableSettings } from './sip-table-settings';
 
-export class SipTableTreeManager extends TreeTable {
+export class SipTableTreeManager<T=object> extends TreeTable {
 
     dataSource:SipTreeDataSource;
     // onSetRows: EventEmitter<TreeNode[]>;
 
-    constructor(public injector: Injector, columns: ColumnBase[],
+    constructor(public injector: Injector, columns: SipTableColumn[],
         settings: SipTableSettings, source?: SipTreeDataSource) {
         super(columns, settings, source = source || new SipTableTreeSourceService(injector, settings));
 
@@ -45,12 +45,12 @@ export class SipTableTreeManager extends TreeTable {
         }
     }
 
-    public get datas(): any[] {
-        let rows:Row[];
+    public get datas(): T[] {
+        let rows:SipRow<T>[] = this.rows;
         return !rows ? [] : rows.map(item=>item.$$data);
     }
-    public set datas(value: any[]) {
-        this.rows = value;
+    public set datas(value: T[]) {
+        this.rows = this.dataSource.makeTreeNodes(value);
     }
 
     /**
@@ -59,16 +59,18 @@ export class SipTableTreeManager extends TreeTable {
      * @param value 
      * @example getRow('id', '1111');
      */
-    getRow(propName: string, value: any): Row {
-        return this.getRows().find((item) => { return item.$$data[propName] == value; });
+    getRow(propName: string, value: any): SipRow<T> {
+        let rows:SipRow<T>[] = <any[]>this.getRows();
+
+        return rows.find((item) => { return item.$$data[propName] == value; });
     }
 
-    getSelectedRows(): Row[] {
+    getSelectedRows(): SipRow<T>[] {
         let rows = this.selection.getSelectedRows(this.getRows()) || [];
         return Lib.isArray(rows) ? rows : [rows];
     }
 
-    getSelectedFirstRow(): Row {
+    getSelectedFirstRow(): SipRow<T> {
         let rows = this.getSelectedRows();
         return rows && rows.length > 0 ? rows[0] : null;
     }

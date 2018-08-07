@@ -2,16 +2,16 @@ import { Injector } from '@angular/core';
 import { Lib } from 'sip-lib';
 import { SipContextMenuService } from '../../../../services/sip-context-menu.service';
 import { DataManager } from '../../ng-crud-table';
-import { Row } from '../../ng-data-table';
-import { ColumnBase } from '../../ng-data-table/base';
 import { SipTableServerSourceService } from '../services/sip-table-server-source.service';
+import { SipRow } from './sip-row';
+import { SipTableColumn } from './sip-table-column';
 import { SipTableDataSource } from './sip-table-data-source';
 import { SipTableSettings } from './sip-table-settings';
 
-export class SipTableServerManager extends DataManager {
+export class SipTableServerManager<T=object> extends DataManager {
 
 
-    constructor(public injector: Injector, columns: ColumnBase[],
+    constructor(public injector: Injector, columns: SipTableColumn[],
         settings: SipTableSettings, source?: SipTableDataSource) {
         super(columns, settings, source || new SipTableServerSourceService(injector, settings));
 
@@ -42,11 +42,11 @@ export class SipTableServerManager extends DataManager {
         }
     }
 
-    public get datas(): any[] {
-        let rows:Row[];
+    public get datas(): T[] {
+        let rows:SipRow<T>[] = this.rows;
         return !rows ? [] : rows.map(item=>item.$$data);
     }
-    public set datas(value: any[]) {
+    public set datas(value: T[]) {
         this.rows = value;
     }
 
@@ -73,16 +73,17 @@ export class SipTableServerManager extends DataManager {
      * @param value 
      * @example getRow('id', '1111');
      */
-    getRow(propName: string, value: any): Row {
-        return this.getRows().find((item) => { return item.$$data[propName] == value; });
+    getRow(propName: string, value: any): SipRow<T> {
+        let rows:SipRow<T>[] = <any[]>this.getRows();
+        return rows.find((item) => { return item.$$data[propName] == value; });
     }
 
-    getSelectedRows(): Row[] {
+    getSelectedRows(): SipRow<T>[] {
         let rows = this.selection.getSelectedRows(this.getRows()) || [];
         return Lib.isArray(rows) ? rows : [rows];
     }
 
-    getSelectedFirstRow(): Row {
+    getSelectedFirstRow(): SipRow<T> {
         let rows = this.getSelectedRows();
         return rows && rows.length > 0 ? rows[0] : null;
     }
