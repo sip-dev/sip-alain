@@ -490,7 +490,7 @@ export class SipAccessManager {
             }
         } else
             checkOk = true;
-        if (checkOk && acItem.check) checkOk = acItem.check(datas);
+        if (checkOk && acItem.check) checkOk = acItem.check(datas, this);
         return checkOk;
     }
 }
@@ -569,7 +569,7 @@ export interface ISipRestDefParamsBase<T> {
     /**是否缓存，必须设置owner */
     cache?: boolean;
     //改造数据
-    map?: (datas:T, rs: SipRestRet<T>) => T;
+    map?: (datas:T, rs: SipRestRet<T>, target?:any) => T;
 }
 
 export interface ISipRestDefParams<T=any> extends ISipRestDefParamsBase<T> {
@@ -610,7 +610,7 @@ export function SipRestDef<T=any>(params: ISipRestDefParams<T>) {
                             break;
                     }
                     if (tempParams.map)
-                        return obs.pipe(map((rs)=>{ rs.datas = tempParams.map(rs.datas, rs); return rs; }));
+                        return obs.pipe(map((rs)=>{ rs.datas = tempParams.map(rs.datas, rs, this); return rs; }));
                     else
                         return obs;
                 }.bind(this);
@@ -670,7 +670,7 @@ export function SipRestSqlDef<T=any>(params: ISipRestSqlDefParams<T>) {
                             break;
                     }
                     if (tempParams.map)
-                        return obs.pipe(map((rs)=>{ rs.datas = tempParams.map(rs.datas, rs); return rs; }));
+                        return obs.pipe(map((rs)=>{ rs.datas = tempParams.map(rs.datas, rs, this); return rs; }));
                     else
                         return obs;
                 }.bind(this);
