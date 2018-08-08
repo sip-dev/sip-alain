@@ -346,7 +346,7 @@ export interface ISipAccessParams<T=object> {
      * 检查数据
      * @param datas 传入的数据
      */
-    check?: (this: T, datas: any[]) => boolean;
+    check?: (this: T, datas: any[], target:T) => boolean;
 };
 
 export interface ISipAccessManager<T> {
@@ -410,8 +410,8 @@ export function SipAccessItem<T=object>(key: string, params?: ISipAccessParams<T
             if (access && params) {
                 _has = true;
                 let pp: any = Lib.extend({}, params);
-                pp.check = function () {
-                    return _checkFn && _checkFn.apply(this, arguments);
+                pp.check = function (datas:any[]) {
+                    return _checkFn && _checkFn.call(this, datas, this);
                 }.bind(this);
                 let acItem = {};
                 acItem[key] = pp;
