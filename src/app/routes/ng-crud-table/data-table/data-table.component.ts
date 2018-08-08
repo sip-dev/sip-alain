@@ -3,6 +3,7 @@ import { SipAccess, SipAccessItem, SipAccessManager, SipInject, SipNgDestroy, Si
 import { ListFormComponent } from '../../ui-demo/list-form/list-form.component';
 import { getColumnsPlayers } from '../shared/base/column';
 import { PlayerService } from '../shared/services/player.service';
+
 @Component({
   selector: 'sip-data-table',
   templateUrl: './data-table.component.html',

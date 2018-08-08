@@ -1,5 +1,5 @@
-import { Subject, BehaviorSubject } from 'rxjs';
-import { ColumnMenuEventArgs, CellEventArgs } from '../types';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { CellEventArgs, ColumnMenuEventArgs } from '../types';
 
 export class Events {
 
@@ -25,7 +25,7 @@ export class Events {
   private cellEditModeSource = new Subject<CellEventArgs>();
   private checkboxSource = new Subject<any>();
 
-  sortSource$ = this.sortSource.asObservable();
+  sortSource$:Observable<any> = this.sortSource.asObservable();
   filterSource$ = this.filterSource.asObservable();
   selectionSource$ = this.selectionSource.asObservable();
   pageSource$ = this.pageSource.asObservable();

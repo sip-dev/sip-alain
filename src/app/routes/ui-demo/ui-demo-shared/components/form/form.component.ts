@@ -14,27 +14,27 @@ export class FormComponent extends SipComponent {
 		super(vcf);
     }
     
-    @SipFormGroup<FormComponent>(function () {
-        let model:DemoModel = {
-            "num": "",
-            "name": "",
-            "status": "success",
-            "region": "测试云",
-            "ip": "",
-            "spec": "2核2G",
-            "user": "test",
-            "date": new Date(),
-            "dateRang":"",
-            "remark":"",
-            "weight":""
-        };
-        return model;
-    }, function () {
+    @SipFormGroup((target) => {
         return {
-            num: [SipValidators.rangeLength(1, 20)],
-            name: [SipValidators.required]
+            model:{
+                "num": "",
+                "name": "",
+                "status": "success",
+                "region": "测试云",
+                "ip": "",
+                "spec": "2核2G",
+                "user": "test",
+                "date": new Date(),
+                "dateRang":"",
+                "remark":"",
+                "weight":""
+            },
+            validators:{
+                num: [SipValidators.rangeLength(1, 20)],
+                name: [SipValidators.required]
+            },
+            extra:null
         };
-    }, (p) => {
     })
     form: ISipFormGroup<DemoModel>;
 

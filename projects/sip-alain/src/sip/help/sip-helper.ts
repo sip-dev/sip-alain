@@ -569,7 +569,7 @@ export interface ISipRestDefParamsBase<T> {
     /**是否缓存，必须设置owner */
     cache?: boolean;
     //改造数据
-    map?: (datas:T, rs: SipRestRet<T>, target?:any) => T;
+    map?: (rs: SipRestRet<T>, target?:any) => T;
 }
 
 export interface ISipRestDefParams<T=any> extends ISipRestDefParamsBase<T> {
@@ -610,7 +610,7 @@ export function SipRestDef<T=any>(params: ISipRestDefParams<T>) {
                             break;
                     }
                     if (tempParams.map)
-                        return obs.pipe(map((rs)=>{ rs.datas = tempParams.map(rs.datas, rs, this); return rs; }));
+                        return obs.pipe(map((rs)=>{ rs.datas = tempParams.map(rs, this); return rs; }));
                     else
                         return obs;
                 }.bind(this);
@@ -670,7 +670,7 @@ export function SipRestSqlDef<T=any>(params: ISipRestSqlDefParams<T>) {
                             break;
                     }
                     if (tempParams.map)
-                        return obs.pipe(map((rs)=>{ rs.datas = tempParams.map(rs.datas, rs, this); return rs; }));
+                        return obs.pipe(map((rs)=>{ rs.datas = tempParams.map(rs, this); return rs; }));
                     else
                         return obs;
                 }.bind(this);
@@ -747,15 +747,21 @@ export interface ISipFormGroup<T=any> extends FormGroup {
     $toJSONObject: () => T
     [key: string]: any;
 }
+export interface ISipFormGroupParams {
+    model: object;
+    validators?: { [key: string]: any };
+    extra?: { [key: string]: any };
+}
 
-export function SipFormGroup<T>(model: ((this: T) => any) | object, validators?: { [key: string]: any } | ((this: T) => { [key: string]: any }), extra?: { [key: string]: any } | ((this: T) => { [key: string]: any })) {
+export function SipFormGroup<T>(factory:(target:any)=>ISipFormGroupParams) {
     return function (target: any, propKey: string) {
 
         _pushEvent(target, 'sipOnConstructor', function () {
+            let params = factory(this);
             let valids = {};
             let modelObj = {};
-            let modelThis = Lib.isFunction(model) ? (model as Function).call(this) : (model || {});
-            let validatorsTemp = Lib.isFunction(validators) ? (validators as Function).call(this) : (validators || {});
+            let modelThis = params.model;
+            let validatorsTemp = params.validators;
             Lib.eachProp(modelThis, function (item, name) {
                 if (validatorsTemp[name])
                     valids[name] = [item, validatorsTemp[name]];
@@ -773,7 +779,7 @@ export function SipFormGroup<T>(model: ((this: T) => any) | object, validators?:
                     }
                 });
             }, this);
-            let extraTemp = Lib.isFunction(extra) ? (extra as Function).call(this) : extra;
+            let extraTemp = params.extra;
             let formGroup: FormGroup = this.$formBuilder.group(valids, extraTemp);
             this[propKey] = formGroup;
             Lib.eachProp(modelThis, function (item, name) {
