@@ -756,7 +756,7 @@ export interface ISipFormGroupParams {
 export function SipFormGroup<T>(factory:(target:any)=>ISipFormGroupParams) {
     return function (target: any, propKey: string) {
 
-        _pushEvent(target, 'sipOnConstructor', function () {
+        _pushEvent(target, 'ngOnInit', function () {
             let params = factory(this);
             let valids = {};
             let modelObj = {};

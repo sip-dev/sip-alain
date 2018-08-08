@@ -16,8 +16,8 @@ export class PlayerService extends SipService {
       pageSize: 10,
         searchparam: { "content": "" },
       cache: true,
-      map: function (datas, rs) {
-          return datas;
+      map: function (rs, target) {
+          return rs.datas;
       }
   })
   getPageList: SipRestSqlFunction<{
@@ -28,8 +28,8 @@ export class PlayerService extends SipService {
     url: 'api/demo/data-table/players',
     method: SipRestMethod.GET,
     cache: true,
-    map: function (datas, rs) {
-      return datas;
+    map: function (rs, target) {
+      return rs.datas;
     }
   })
   getList: SipRestFunction<PlayerModel, PlayerModel[]>;
