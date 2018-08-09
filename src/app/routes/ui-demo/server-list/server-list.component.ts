@@ -1,5 +1,5 @@
-import { Component, ViewContainerRef, forwardRef } from '@angular/core';
-import { SipPage, SipNgInit, SipBusinessComponent } from 'sip-alain';
+import { Component, forwardRef, ViewContainerRef } from '@angular/core';
+import { SipBusinessComponent, SipNgInit, SipPage } from 'sip-alain';
 
 @Component({
     selector: 'sip-server-list',
@@ -18,9 +18,9 @@ export class ServerListComponent extends SipPage {
     //等效于ngOnInit, 但可以多次使用
     @SipNgInit()
     private _init() {
-        this.params = this.$params(this.params);
+		this.params = this.$params(this.params);
 	}
-    
+
 	/**
 	 * 基础demo数据可删除
 	 */

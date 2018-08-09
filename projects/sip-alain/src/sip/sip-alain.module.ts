@@ -3,7 +3,7 @@
 import { registerLocaleData } from '@angular/common';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import localeZhHans from '@angular/common/locales/zh';
-import { APP_INITIALIZER, LOCALE_ID, ModuleWithProviders, NgModule, Optional, SkipSelf, Type } from '@angular/core';
+import { APP_INITIALIZER, LOCALE_ID, NgModule, Optional, SkipSelf } from '@angular/core';
 import { AdPageHeaderConfig } from '@delon/abc';
 import { DelonAuthConfig, SimpleInterceptor } from '@delon/auth';
 import { ALAIN_I18N_TOKEN } from '@delon/theme';
@@ -16,6 +16,7 @@ import { DefaultInterceptor } from '../delon/net/default.interceptor';
 import { StartupService } from '../delon/startup/startup.service';
 import { SipAlainConfig } from './base/sip-alain-config';
 import { SipAlainCoreModule } from './sip-alain-core.module';
+import { SipAlainSharedModule } from './sip-alain-shared.module';
 
 registerLocaleData(localeZhHans);
 
@@ -49,7 +50,7 @@ export function delonAuthConfig(config: SipAlainConfig): DelonAuthConfig {
         HttpClientModule,
         DelonModule.forRoot(),
         SipAlainCoreModule,
-        // SipAlainSharedModule,
+        SipAlainSharedModule,
         // i18n
         TranslateModule.forRoot({
             loader: {
@@ -60,36 +61,24 @@ export function delonAuthConfig(config: SipAlainConfig): DelonAuthConfig {
         })
     ],
     providers: [
+        { provide: LOCALE_ID, useValue: 'zh-Hans' },
+        { provide: HTTP_INTERCEPTORS, useClass: SimpleInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true },
+        { provide: ALAIN_I18N_TOKEN, useClass: I18NService, multi: false },
+        { provide: AdPageHeaderConfig, useFactory: pageHeaderConfig, deps: [SipAlainConfig] },
+        { provide: DelonAuthConfig, useFactory: delonAuthConfig, deps: [SipAlainConfig] },
+        StartupService,
+        {
+            provide: APP_INITIALIZER,
+            useFactory: StartupServiceFactory,
+            deps: [StartupService, SipAlainConfig],
+            multi: true
+        }
     ]
 })
 export class SipAlainModule {
     constructor(@Optional() @SkipSelf() parentModule: SipAlainModule) {
         throwIfAlreadyLoaded(parentModule, 'SipAlainModule');
-    }
-
-    static forRoot(config:Type<SipAlainConfig>): ModuleWithProviders {
-
-        return {
-            ngModule: SipAlainModule,
-            providers: [
-                // TIPS：@delon/abc 有大量的全局配置信息，例如设置所有 `simple-table` 的页码默认为 `20` 行
-                // { provide: SimpleTableConfig, useFactory: simpleTableConfig }
-                { provide: SipAlainConfig, useClass: config },
-                { provide: LOCALE_ID, useValue: 'zh-Hans' },
-                { provide: HTTP_INTERCEPTORS, useClass: SimpleInterceptor, multi: true },
-                { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true },
-                { provide: ALAIN_I18N_TOKEN, useClass: I18NService, multi: false },
-                { provide: AdPageHeaderConfig, useFactory: pageHeaderConfig, deps: [SipAlainConfig] },
-                { provide: DelonAuthConfig, useFactory: delonAuthConfig, deps: [SipAlainConfig] },
-                StartupService,
-                {
-                    provide: APP_INITIALIZER,
-                    useFactory: StartupServiceFactory,
-                    deps: [StartupService, SipAlainConfig],
-                    multi: true
-                }
-            ]
-        };
     }
 
 }

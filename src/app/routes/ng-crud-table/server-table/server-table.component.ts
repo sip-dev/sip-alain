@@ -46,11 +46,10 @@ export class ServerTableComponent extends SipPage {
   @ViewChild('templateName') templateName: TemplateRef<any>;
 
   public tableSettings: SipTableSettings = new SipTableSettings({
-    sqlId: 'iaas.instlist', connstr: 'iaas',
+    // sqlId: 'iaas.instlist', connstr: 'iaas',
     sortName: 'name', sortOrder: 'asc',
     pageSize: 10,
     editMode: 'editProgrammatically',
-    clientSide: true,
     restSrv:(param) => this._playerSrv.getPageList(null, param),
     rowActionTemplate:null,
     selectionMultiple:true,
