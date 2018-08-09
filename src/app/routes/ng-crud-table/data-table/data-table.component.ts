@@ -40,17 +40,17 @@ export class DataTableComponent extends SipPage {
       this.$access.check(datas);
     });
     this.tableManager.events.activateCellSource$.subscribe((p) => {
-      console.log('activateCellSource', p);
+      this.$logger.log('activateCellSource', p);
     });
     this.tableManager.events.clickCellSource$.subscribe((p) => {
-      console.log('cell click', p);
+      this.$logger.log('cell click', p);
     });
-    console.log('init - 1', this.params);
+    this.$logger.log('init - 1', this.params);
   }
 
   @SipNgDestroy()
   private _destroy() {
-    console.log('_destroy test in list');
+    this.$logger.log('_destroy test in list');
   }
 
   public tableManager: SipTableDataManager;
@@ -75,7 +75,7 @@ export class DataTableComponent extends SipPage {
     let url = 'ui-demo/list-create';
     this.$navigate(url, { id: '' }).subscribe(r => {
       if (!r) return;
-      console.log(url, r);
+      this.$logger.log(url, r);
     });
   }
 
@@ -87,10 +87,10 @@ export class DataTableComponent extends SipPage {
   })
   test() {
     let rows = this.tableManager.getSelectedRows();
-    console.log('rows', rows);
+    this.$logger.log('rows', rows);
     this.$modal(ListFormComponent, { id: '' }).subscribe(r => {
       if (!r) return;
-      console.log('ListFormComponent', r);
+      this.$logger.log('ListFormComponent', r);
     });
   }
 

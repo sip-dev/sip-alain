@@ -60,7 +60,7 @@ export class TreeTableComponent extends SipPage {
         name: 'FEMALE_a'
       }];
     this.tableManager.events.selectionSource$.subscribe(() => {
-      console.log('selecha', this.tableManager.getSelection());
+      this.$logger.log('select', this.tableManager.getSelection());
     });
 
     // tableManager2==========================================
@@ -166,6 +166,6 @@ export class TreeTableComponent extends SipPage {
   ];
 
   onEditComplete(event) {
-    console.log('onEditComplete', event);
+    this.$logger.log('onEditComplete', event);
   }
 }

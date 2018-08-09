@@ -22,7 +22,6 @@ export class ServerTableComponent extends SipPage {
   @SipNgInit()
   private _init() {
     this.params = this.$params(this.params);
-    console.log('init', this.params);
     this.$logger.log('init', this.params);
     this.$logger.warn('init', this.params);
     this.$logger.error('init', this.params);
@@ -64,13 +63,13 @@ export class ServerTableComponent extends SipPage {
         items: [{
           title: 'test',
           onClick: (p) => {
-            console.log('test', row);
+            this.$logger.log('test', row);
           }
         },
         {
           title: 'test1',
           onClick: (p) => {
-            console.log('test1', row);
+            this.$logger.log('test1', row);
           }
         }]
       };
@@ -96,7 +95,7 @@ export class ServerTableComponent extends SipPage {
     let url = 'ui-demo/list-create';
     this.$navigate(url, { id: '' }).subscribe(r => {
       if (!r) return;
-      console.log(url, r);
+      this.$logger.log(url, r);
     });
   }
 
@@ -108,10 +107,10 @@ export class ServerTableComponent extends SipPage {
   })
   test() {
     let rows = this.tableManager.getSelectedRows();
-    console.log('rows', rows);
+    this.$logger.log('rows', rows);
     this.$modal(ListFormComponent, { id: '' }).subscribe(r => {
       if (!r) return;
-      console.log('ListFormComponent', r);
+      this.$logger.log('ListFormComponent', r);
     });
   }
 
