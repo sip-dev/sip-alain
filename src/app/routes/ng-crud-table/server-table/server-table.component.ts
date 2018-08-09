@@ -50,9 +50,11 @@ export class ServerTableComponent extends SipPage {
     sortName: 'name', sortOrder: 'asc',
     pageSize: 10,
     editMode: 'editProgrammatically',
+    clientSide: true,
     restSrv:(param) => this._playerSrv.getPageList(null, param),
-    // selectionType: 'multiple',
-    // selectionMode: 'checkbox',
+    rowActionTemplate:null,
+    selectionMultiple:true,
+    selectionMode: 'checkbox',
     contextmenuAction: (e, row) => {
       return {
         width: '100px',

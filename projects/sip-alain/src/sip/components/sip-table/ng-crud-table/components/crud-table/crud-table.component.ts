@@ -1,11 +1,8 @@
-import {
-  Component, OnInit, ViewChild, Input, Output, EventEmitter, ViewEncapsulation, OnDestroy,
-  TemplateRef, HostBinding, ElementRef, ChangeDetectionStrategy, ChangeDetectorRef
-} from '@angular/core';
-import {ModalEditFormComponent} from '../modal-edit-form/modal-edit-form.component';
-import {DataManager, Row, RowMenuEventArgs} from '../../base';
-import {Subscription} from 'rxjs';
-import {RowMenuComponent} from '../row-menu/row-menu.component';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { DataManager, Row, RowMenuEventArgs } from '../../base';
+import { ModalEditFormComponent } from '../modal-edit-form/modal-edit-form.component';
+import { RowMenuComponent } from '../row-menu/row-menu.component';
 
 @Component({
   selector: 'app-crud-table',
@@ -39,7 +36,8 @@ export class CrudTableComponent implements OnInit, OnDestroy {
     if (this.dataManager.settings.initLoad) {
       this.dataManager.getItems().then();
     }
-    this.dataManager.settings.rowActionTemplate = this.rowActionTemplate;
+    if (!('rowActionTemplate' in this.dataManager.settings))
+      this.dataManager.settings.rowActionTemplate = this.rowActionTemplate;
 
     const subSelection = this.dataManager.events.selectionSource$.subscribe(() => {
       this.onSelectedRow();

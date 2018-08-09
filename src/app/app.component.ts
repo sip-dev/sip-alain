@@ -1,10 +1,8 @@
-import {Component,HostBinding,OnInit,Renderer2,ElementRef} from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Component, ElementRef, HostBinding, OnInit, Renderer2 } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { SettingsService, TitleService, VERSION as VERSION_ALAIN } from '@delon/theme';
+import { VERSION as VERSION_ZORRO } from 'ng-zorro-antd';
 import { filter } from 'rxjs/operators';
-import { SettingsService, TitleService } from '@delon/theme';
-import { VERSION as VERSION_ALAIN } from '@delon/theme';
-// TODO: wait next version, [#1874](https://github.com/NG-ZORRO/ng-zorro-antd/pull/1874)
-// import { VERSION as VERSION_ZORRO } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-root',
@@ -36,7 +34,11 @@ export class AppComponent implements OnInit {
       'ng-alain-version',
       VERSION_ALAIN.full,
     );
-    // renderer.setAttribute(el.nativeElement, 'ng-zorro-version', VERSION_ZORRO.full);
+    renderer.setAttribute(
+      el.nativeElement,
+      'ng-zorro-version',
+      VERSION_ZORRO.full,
+    );
   }
 
   ngOnInit() {
