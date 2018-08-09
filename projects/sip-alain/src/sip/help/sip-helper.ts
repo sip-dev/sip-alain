@@ -9,6 +9,7 @@ import { breakOff, Lib } from 'sip-lib';
 import { SipAlainConfig } from '../base/sip-alain-config';
 import { SipAppContainerService } from '../services/sip-app-container.service';
 import { SipEventService } from '../services/sip-event.service';
+import { SipLoggerService } from '../services/sip-logger.service';
 import { ISipRestDict, SipHttpOptions, SipRestRet, SipRestService, SipRestSqlRet } from '../services/sip-rest.service';
 
 let undef;
@@ -867,13 +868,10 @@ export class SipParent {
     /**Lib提供常用方法 */
     public readonly Lib = Lib;
 
-    /**$log，可用于模板 */
-    public $log(...args: any[]) {
-        console.log.apply(console, arguments);
-    }
-
     /**SipConfig */
     @SipInject(SipAlainConfig) $config: SipAlainConfig;
+    /**日志服务 */
+    @SipInject(SipLoggerService) $logger: SipLoggerService;
 
     //#region Observable
 

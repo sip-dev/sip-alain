@@ -255,16 +255,16 @@
             "active": false,
             "files": [
                 {
-                    "active": false,
+                    "active": true,
                     "className": "@{#fileName}",
                     "fileName": "@{input}.@{type}",
                     "htmlContent": "",
                     "importToModue": "",
-                    "input": "sip-data-table",
+                    "input": "sip-logger-level",
                     "path": "@{input}",
                     "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let testModule: @{className};\n\n  beforeEach(() => {\n    testModule = new @{className}();\n  });\n\n  it('should create an instance', () => {\n    expect(testModule).toBeTruthy();\n  });\n});\n",
                     "styleContent": "",
-                    "tsContent": "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\n\nimport { @{#input}RoutingModule } from './@{input}-routing.module';\n\n@NgModule({\n  imports: [\n    CommonModule,\n    @{#input}RoutingModule\n  ],\n  declarations: []\n})\nexport class @{className} { }\n",
+                    "tsContent": "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\nimport { SharedModule } from '@shared/shared.module';\nimport { @{#input}RoutingModule } from './@{input}-routing.module';\n\n@NgModule({\n  imports: [\n    CommonModule,\n    SharedModule,\n    @{#input}RoutingModule\n  ],\n  declarations: []\n})\nexport class @{className} { }\n",
                     "type": "module",
                     "typeInfo": {
                         "importToModue": true,
@@ -275,12 +275,12 @@
                     }
                 },
                 {
-                    "active": true,
+                    "active": false,
                     "className": "@{#fileName}",
                     "fileName": "@{input}-routing.@{type}",
                     "htmlContent": "",
                     "importToModue": "./@{input}.@{type}.ts",
-                    "input": "sip-data-table",
+                    "input": "sip-logger-level",
                     "path": "@{input}",
                     "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let testRoutingModule: @{className};\n\n  beforeEach(() => {\n    testRoutingModule = new @{className}();\n  });\n\n  it('should create an instance', () => {\n    expect(testRoutingModule).toBeTruthy();\n  });\n});\n",
                     "styleContent": "",
@@ -430,14 +430,14 @@
                 {
                     "active": true,
                     "className": "@{#fileName}",
-                    "fileName": "@{input}.@{type}",
+                    "fileName": "@{input}",
                     "htmlContent": "",
                     "importToModue": "",
-                    "input": "test",
+                    "input": "sip-logger-level",
                     "path": "",
                     "specContent": "",
                     "styleContent": "",
-                    "tsContent": "export enum @{className} {\n}\n",
+                    "tsContent": "export enum @{className} {\n   MIN=0,\n   MAX=999\n}\n",
                     "type": "enum",
                     "typeInfo": {
                         "ts": true
@@ -456,7 +456,7 @@
                     "fileName": "@{input}.@{type}",
                     "htmlContent": "<sip-page>\n  <sip-page-header navigator=\"页面\">\n    <ng-template #title>@{input} page</ng-template>\n    <ng-template #desc>\n      页面\n      <nz-tooltip [nzTitle]=\"'了解更多实例介绍'\">\n        <a nz-tooltip [sipRouterLink]>更多…</a>\n      </nz-tooltip>\n    </ng-template>\n  </sip-page-header>\n\n  <sip-page-body>\n    <!-- 卡片 -->\n    <nz-card [nzBordered]=\"false\">\n        @{input} body\n    </nz-card>\n  </sip-page-body>\n</sip-page>",
                     "importToModue": "",
-                    "input": "row-group",
+                    "input": "sip-logger",
                     "path": "@{input}",
                     "specContent": "import { async, ComponentFixture, TestBed } from '@angular/core/testing';\n\nimport { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let component: @{className};\n  let fixture: ComponentFixture<@{className}>;\n\n  beforeEach(async(() => {\n    TestBed.configureTestingModule({\n      declarations: [ @{className}]\n    })\n    .compileComponents();\n  }));\n\n  beforeEach(() => {\n    fixture = TestBed.createComponent(@{className});\n    component = fixture.componentInstance;\n    fixture.detectChanges();\n  });\n\n  it('should create', () => {\n    expect(component).toBeTruthy();\n  });\n});\n",
                     "styleContent": "",
@@ -476,7 +476,7 @@
                 }
             ],
             "index": 11,
-            "title": "page_base"
+            "title": "sip-page"
         },
         {
             "active": false,

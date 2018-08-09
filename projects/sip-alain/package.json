@@ -39,7 +39,6 @@
     "@antv/g2-plugin-slider": "^2.0.2",
     "@ngx-translate/core": "^10.0.1",
     "@ngx-translate/http-loader": "^3.0.1",
-    "@nsalaun/ng-logger": "^5.0.0",
     "@types/node": "~8.9.4",
     "core-js": "^2.5.4",
     "rxjs": "^6.0.0",

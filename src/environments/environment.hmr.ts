@@ -2,6 +2,7 @@
 // `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 import { DelonMockModule } from '@delon/mock';
+import { SipLoggerLevel } from 'sip-alain';
 import * as MOCKDATA from '../../_mock';
 const MOCKMODULE = [DelonMockModule.forRoot({ data: MOCKDATA })];
 
@@ -10,6 +11,7 @@ export const environment = {
   production: false,
   useHash: true,
   hmr: true,
+  loggerLevel:SipLoggerLevel.LOG,
   MOCKMODULE: MOCKMODULE
 };
 

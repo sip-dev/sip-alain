@@ -3,13 +3,18 @@ import { Type } from '@angular/core';
 import { AdPageHeaderConfig, ReuseTabMatchMode } from '@delon/abc';
 import { DelonAuthConfig } from '@delon/auth';
 import { IConfigResetMapRet } from './i-config-reset-map-ret';
+import { SipLoggerOptions } from './sip-logger-options';
 
+/**配置基类 */
 export abstract class SipAlainConfig {
 
     environment?: {
         production: boolean;
-        [key:string]:any;
+        [key: string]: any;
     };
+
+    /**logger参数 */
+    loggerOptions: SipLoggerOptions;
 
     i18n: {
         prefix: string;
@@ -17,16 +22,17 @@ export abstract class SipAlainConfig {
         default: string;
         langs: { code: string; text: string; }[];
     };
+
     i18nLoader: (http: HttpClient) => any;
     appDataPath: string;
     startup: () => Promise<any>;
     intercept: (req: HttpRequest<any>, next: HttpHandler) => any;
 
     authOptions?: DelonAuthConfig;
-    pageHeaderConfig?:AdPageHeaderConfig;
+    pageHeaderConfig?: AdPageHeaderConfig;
 
     reuseTab?: {
-        use:boolean;
+        use: boolean;
         mode: ReuseTabMatchMode;
     };
 
@@ -58,7 +64,7 @@ export abstract class SipAlainConfig {
         /**
          * 字典接口的connstr, 默认为:boss
          */
-        dictConnstr?:string;
+        dictConnstr?: string;
         /**
          * rest 数据结构改造
          */
@@ -104,7 +110,7 @@ export abstract class SipAlainConfig {
          */
         selectMode: string;
         /**是否单过滤, 默认true */
-        filterSingle?:boolean;
+        filterSingle?: boolean;
     };
 
 }

@@ -4,6 +4,7 @@
 
 // mock
 import { DelonMockModule } from '@delon/mock';
+import { SipLoggerLevel } from 'sip-alain';
 import * as MOCKDATA from '../../_mock';
 const MOCKMODULE = [DelonMockModule.forRoot({ data: MOCKDATA })];
 
@@ -12,6 +13,7 @@ export const environment = {
   production: false,
   useHash: true,
   hmr: false,
+  loggerLevel:SipLoggerLevel.LOG,
   MOCKMODULE: MOCKMODULE
 };
 

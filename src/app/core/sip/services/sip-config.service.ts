@@ -22,6 +22,12 @@ export class SipConfigService implements SipAlainConfig {
 
     environment = environment;
 
+    loggerOptions = {
+        level: environment.loggerLevel,
+        global: true,
+        globalAs: "sipLogger"
+    };
+
     site = {
         loginUrl: '/themes/metronic/modules/common/login/login_sso.jsp?returnUrl=/',
         logoutUrl: ''

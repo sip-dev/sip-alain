@@ -23,6 +23,10 @@ export class ServerTableComponent extends SipPage {
   private _init() {
     this.params = this.$params(this.params);
     console.log('init', this.params);
+    this.$logger.log('init', this.params);
+    this.$logger.warn('init', this.params);
+    this.$logger.error('init', this.params);
+    this.$logger.info('init', this.params);
     this.columns = getColumnsPlayers();
     this.columns[1].cellTemplate= this.templateName;
     this.columns[1].editable = false;
