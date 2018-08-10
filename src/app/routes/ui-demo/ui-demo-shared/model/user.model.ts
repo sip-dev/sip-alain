@@ -1,11 +1,10 @@
-export class UserModel {
+//定义模型(model)
+export interface UserModel {
 
-  id?:string = '';
-  
-  constructor(init?: Partial<UserModel>) {
-    if (init) {
-      Object.assign(this, init);
-    }
-  }
+    id?: string;
+    name?: string;
+    role?: string;
+    loginId?: string;
+    password?: string;
 
 }
