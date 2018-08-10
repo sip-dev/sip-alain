@@ -347,7 +347,7 @@ export interface ISipAccessParams<T=object> {
      * 检查数据
      * @param datas 传入的数据
      */
-    check?: (this: T, datas: any[], target:T) => boolean;
+    check?: (this: T, datas: any[], target: T) => boolean;
 };
 
 export interface ISipAccessManager<T> {
@@ -411,7 +411,7 @@ export function SipAccessItem<T=object>(key: string, params?: ISipAccessParams<T
             if (access && params) {
                 _has = true;
                 let pp: any = Lib.extend({}, params);
-                pp.check = function (datas:any[]) {
+                pp.check = function (datas: any[]) {
                     return _checkFn && _checkFn.call(this, datas, this);
                 }.bind(this);
                 let acItem = {};
@@ -570,7 +570,7 @@ export interface ISipRestDefParamsBase<T> {
     /**是否缓存，必须设置owner */
     cache?: boolean;
     //改造数据
-    map?: (rs: SipRestRet<T>, target?:any) => T;
+    map?: (rs: SipRestRet<T>, target?: any) => T;
 }
 
 export interface ISipRestDefParams<T=any> extends ISipRestDefParamsBase<T> {
@@ -611,7 +611,7 @@ export function SipRestDef<T=any>(params: ISipRestDefParams<T>) {
                             break;
                     }
                     if (tempParams.map)
-                        return obs.pipe(map((rs)=>{ rs.datas = tempParams.map(rs, this); return rs; }));
+                        return obs.pipe(map((rs) => { rs.datas = tempParams.map(rs, this); return rs; }));
                     else
                         return obs;
                 }.bind(this);
@@ -671,7 +671,7 @@ export function SipRestSqlDef<T=any>(params: ISipRestSqlDefParams<T>) {
                             break;
                     }
                     if (tempParams.map)
-                        return obs.pipe(map((rs)=>{ rs.datas = tempParams.map(rs, this); return rs; }));
+                        return obs.pipe(map((rs) => { rs.datas = tempParams.map(rs, this); return rs; }));
                     else
                         return obs;
                 }.bind(this);
@@ -754,7 +754,7 @@ export interface ISipFormGroupParams {
     extra?: { [key: string]: any };
 }
 
-export function SipFormGroup<T>(factory:(target:any)=>ISipFormGroupParams) {
+export function SipFormGroup<T>(factory: (target: any) => ISipFormGroupParams) {
     return function (target: any, propKey: string) {
 
         _pushEvent(target, 'sipOnConstructor', function () {
@@ -961,7 +961,9 @@ export class SipParent {
         this._$eventSrv.removeOwner(this);
         if (this._$ijdestroys.length)
             this._$ijdestroys.forEach((item) => { item.$destroy && item.$destroy(); });
-        this._$ijs = this._$ijTokens = this._$injector = null;
+        setTimeout(() => {
+            this._$ijs = this._$ijTokens = this._$injector = null;
+        }, 1);
     }
 
 }
