@@ -7,6 +7,7 @@ export class PlayerService extends SipService {
 
   constructor(injector: Injector) {
     super(injector);
+    this.$logger.warn('PlayerService init');
   }
 
   @SipRestSqlDef<PlayerModel[]>({

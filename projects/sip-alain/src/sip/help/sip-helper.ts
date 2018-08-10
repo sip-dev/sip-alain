@@ -1,4 +1,4 @@
-import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, ComponentFactoryResolver, ComponentRef, DoCheck, EventEmitter, forwardRef, Injector, OnChanges, OnDestroy, OnInit, QueryList, TemplateRef, Type, ViewContainerRef, ViewRef } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, ComponentFactoryResolver, ComponentRef, DoCheck, EventEmitter, forwardRef, Injector, OnChanges, OnDestroy, OnInit, QueryList, ReflectiveInjector, TemplateRef, Type, ViewContainerRef, ViewRef } from '@angular/core';
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from "@angular/router";
 import { ReuseTabService } from "@delon/abc";
@@ -281,6 +281,8 @@ export interface ISipInjectParams {
     autoDestroy?: boolean;
     /**injector.get notFoundValue参数 */
     notFoundValue?: any;
+    /**单独，每次创建新的服务 */
+    singleton?: boolean;
 }
 
 /**
@@ -290,7 +292,8 @@ export interface ISipInjectParams {
  * @example SipInject(TestServcie, { autoDestroy: true })
  */
 export function SipInject(token: any, params?: ISipInjectParams) {
-    let a;
+    if (params && params.singleton)
+        params.autoDestroy = true;
     return function (target: any, propKey: string) {
         Object.defineProperty(target, propKey, {
             configurable: false,
@@ -854,7 +857,12 @@ export class SipParent {
             if (index > -1)
                 return this._$ijs[index];
             else {
-                let ret = this.$injector().get(token, params && params.notFoundValue);
+                let ret, injectorTemp = this.$injector();
+                if (params && params.singleton) {
+                    const refJector = ReflectiveInjector.resolveAndCreate([token], injectorTemp);
+                    ret = refJector.resolveAndInstantiate(token);
+                } else
+                    ret = injectorTemp.get(token, params && params.notFoundValue);
                 if (params && params.autoDestroy)
                     this._$ijdestroys.push(ret);
                 this._$ijs.push(ret);
