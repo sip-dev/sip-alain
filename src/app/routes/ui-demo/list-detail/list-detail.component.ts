@@ -17,7 +17,7 @@ export class ListDetailComponent extends SipPage {
 	@SipNgInit()
 	private _init() {
 		this.params = this.$params(this.params);
-		console.log('poener', this.$opener);
+		this.$logger.log('poener', this.$opener);
 	}
 
 	nzdata = [
