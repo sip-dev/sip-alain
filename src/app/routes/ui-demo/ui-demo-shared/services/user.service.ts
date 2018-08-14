@@ -17,7 +17,7 @@ export class UserService extends SipService {
        url: 'api/getuser',
        method: SipRestMethod.GET,
        cache: true,
-       map: function (rs, target) {
+       map: function (rs, target: UserService) {
            return rs.datas;
        }
    })
@@ -30,7 +30,7 @@ export class UserService extends SipService {
        sqlId: 'uam.UserModel.list',
        searchparam: { "content": "" },
        cache: true,
-       map: function (rs, target) {
+       map: function (rs, target: UserService) {
            return rs.datas;
        }
    })

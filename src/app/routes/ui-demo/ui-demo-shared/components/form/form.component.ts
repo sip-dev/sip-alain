@@ -4,19 +4,19 @@ import { ISipFormGroup, SipComponent, SipFormGroup, SipFormSubmit } from 'sip-al
 import { DemoModel } from '../../model/demo.model';
 
 @Component({
-	selector: 'sip-form',
-	templateUrl: './form.component.html',
-	styles: []
+    selector: 'sip-form',
+    templateUrl: './form.component.html',
+    styles: []
 })
 export class FormComponent extends SipComponent {
 
-	constructor(vcf: ViewContainerRef) {
-		super(vcf);
+    constructor(vcf: ViewContainerRef) {
+        super(vcf);
     }
-    
-    @SipFormGroup((target) => {
+
+    @SipFormGroup((target: FormComponent) => {
         return {
-            model:{
+            model: {
                 "num": "",
                 "name": "",
                 "status": "success",
@@ -25,15 +25,15 @@ export class FormComponent extends SipComponent {
                 "spec": "2核2G",
                 "user": "test",
                 "date": new Date(),
-                "dateRang":"",
-                "remark":"",
-                "weight":""
+                "dateRang": "",
+                "remark": "",
+                "weight": ""
             },
-            validators:{
+            validators: {
                 num: [SipValidators.rangeLength(1, 20)],
                 name: [SipValidators.required]
             },
-            extra:null
+            extra: null
         };
     })
     form: ISipFormGroup<DemoModel>;
@@ -50,7 +50,7 @@ export class FormComponent extends SipComponent {
     ];
 
     @SipFormSubmit('this.form')
-	getSaveData():object{
-		return this.form.$toJSONObject();
-	}
+    getSaveData(): object {
+        return this.form.$toJSONObject();
+    }
 }
