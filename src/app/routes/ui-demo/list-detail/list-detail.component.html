@@ -11,8 +11,8 @@
     <nz-tabset>
       <nz-tab nzTitle="概况">
         <div nz-row>
-          <div nz-row [nzGutter]="16">
-            <div nz-col [nzMd]="16">
+          <div nz-row nzGutter="24">
+            <div nz-col nzSpan="16">
               <nz-card [nzTitle]="cardMonitorTitle" [nzExtra]="cardMonitorExtra">
                 <ng-template #cardMonitorTitle>
                   <i class="anticon anticon-area-chart mr-sm"></i>监控指标
@@ -46,80 +46,28 @@
                 <!-- <bar height="300" title="销售额趋势01" [data]="salesData"></bar> -->
               </nz-card>
             </div>
-            <div nz-col [nzMd]="8">
+            <div nz-col nzSpan="6">
               <nz-card [nzTitle]="cardBaseTitle">
                 <ng-template #cardBaseTitle>
                   <i class="anticon anticon-credit-card mr-sm"></i>基本信息
                 </ng-template>
-                <form nz-form>
-                  <div nz-form-item nz-row>
-                    <div nz-form-label nz-col [nzSpan]="5">
-                      <label>专业</label>
-                    </div>
-                    <div nz-form-control nz-col [nzSpan]="19">
-                      <nz-badge [nzStatus]="'processing'" class="mr-sm"></nz-badge>运行中
-                    </div>
-                  </div>
-                  <div nz-form-item nz-row>
-                    <div nz-form-label nz-col [nzSpan]="5">
-                      <label>区域</label>
-                    </div>
-                    <div nz-form-control nz-col [nzSpan]="19">
-                      开发云
-                    </div>
-                  </div>
-                  <div nz-form-item nz-row>
-                    <div nz-form-label nz-col [nzSpan]="5">
-                      <label>所属区域</label>
-                    </div>
-                    <div nz-form-control nz-col [nzSpan]="19">
-                      测试集群一
-                    </div>
-                  </div>
-                  <div nz-form-item nz-row>
-                    <div nz-form-label nz-col [nzSpan]="5">
-                      <label>镜像</label>
-                    </div>
-                    <div nz-form-control nz-col [nzSpan]="19">
-                      SIP
-                    </div>
-                  </div>
-                  <nz-divider class="mb-lg"></nz-divider>
-                  <div nz-form-item nz-row>
-                    <div nz-form-label nz-col [nzSpan]="5">
-                      <label>内存/CPU</label>
-                    </div>
-                    <div nz-form-control nz-col [nzSpan]="19">
-                      2核2G
-                    </div>
-                  </div>
-                  <div nz-form-item nz-row>
-                    <div nz-form-label nz-col [nzSpan]="5">
-                      <label>内网IP</label>
-                    </div>
-                    <div nz-form-control nz-col [nzSpan]="19">
-                      10.202.131.39
-                    </div>
-                  </div>
-                  <div nz-form-item nz-row>
-                    <div nz-form-label nz-col [nzSpan]="5">
-                      <label>外网IP</label>
-                    </div>
-                    <div nz-form-control nz-col [nzSpan]="19">
-                      无
-                      <a class="ml-sm">绑定IP</a>
-                    </div>
-                  </div>
-                  <div nz-form-item nz-row>
-                    <div nz-form-label nz-col [nzSpan]="5">
-                      <label>安全组</label>
-                    </div>
-                    <div nz-form-control nz-col [nzSpan]="19">
-                      123
-                      <a class="ml-sm" [sipRouterLink]="['/sip/ui-demo/create']">编辑</a>
-                    </div>
-                  </div>
-                </form>
+                <desc-list col="1" size="large" class="mb-md">
+                  <desc-list-item term="专业">
+                    <nz-badge [nzStatus]="'processing'" class="mr-sm"></nz-badge>运行中
+                  </desc-list-item>
+                  <desc-list-item term="区域">开发云</desc-list-item>
+                  <desc-list-item term="所属区域">测试aaaaaaaaaaaaaaaaa集群一</desc-list-item>
+                  <desc-list-item term="镜像">SIP</desc-list-item>
+                </desc-list>
+                <nz-divider nzTitle="" nzDashed></nz-divider>
+                <desc-list col="1" size="large" class="mb-md">
+                  <desc-list-item term="内存/CPU">2核2G</desc-list-item>
+                  <desc-list-item term="内网IP">10.202.131.39</desc-list-item>
+                  <desc-list-item term="外网IP">无
+                    <a class="ml-sm">绑定IP</a></desc-list-item>
+                  <desc-list-item term="安全组">123
+                    <a class="ml-sm" [sipRouterLink]="['/ui-demo/list-create']">编辑</a></desc-list-item>
+                </desc-list>
               </nz-card>
             </div>
           </div>
@@ -127,8 +75,8 @@
       </nz-tab>
       <nz-tab nzTitle="设备">
         <div nz-row>
-          <div nz-row [nzGutter]="16">
-            <div nz-col [nzSpan]="16">
+          <div nz-row [nzGutter]="24">
+            <div nz-col [nzXl]="18" [nzMd]="16">
               <nz-card [nzTitle]="cardNetTitle" [nzExtra]="cardNetExtra">
                 <ng-template #cardNetTitle>
                   <i class="anticon anticon-wifi mr-sm"></i>网卡
@@ -204,7 +152,7 @@
               </nz-card>
 
             </div>
-            <div nz-col [nzSpan]="8">
+            <div nz-col [nzXl]="6" [nzMd]="8">
               <nz-card [nzTitle]="cardInfoTitle">
                 <ng-template #cardInfoTitle>
                   <i class="anticon anticon-credit-card mr-sm"></i>设备信息
