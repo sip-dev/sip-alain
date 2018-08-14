@@ -30,6 +30,9 @@ npm install
 # in china please use cnpm （https://github.com/cnpm/cnpm）
 # cnpm install
 
+# build the serve
+npm build-sip-alain
+
 # start the serve
 npm start
 
