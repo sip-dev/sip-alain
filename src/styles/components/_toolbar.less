@@ -1,0 +1,19 @@
+.sip-page-toolbar{
+    margin-bottom: @gutter*2;
+
+    &::after{
+        content: '';
+        display:table;
+        clear: both;
+    }
+
+
+    > *{
+        margin-right: @gutter;
+        margin-left: 0 !important;
+
+        &:last-child{
+            margin-right: 0;
+        }
+    }   
+}
