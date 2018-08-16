@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from "@angular/router";
 import { ReuseTabService } from "@delon/abc";
 import { Menu, MenuService } from "@delon/theme";
+import { NzMessageService } from 'ng-zorro-antd';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { breakOff, Lib } from 'sip-lib';
@@ -950,6 +951,8 @@ export class SipParent {
 
     /**SipRestService */
     @SipInject(SipRestService) $httpSrv: SipRestService;
+    @SipInject(NzMessageService)
+    private $message:NzMessageService;
 
     private _$isDestroyed: boolean = false;
     public get $isDestroyed(): boolean {

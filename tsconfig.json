@@ -41,6 +41,12 @@
       ],
       "@env/*": [
         "environments/*"
+      ],
+      "sip-alain":[
+        "dist/sip-alain/"
+      ],
+      "sip-alain/*":[
+        "dist/sip-alain/*"
       ]
     }
   },

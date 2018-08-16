@@ -1,4 +1,5 @@
 import { Component, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { NzMessageService } from 'ng-zorro-antd';
 import { SipAccessItem, SipInject, SipNgInit, SipPage, SipProvidePages, SipTableColumn, SipTableServerManager, SipTableSettings } from 'sip-alain';
 import { ListFormComponent } from '../../ui-demo/list-form/list-form.component';
 import { getColumnsPlayers } from '../shared/base/column';
@@ -18,9 +19,13 @@ export class ServerTableComponent extends SipPage {
 
   params = { id: '' };
 
+  @SipInject(NzMessageService)
+  private _msgSrv:NzMessageService;
+
   /**等效于ngOnInit, 但可以多次使用 */
   @SipNgInit()
   private _init() {
+    
     this.params = this.$params(this.params);
     this.$logger.log('init', this.params);
     this.$logger.warn('init', this.params);
