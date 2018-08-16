@@ -8,14 +8,14 @@ import {translate, addClass} from '../../base/util';
 import {Row} from '../../types';
 
 @Component({
-  selector: 'app-datatable-body-row',
+  selector: 'dt-body-row',
   templateUrl: './body-row.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BodyRowComponent implements OnInit, OnDestroy {
 
-  @Input() public table: DataTable;
-  @Input() public row: Row;
+  @Input() table: DataTable;
+  @Input() row: Row;
 
   private rowDiffer: KeyValueDiffer<{}, {}>;
   private subscriptions: Subscription[] = [];

@@ -5,14 +5,14 @@ import {DataTable} from '../../base';
 import {Subscription} from 'rxjs';
 
 @Component({
-  selector: 'app-datatable-header-cell-action',
+  selector: 'dt-header-cell-action',
   templateUrl: 'header-cell-action.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class HeaderCellActionComponent implements OnInit, OnDestroy {
 
-  @Input() public table: DataTable;
+  @Input() table: DataTable;
 
   @HostBinding('class')
   get columnCssClasses(): any {
@@ -34,7 +34,7 @@ export class HeaderCellActionComponent implements OnInit, OnDestroy {
 
   private subscriptions: Subscription[] = [];
 
-  constructor(public cd: ChangeDetectorRef) {
+  constructor(private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {

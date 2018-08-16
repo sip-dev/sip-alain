@@ -1,18 +1,17 @@
-import {
-  Component, OnInit, OnDestroy, Input, ViewEncapsulation, ChangeDetectorRef, HostBinding, ViewChild, TemplateRef
-} from '@angular/core';
-import {TreeTable, Row} from '../../base';
-import {Subscription} from 'rxjs';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, Input, OnDestroy, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Row, TreeTable } from '../../base';
 
 @Component({
   selector: 'app-tree-table',
   templateUrl: './tree-table.component.html',
-  styleUrls: ['../../../ng-data-table/styles/index.css'],
+  // styleUrls: ['../../../ng-data-table/styles/index.css'],
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TreeTableComponent implements OnInit, OnDestroy {
 
-  @Input() public treeTable: TreeTable;
+  @Input() treeTable: TreeTable;
 
   @HostBinding('class') cssClass = 'datatable';
   @ViewChild('cellTemplate') cellTemplate: TemplateRef<any>;
@@ -26,7 +25,7 @@ export class TreeTableComponent implements OnInit, OnDestroy {
     this.treeTable.columns[0].cellTemplate = this.cellTemplate;
     this.initGetNodes();
 
-    const subScroll = this.treeTable.events.scrollSource$.subscribe((event) => {
+    const subScroll = this.treeTable.events.scrollSource$.subscribe(() => {
       requestAnimationFrame(() => {
         this.cd.detectChanges();
       });
@@ -69,19 +68,15 @@ export class TreeTableComponent implements OnInit, OnDestroy {
 
   getIcon(node: any) {
     let icon: string;
-    if (node.loading && !this.isLeaf(node)) {
+    if (node.loading && !node.isLeaf()) {
       return 'icon-collapsing';
     }
-    if (!this.isLeaf(node) && node.expanded) {
+    if (!node.isLeaf() && node.expanded) {
       icon = 'icon-node icon-collapsed';
-    } else if (!this.isLeaf(node)) {
+    } else if (!node.isLeaf()) {
       icon = 'icon-node';
     }
     return icon;
-  }
-
-  isLeaf(node: any) {
-    return node.leaf === false ? false : !(node.children && node.children.length);
   }
 
   selectionToggle(row: Row): void {

@@ -14,7 +14,7 @@
     </i>
     </span>
     <i *ngIf="column.filter"
-        (click)="clickColumnMenu($event, column)"
+        (click)="clickColumnMenu($event, column, false)"
         [ngClass]="{'is-filter': table.dataFilter.isFilter(column.name)}"
         class="icon-filter column-menu">
     </i>

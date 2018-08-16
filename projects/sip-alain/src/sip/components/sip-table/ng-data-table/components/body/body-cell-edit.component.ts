@@ -4,13 +4,13 @@ import { CellEventArgs, Row, SelectOption } from '../../types';
 import { BodyCellComponent } from './body-cell.component';
 
 @Component({
-  selector: 'app-datatable-body-cell-edit',
+  selector: 'dt-body-cell-edit',
   templateUrl: './body-cell-edit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BodyCellEditComponent extends BodyCellComponent implements OnInit {
 
-  public tempValue: any;
+  tempValue: any;
 
   constructor(cd: ChangeDetectorRef, element: ElementRef) {
     super(cd, element);
@@ -93,7 +93,7 @@ export class BodyCellEditComponent extends BodyCellComponent implements OnInit {
     }
   }
 
-  getOptions(row: Row): SelectOption[] {
+  getOptions(row: Row):SelectOption[] {
     return this.column.getOptions(row[this.column.dependsColumn]);
   }
 

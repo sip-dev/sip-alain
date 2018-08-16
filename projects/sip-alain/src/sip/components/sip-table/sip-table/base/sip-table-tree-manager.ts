@@ -1,9 +1,9 @@
 import { Injector } from '@angular/core';
 import { TreeTable } from '../../ng-tree-table';
-import { SipTreeDataSource } from '../base';
 import { SipTableTreeSourceService } from '../services/sip-table-tree-source.service';
 import { SipTableColumn } from './sip-table-column';
 import { SipTableSettings } from './sip-table-settings';
+import { SipTreeDataSource } from './sip-tree-data-source';
 
 export class SipTableTreeManager<T=object> extends TreeTable<T> {
 

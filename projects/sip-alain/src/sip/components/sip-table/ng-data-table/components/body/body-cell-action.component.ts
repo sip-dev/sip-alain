@@ -7,13 +7,13 @@ import {Row} from '../../types';
 import {Subscription} from 'rxjs';
 
 @Component({
-  selector: 'app-datatable-body-cell-action',
+  selector: 'dt-body-cell-action',
   templateUrl: 'body-cell-action.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BodyCellActionComponent implements OnInit, OnDestroy {
 
-  @Input() public table: DataTable;
+  @Input() table: DataTable;
 
   @Input()
   set row(row: Row) {
@@ -34,8 +34,8 @@ export class BodyCellActionComponent implements OnInit, OnDestroy {
 
   @ViewChild('rowActionTemplate', {read: ViewContainerRef}) rowActionTemplate: ViewContainerRef;
 
-  public checked: boolean;
-  public cellContext: any = {row: this.row};
+  checked: boolean;
+  cellContext: any = {row: this.row};
   private _row: Row;
   private subscriptions: Subscription[] = [];
 

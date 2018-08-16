@@ -1,4 +1,4 @@
-// export {TreeTableModule} from './tree-table-module';
-export { Column, DataTable, Message, Settings } from '../ng-data-table';
-export { TreeDataSource, TreeNode, TreeTable } from './base';
-export { TreeTableComponent } from './components/tree-table/tree-table.component';
+export {TreeTableModule} from './tree-table-module';
+export {TreeTableComponent} from './components/tree-table/tree-table.component';
+export {TreeTable, TreeDataSource, TreeNode} from './base';
+export {Column, DataTable, Settings, Message} from '../ng-data-table';

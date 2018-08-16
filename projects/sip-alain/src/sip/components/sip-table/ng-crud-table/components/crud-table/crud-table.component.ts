@@ -7,14 +7,14 @@ import { RowMenuComponent } from '../row-menu/row-menu.component';
 @Component({
   selector: 'app-crud-table',
   templateUrl: './crud-table.component.html',
-  styleUrls: ['../../styles/index.css'],
+  // styleUrls: ['../../styles/index.css'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class CrudTableComponent implements OnInit, OnDestroy {
 
-  @Input() public dataManager: DataManager;
+  @Input() dataManager: DataManager;
   @Output() select: EventEmitter<any> = new EventEmitter();
   @Output() rowsChanged: EventEmitter<boolean> = new EventEmitter();
 
@@ -36,8 +36,9 @@ export class CrudTableComponent implements OnInit, OnDestroy {
     if (this.dataManager.settings.initLoad) {
       this.dataManager.getItems().then();
     }
-    if (!('rowActionTemplate' in this.dataManager.settings))
-      this.dataManager.settings.rowActionTemplate = this.rowActionTemplate;
+    let settings = this.dataManager.settings;
+    if (!('rowActionTemplate' in settings) && !settings.selectionMultiple)
+      settings.rowActionTemplate = this.rowActionTemplate;
 
     const subSelection = this.dataManager.events.selectionSource$.subscribe(() => {
       this.onSelectedRow();

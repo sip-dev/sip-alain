@@ -6,7 +6,7 @@
                  *ngIf="column.cellTemplate"
                  [ngTemplateOutlet]="column.cellTemplate"
                  [ngTemplateOutletContext]="{
-                  value: dataManager.item[column.name],
+                  value: (column.keyColumn) ? dataManager.item[column.keyColumn] : dataManager.item[column.name],
                   column: column
                }">
     </ng-template>

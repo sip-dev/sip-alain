@@ -31,6 +31,12 @@
             "problemMatcher": []
         },
         {
+            "type": "npm",
+            "label": "! 编译 sip-alain-css (build-sip-alain-css)",
+            "script": "build-sip-alain-css",
+            "problemMatcher": []
+        },
+        {
             "label": "测试 web",
             "type": "npm",
             "script": "test",

@@ -1,6 +1,6 @@
 import { Injectable, Injector } from '@angular/core';
 import { SipRestService, SipSqlParam } from '../../../../services/sip-rest.service';
-import { TreeNode } from '../../ng-tree-table/base/interface';
+import { TreeNode } from '../../ng-tree-table/base/tree-node';
 import { SipTableSettings } from '../base/sip-table-settings';
 import { SipTreeDataSource } from '../base/sip-tree-data-source';
 
@@ -45,7 +45,7 @@ export class SipTableTreeSourceService extends SipTreeDataSource {
   }
 
   private makeTreeNodeItem(data): TreeNode {
-    let node: TreeNode = {
+    let node: TreeNode = <TreeNode>{
       id: data ? data[this.idField] : '',
       name: data ? data[this.nameField] : '',
       leaf: data ? data[this.leafField] : true,
@@ -71,8 +71,8 @@ export class SipTableTreeSourceService extends SipTreeDataSource {
     return this.makeTreeNodes(children);
   }
 
-  private _allTempDatas:any[];
-  toTreeNodes(datas: any[]): TreeNode[]{
+  private _allTempDatas: any[];
+  toTreeNodes(datas: any[]): TreeNode[] {
     if (!datas) return [];
     let rootData = {};
     if (this.childrenFiled)

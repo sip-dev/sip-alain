@@ -1,17 +1,19 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { Column, DataTable } from '../../base';
-import { ColumnMenuEventArgs } from '../../types';
+import {
+    Component, Input, HostBinding, ChangeDetectionStrategy, ChangeDetectorRef, OnInit, OnDestroy
+  } from '@angular/core';
+import {Column, DataTable} from '../../base';
+import {Subscription} from 'rxjs';
+import {ColumnMenuEventArgs} from '../../types';
 
   @Component({
-    selector: 'app-datatable-header-cell',
+    selector: 'dt-header-cell',
     templateUrl: 'header-cell.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
   })
 
   export class HeaderCellComponent implements OnInit, OnDestroy {
 
-    @Input() public table: DataTable;
+    @Input() table: DataTable;
 
     @Input() set column(column: Column) {
         this._column = column;
@@ -37,13 +39,13 @@ import { ColumnMenuEventArgs } from '../../types';
       return this.column.title;
     }
 
-    public cellContext: any = {
+    cellContext: any = {
         column: this.column,
     };
     private _column: Column;
     private subscriptions: Subscription[] = [];
 
-    constructor(public cd: ChangeDetectorRef) {
+    constructor(private cd: ChangeDetectorRef) {
     }
 
     ngOnInit() {
@@ -65,11 +67,11 @@ import { ColumnMenuEventArgs } from '../../types';
         this.table.events.onSort();
     }
 
-    clickColumnMenu(event: any, column: Column, isLast?: boolean) {
+    clickColumnMenu(event: any, column: Column, isLast: boolean) {
         const el = event.target.parentNode;
         let left = el.offsetLeft;
         let top = el.offsetTop;
-        top = top + this.table.dimensions.headerRowHeight;
+        top = top + this.table.dimensions.headerRowHeight + (this.table.dimensions.headerTemplateHeight || 0);
         // datatable-row-left + offsetLeft
         if (el.parentNode.offsetLeft > 0) {
           left = left + el.parentNode.offsetLeft - this.table.dimensions.offsetX;

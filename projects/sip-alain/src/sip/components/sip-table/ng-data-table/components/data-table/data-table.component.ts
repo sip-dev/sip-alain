@@ -1,21 +1,18 @@
-import {
-  Component, OnInit, ViewChild, Input, Output, ViewEncapsulation, EventEmitter, ElementRef, HostBinding,
-  ChangeDetectionStrategy, DoCheck, KeyValueDiffers, KeyValueDiffer, ChangeDetectorRef, OnDestroy
-} from '@angular/core';
-import {DataTable, Constants} from '../../base';
-import {Subscription} from 'rxjs';
-import {BodyScrollDirective} from '../../directives/body-scroll.directive';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DoCheck, ElementRef, EventEmitter, HostBinding, Input, KeyValueDiffer, KeyValueDiffers, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Constants, DataTable } from '../../base';
+import { BodyScrollDirective } from '../../directives/body-scroll.directive';
 
 @Component({
-  selector: 'app-datatable',
+  selector: 'app-datatable, app-data-table',
   templateUrl: './data-table.component.html',
-  styleUrls: ['../../styles/index.css'],
+  // styleUrls: ['../../styles/index.css'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataTableComponent implements OnInit, DoCheck, OnDestroy {
 
-  @Input() public table: DataTable;
+  @Input() table: DataTable;
   @Output() selectionChange: EventEmitter<any> = new EventEmitter();
 
   @ViewChild('resizeHelper') resizeHelper: ElementRef;
@@ -34,7 +31,7 @@ export class DataTableComponent implements OnInit, DoCheck, OnDestroy {
     return this.table.dimensions.tableWidth;
   }
 
-  public loading: boolean;
+  loading: boolean;
   private rowDiffer: KeyValueDiffer<{}, {}>;
   private subscriptions: Subscription[] = [];
 

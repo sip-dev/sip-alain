@@ -4,9 +4,10 @@ import { Message } from '../../ng-data-table/base/message';
 import { Settings } from '../../ng-data-table/base/settings';
 import { SipDataTable } from '../../sip-table/base/sip-data-table';
 import { Row } from './index';
-import { TreeDataSource, TreeNode } from './interface';
 import { Tree } from './tree';
 import { TreeFlattener } from './tree-flattener';
+import { TreeNode } from './tree-node';
+import { TreeDataSource } from './tree-types';
 
 export class TreeTable<T=object> extends SipDataTable<T> {
 
@@ -20,6 +21,7 @@ export class TreeTable<T=object> extends SipDataTable<T> {
 
   set nodes(val: TreeNode[]) {
     this.tree.nodes = val;
+    this.flatten();
   }
 
   get nodes(): TreeNode[] {
@@ -34,8 +36,8 @@ export class TreeTable<T=object> extends SipDataTable<T> {
     return this.tree.filterLoading;
   }
 
-  public tree: Tree;
-  public treeFlattener: TreeFlattener;
+  tree: Tree;
+  treeFlattener: TreeFlattener;
 
   constructor(columns: ColumnBase[], settings: Settings, dataSource: TreeDataSource, messages?: Message, injector?:Injector) {
     super(columns, settings, messages, injector);
@@ -64,6 +66,34 @@ export class TreeTable<T=object> extends SipDataTable<T> {
       results.push(this.rows[i]);
     }
     return results;
+  }
+
+  rowsToTree(rows: any[], from: string, to: string): TreeNode[] {
+    const map = {};
+    const roots: TreeNode[] = [];
+
+    for (let i = 0; i < rows.length; i++) {
+      const id = rows[i][to];
+      map[id] = <TreeNode>{
+        id: id,
+        name: (rows[i].name) ? rows[i].name : null,
+        data: Object.assign({}, rows[i]),
+        icon: (rows[i].icon) ? rows[i].icon : null,
+        children: [],
+      };
+    }
+
+    for (let i = 0; i < rows.length; i++) {
+      const id = rows[i][to];
+      const node = map[id];
+      const parentId = node.data[from];
+      if (parentId !== 0) {
+        map[parentId].children.push(node);
+      } else {
+        roots.push(node);
+      }
+    }
+    return roots;
   }
 
 }
