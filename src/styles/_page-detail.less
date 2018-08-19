@@ -1,9 +1,9 @@
 /* 详情
 ============================================================*/
 
-@lg:24px;
+@lg:16px;
 .page-detail{
-	nz-tabset{
+	.ant-tabs{
 		margin-top: -25px;
 		margin-left: -@lg;
 		margin-right: -@lg;
@@ -16,9 +16,10 @@
 			}
 		}
 
-		nz-tab-body{
-			margin-left: @lg;
-			margin-right: @lg;
-		}
+        .ant-tabs-tabpane{
+            padding-left: 16px;
+            padding-right: 16px;
+        }
+		
 	}
 }

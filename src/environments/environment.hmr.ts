@@ -8,7 +8,7 @@ const MOCKMODULE = [DelonMockModule.forRoot({ data: MOCKDATA })];
 
 export const environment = {
   SERVER_URL: `./`,
-  production: false,
+  production: true,
   useHash: true,
   hmr: true,
   loggerLevel:SipLoggerLevel.LOG,
