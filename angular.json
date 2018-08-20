@@ -57,6 +57,10 @@
                   "with": "src/environments/environment.hmr.ts"
                 }
               ]
+            },
+            "css": {
+              "sourceMap": true,
+              "extractCss": true
             }
           }
         },
@@ -72,6 +76,9 @@
             "hmr": {
               "browserTarget": "ng-alain:build:hmr",
               "hmr": true
+            },
+            "css": {
+              "browserTarget": "ng-alain:build:css"
             }
           }
         },
