@@ -1,5 +1,5 @@
-import {Row} from '../types';
-import {Events} from './events';
+import { Row } from '../types';
+import { Events } from './events';
 
 export class DataSelection {
 
@@ -26,9 +26,9 @@ export class DataSelection {
     }
   }
 
-  clearSelection(): void {
+  clearSelection(triggetEvent?:boolean): void {
     this._unmarkAll();
-    this.events.onSelectionChange();
+    triggetEvent !== false && this.events.onSelectionChange();
   }
 
   isRowSelected(rowIndex: number): boolean {

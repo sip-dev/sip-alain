@@ -32,8 +32,7 @@ export class TreeTableComponent extends SipPage {
       treeParentIdField: 'parentId',
       /**children字段, 默认为空，如果有内容表示子节点数据 */
       // treeChildrenField:'children',
-      selectionMultiple: true,
-      selectionMode: 'checkbox'
+      selectionMultiple: true
     }));
     this.tableManager.datas = [
       {
@@ -72,8 +71,7 @@ export class TreeTableComponent extends SipPage {
       treeNameField: 'name',
       /**children字段, 默认为空，如果有内容表示子节点数据 */
       treeChildrenField: 'children',
-      selectionMultiple: true,
-      selectionMode: 'checkbox'
+      selectionMultiple: true
     }));
     this.tableManager2.datas = [
       {

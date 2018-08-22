@@ -1,6 +1,6 @@
-import {SelectionMode, ColumnResizeMode, EditMode} from '../types';
-import {TemplateRef} from '@angular/core';
-import {Constants} from './constants';
+import { TemplateRef } from '@angular/core';
+import { ColumnResizeMode, EditMode, SelectionMode } from '../types';
+import { Constants } from './constants';
 
 export class Settings {
   api?: string;
@@ -18,6 +18,7 @@ export class Settings {
   globalFilter?: boolean;
   columnResizeMode?: ColumnResizeMode = Constants.resizeSimple;
   selectionMultiple?: boolean;
+  /**选择模式，分别是操作模式(operate)和选择模式(select), 默认为operate */
   selectionMode?: SelectionMode;
   singleRowView?: boolean = true;
   virtualScroll?: boolean;

@@ -1,6 +1,6 @@
-<span *ngIf="isCheckboxable && table.settings.selectionMode"
-      class="{{'datatable-' + table.settings.selectionMode}}">
-      <input [type]="table.settings.selectionMode"
+<span *ngIf="isCheckboxable && table.settings.selectionMultiple"
+      class="datatable-checkbox">
+      <input type="checkbox"
              [checked]="allRowsSelected"
              (click)="onHeaderCheckboxClick()"/>
 </span>

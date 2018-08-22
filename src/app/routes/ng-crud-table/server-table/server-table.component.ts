@@ -61,7 +61,6 @@ export class ServerTableComponent extends SipPage {
     restSrv:(param) => this._playerSrv.getPageList(null, param),
     rowActionTemplate:null,
     selectionMultiple:true,
-    selectionMode: 'checkbox',
     contextmenuAction: (e, row) => {
       return {
         width: '100px',

@@ -17,7 +17,7 @@ export type AggregateType =
   'min' |
   'count';
 
-export type SelectionMode = 'checkbox' | 'radio';
+  export type SelectionMode = 'operate' | 'select';
 
 export type ColumnResizeMode = 'simple' | 'aminated';
 

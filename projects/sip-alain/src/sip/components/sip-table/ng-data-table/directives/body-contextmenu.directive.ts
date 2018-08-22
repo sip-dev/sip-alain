@@ -1,4 +1,4 @@
-import { Directive, Input, ElementRef, OnInit, OnDestroy, NgZone } from '@angular/core';
+import { Directive, ElementRef, Input, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { DataTable, EventHelper } from '../base';
 
 @Directive({
@@ -30,6 +30,7 @@ export class BodyContextMenuDirective implements OnInit, OnDestroy {
         const cellEventArgs = EventHelper.findCellEvent(event, this.element);
         if (cellEventArgs) {
             this.ngZone.run(() => {
+                this.table.checkSelectByMode(cellEventArgs, true);
                 this.table.events.onContextMenu(cellEventArgs);
             });
         }

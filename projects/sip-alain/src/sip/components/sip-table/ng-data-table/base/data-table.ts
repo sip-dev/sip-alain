@@ -1,17 +1,17 @@
-import {Row, CellEventArgs} from '../types';
-import {ColumnBase} from './column-base';
-import {Column} from './column';
-import {Settings} from './settings';
-import {DataPager} from './data-pager';
-import {DataSort} from './data-sort';
-import {DataFilter} from './data-filter';
-import {Events} from './events';
-import {DataSelection} from './data-selection';
-import {Dimensions} from './dimensions';
-import {Message} from './message';
-import {RowGroup} from './row-group';
-import {RowVirtual} from './row-virtual';
-import {Sequence} from './sequence';
+import { CellEventArgs, Row } from '../types';
+import { Column } from './column';
+import { ColumnBase } from './column-base';
+import { DataFilter } from './data-filter';
+import { DataPager } from './data-pager';
+import { DataSelection } from './data-selection';
+import { DataSort } from './data-sort';
+import { Dimensions } from './dimensions';
+import { Events } from './events';
+import { Message } from './message';
+import { RowGroup } from './row-group';
+import { RowVirtual } from './row-virtual';
+import { Sequence } from './sequence';
+import { Settings } from './settings';
 
 export class DataTable {
 
@@ -152,7 +152,7 @@ export class DataTable {
     this.chunkRows(true);
     this.events.onRowsChanged();
     setTimeout(() => {
-      this.events.onActivateCell(<CellEventArgs>{columnIndex: 0, rowIndex: newRow.$$index});
+      this.events.onActivateCell(<CellEventArgs>{ columnIndex: 0, rowIndex: newRow.$$index });
     }, 10);
   }
 
@@ -186,7 +186,7 @@ export class DataTable {
   }
 
   editCell(rowIndex: number, columnIndex: number, editMode: boolean) {
-    this.events.onCellEditMode(<CellEventArgs>{columnIndex, rowIndex, editMode});
+    this.events.onCellEditMode(<CellEventArgs>{ columnIndex, rowIndex, editMode });
   }
 
   updateCell(rowIndex: number, field: string, value: string | number | boolean | Date): void {
@@ -226,6 +226,19 @@ export class DataTable {
 
   getSelection() {
     return this.selection.getSelectedRows(this.rows);
+  }
+
+  checkSelectByMode(cellEventArgs: CellEventArgs, keepSel?:boolean) {
+    let rowIndex = cellEventArgs.rowIndex;
+    let selection = this.selection;
+    if (this.settings.selectionMode !== 'select') {
+      if (keepSel !== true || !selection.isRowSelected(rowIndex))
+        selection.clearSelection(false);
+      this.selectRow(rowIndex);
+    } else if (selection.isRowSelected(rowIndex)) {
+      selection.toggle(rowIndex);
+    } else
+      this.selectRow(rowIndex);
   }
 
 }
