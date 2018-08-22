@@ -43,7 +43,7 @@ export class SipConfigService implements SipAlainConfig {
 
     reuseTab = {
         /**是否使用多页面 */
-        use: true,
+        use: false,
         /**多页url复用模式 */
         mode: ReuseTabMatchMode.URL
     };

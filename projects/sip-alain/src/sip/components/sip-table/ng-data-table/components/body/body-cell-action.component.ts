@@ -26,6 +26,7 @@ export class BodyCellActionComponent implements OnInit, OnDestroy {
   }
 
   @HostBinding('class') cssClass = 'datatable-body-cell action-cell';
+  @HostBinding('attr.role') role = 'gridcell';
 
   @HostBinding('style.width.px')
   get width(): number {
@@ -58,7 +59,7 @@ export class BodyCellActionComponent implements OnInit, OnDestroy {
   }
 
   onCheckboxClick(event) {
-    this.table.selectRow(this.row.$$index);
+    this.table.selection.toggle(this.row.$$index);
     this.table.events.onCheckbox(this.row);
   }
 

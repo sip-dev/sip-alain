@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ToolbarModule } from '../lib/toolbar/toolbar-module';
 import { DataTableModule } from '../ng-data-table/data-table-module';
 import { CrudTableComponent } from './components/crud-table/crud-table.component';
 import { CalendarComponent } from './components/form/calendar.component';
@@ -28,6 +29,7 @@ import { OrderPipe } from './pipes/order.pipe';
     FormsModule,
     HttpClientModule,
     DataTableModule,
+    ToolbarModule,
   ],
   declarations: [
     CrudTableComponent,
