@@ -45,6 +45,9 @@ export class DataTableComponent extends SipPage {
     this.tableManager.events.clickCellSource$.subscribe((p) => {
       this.$logger.log('cell click', p);
     });
+    this.tableManager.events.dblClickCellSource$.subscribe((p) => {
+      this.$logger.log('cell dblClickCellSource', p);
+    });
     this.$logger.log('init - 1', this.params);
   }
 

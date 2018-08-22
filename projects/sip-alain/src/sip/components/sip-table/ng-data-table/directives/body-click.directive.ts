@@ -1,4 +1,4 @@
-import { Directive, Input, ElementRef, OnInit, OnDestroy, NgZone } from '@angular/core';
+import { Directive, ElementRef, Input, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { DataTable, EventHelper } from '../base';
 
 @Directive({
@@ -31,6 +31,7 @@ export class BodyClickDirective implements OnInit, OnDestroy {
                 if (!this.table.settings.selectionMode) {
                     this.table.selectRow(cellEventArgs.rowIndex);
                 }
+                this.table.events.onClickCell(cellEventArgs);
             });
         }
     }
