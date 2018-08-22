@@ -42,6 +42,14 @@ export class SipLoggerService {
     this.isLogEnabled() && console.log.apply(console, arguments);
   }
 
+  debug(message?: any, ...optionalParams: any[]) {
+    this.isDebugEnabled() && console.warn.apply(console, arguments);
+  }
+
+  debugger(){
+    if (this.isDebugEnabled()) debugger;
+  }
+
   private _global = () => (<any>window)[this._globalAs] = this;
 
   isErrorEnabled = (): boolean => this.level >= SipLoggerLevel.ERROR;

@@ -37,24 +37,21 @@ export class DataTableComponent extends SipPage {
     });
     this.tableManager.events.selectionSource$.subscribe(() => {
       var datas = this.tableManager.getSelectedDatas();
-      this.$logger.warn('selectionSource');
+      this.$logger.debug('selectionSource');
       this.$access.check(datas);
     });
-    this.tableManager.events.activateCellSource$.subscribe((p) => {
-      this.$logger.warn('activateCellSource', p);
-    });
     this.tableManager.events.clickCellSource$.subscribe((p) => {
-      this.$logger.warn('cell click', p);
+      this.$logger.debug('cell click', p);
     });
     this.tableManager.events.dblClickCellSource$.subscribe((p) => {
-      this.$logger.warn('cell dblClickCellSource', p);
+      this.$logger.debug('cell dblClickCellSource', p);
     });
-    this.$logger.warn('init - 1', this.params);
+    this.$logger.debug('init - 1', this.params);
   }
 
   @SipNgDestroy()
   private _destroy() {
-    this.$logger.warn('_destroy test in list');
+    this.$logger.debug('_destroy test in list');
   }
 
   public tableManager: SipTableDataManager;
