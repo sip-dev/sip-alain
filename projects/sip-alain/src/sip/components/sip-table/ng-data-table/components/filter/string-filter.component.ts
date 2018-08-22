@@ -1,8 +1,5 @@
-import {
-  Component, OnInit, Input, Output, EventEmitter, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef,
-  OnChanges, SimpleChanges, ViewChild
-} from '@angular/core';
-import {Column, DataTable, DataFilter} from '../../base';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Column, DataFilter, DataTable } from '../../base';
 
 @Component({
   selector: 'app-string-filter',
@@ -19,7 +16,7 @@ export class StringFilterComponent implements OnInit, AfterViewInit, OnChanges {
   @ViewChild('filterInput') filterInput: any;
 
   filterTimeout: any;
-  matchMode: string = DataFilter.STARTS_WITH;
+  matchMode: string = DataFilter.CONTAINS;
   stringOperators: any[];
 
   constructor(private cd: ChangeDetectorRef) {

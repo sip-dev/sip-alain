@@ -40,7 +40,33 @@ export class SipDataTable<T> extends DataTable {
                 });
             }
         }
+
+        // this.onSelectChanged = this.events.selectionSource$;
+        // this.onScroll= this.events.scrollSource$;
+        // this.onPageChanaged = this.events.pageSource$;
+        // this.onSort = this.events.sortSource$;
+        // this.onActivateCell = this.events.activateCellSource$;
+        // this.onCellEditMode = this.events.cellEditModeSource$;
+        // this.onClickCell = this.events.clickCellSource$;
+        // this.onDblClickCell = this.events.dblClickCellSource$;
+        // this.onContextMenu = this.events.contextMenuSource$;
+        // this.onResizeBegin = this.events.resizeBeginSource$;
+        // this.onResizeEnd = this.events.resizeEndSource$;
+        // this.onResize = this.events.resizeSource$;
     }
+
+    // readonly onSelectChanged:Observable<any>;
+    // readonly onScroll:Observable<any>;
+    // readonly onPageChanaged:Observable<any>;
+    // readonly onSort:Observable<any>;
+    // readonly onActivateCell:Observable<CellEventArgs>;
+    // readonly onCellEditMode:Observable<CellEventArgs>;
+    // readonly onClickCell:Observable<CellEventArgs>;
+    // readonly onDblClickCell:Observable<CellEventArgs>;
+    // readonly onContextMenu:Observable<CellEventArgs>;
+    // readonly onResizeBegin:Observable<any>;
+    // readonly onResize:Observable<any>;
+    // readonly onResizeEnd:Observable<any>;
 
     //#region rows && datas
 
@@ -150,5 +176,6 @@ export class SipDataTable<T> extends DataTable {
             }
         }
     }
+    //#endregion editCell
 
 }
