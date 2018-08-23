@@ -2,6 +2,7 @@ import { HttpClient, HttpHandler, HttpRequest } from '@angular/common/http';
 import { Type } from '@angular/core';
 import { AdPageHeaderConfig, ReuseTabMatchMode } from '@delon/abc';
 import { DelonAuthConfig } from '@delon/auth';
+import { SipTableSettings } from '../components/sip-table/sip-table/base/sip-table-settings';
 import { IConfigResetMapRet } from './i-config-reset-map-ret';
 import { SipLoggerOptions } from './sip-logger-options';
 
@@ -98,20 +99,7 @@ export abstract class SipAlainConfig {
         }
     };
 
-    minitable: {
-        /**
-         * 页面记录数
-         */
-        pageSize: number;
-        /**是否多选 */
-        multiSelect: boolean;
-        /**
-         * 选择模式，分别是操作模式(operate)和选择模式(select)
-         */
-        selectMode: string;
-        /**是否单过滤, 默认true */
-        filterSingle?: boolean;
-    };
+    crudtable?: SipTableSettings;
 
 }
 

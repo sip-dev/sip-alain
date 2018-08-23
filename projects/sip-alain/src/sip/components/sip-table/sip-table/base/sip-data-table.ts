@@ -12,35 +12,32 @@ export class SipDataTable<T> extends DataTable {
 
     constructor(columns: ColumnBase[], settings: SipTableSettings, messages?: Message,
         public readonly injector?: Injector) {
-        super(columns, settings, messages);
+        super(columns, settings, messages, injector);
+        settings = this.settings;
 
-        if (settings) {
+        settings.clientSide = true;
 
-            settings.clientSide = true;
-
-            let sortName = settings.sortName;
-            if (sortName) {
-                let sortOrder = settings.sortOrder == 'asc' ? 1 : -1;
-                this.sorter.sortMeta.push({ field: sortName, order: sortOrder });
-            }
-
-            this._isEditMode = settings.editMode === 'editProgrammatically';
-            if (this._isEditMode) {
-                /**翻页时取消所有cell编辑状态 */
-                this.events.pageSource$.subscribe((p) => {
-                    this.unEditCellAll();
-                });
-            }
-            if (settings.contextmenuAction) {
-                let contextmenu = injector.get(SipContextMenuService);
-                this.events.contextMenuSource$.subscribe((e) => {
-                    let row = this.getRows()[e.rowIndex];
-                    let ct = settings.contextmenuAction(e, row);
-                    return contextmenu.show(ct, e.event);
-                });
-            }
+        let sortName = settings.sortName;
+        if (sortName) {
+            let sortOrder = settings.sortOrder == 'asc' ? 1 : -1;
+            this.sorter.sortMeta.push({ field: sortName, order: sortOrder });
         }
 
+        this._isEditMode = settings.editMode === 'editProgrammatically';
+        if (this._isEditMode) {
+            /**翻页时取消所有cell编辑状态 */
+            this.events.pageSource$.subscribe((p) => {
+                this.unEditCellAll();
+            });
+        }
+        if (settings.contextmenuAction) {
+            let contextmenu = injector.get(SipContextMenuService);
+            this.events.contextMenuSource$.subscribe((e) => {
+                let row = this.getRows()[e.rowIndex];
+                let ct = settings.contextmenuAction(e, row);
+                return contextmenu.show(ct, e.event);
+            });
+        }
         // this.onSelectChanged = this.events.selectionSource$;
         // this.onScroll= this.events.scrollSource$;
         // this.onPageChanaged = this.events.pageSource$;

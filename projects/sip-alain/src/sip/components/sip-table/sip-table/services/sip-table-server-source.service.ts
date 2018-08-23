@@ -27,8 +27,8 @@ export class SipTableServerSourceService extends SipTableDataSource {
   constructor(private injector: Injector, settings: SipTableSettings) {
     super();
     this.http = this.injector.get(SipRestService);
-    this.settings = Object.assign(settings);
-    this.pageSize = settings.pageSize || 10;
+    this.settings = new SipTableSettings(settings, injector);
+    this.pageSize = this.settings.pageSize || 10;
   }
 
   private makeSqlParam(page: number, filters: Filter, sortMeta: SortMeta[]): SipSqlParam {

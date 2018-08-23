@@ -24,7 +24,8 @@ export class SipTableTreeSourceService extends SipTreeDataSource {
   constructor(private injector: Injector, settings: SipTableSettings) {
     super();
     this.http = this.injector.get(SipRestService);
-    this.settings = Object.assign(settings);
+    this.settings = new SipTableSettings(settings, injector);
+    settings = this.settings;
     this.url = settings.api;
     this.idField = settings.treeIdField || 'id';
     this.nameField = settings.treeNameField || 'name';

@@ -9,7 +9,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NzMessageService } from 'ng-zorro-antd';
 import { Observable, of } from 'rxjs';
 import { catchError, mergeMap } from 'rxjs/operators';
-import { IConfigResetMapRet, SipAlainConfig } from 'sip-alain';
+import { IConfigResetMapRet, SipAlainConfig, SipTableSettings } from 'sip-alain';
 
 
 let _rmPathSplitRegex = /\/{2,}/g;
@@ -212,19 +212,8 @@ export class SipConfigService implements SipAlainConfig {
         }
     };
 
-    /**minitable默认设置 */
-    minitable = {
-        /**
-         * 页面记录数
-         */
+    crudtable = new SipTableSettings({
         pageSize: 10,
-        multiSelect: true,
-        /**
-         * 选择模式，分别是操作模式(operate)和选择模式(select)
-         */
-        selectMode: 'operate',
-        /**过滤器是否单选 */
-        filterSingle: true
-    };
-
+        selectionMode: 'operate'
+    });
 }

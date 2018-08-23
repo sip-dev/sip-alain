@@ -15,7 +15,7 @@
             <div class="table-list">
                  <!-- 操作栏 -->
                 <sip-page-toolbar class="sip-page-toolbar">
-                    <button nz-button [nzType]="'default'">
+                    <button nz-button [nzType]="'default'" (click)="refresh()">
                         <i class="anticon anticon-reload"></i>
                     </button>
                     <button nz-button (click)="create()" sipAccess="create" [nzType]="'primary'">

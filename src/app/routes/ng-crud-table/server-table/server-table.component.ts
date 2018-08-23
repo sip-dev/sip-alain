@@ -56,7 +56,7 @@ export class ServerTableComponent extends SipPage {
   public tableSettings: SipTableSettings = new SipTableSettings({
     // sqlId: 'iaas.instlist', connstr: 'iaas',
     sortName: 'name', sortOrder: 'asc',
-    pageSize: 10,
+    // pageSize: 10,
     editMode: 'editProgrammatically',
     restSrv:(param) => this._playerSrv.getPageList(null, param),
     rowActionTemplate:null,
@@ -88,6 +88,16 @@ export class ServerTableComponent extends SipPage {
       });
     }
   };
+
+  @SipAccessItem('refresh', {
+    multi: false, hasData: false,
+    check: function (datas:any[], target:any) {
+      return true;
+    }
+  })
+  refresh() {
+    this.tableManager.refresh();
+  }
 
   @SipAccessItem<ServerTableComponent>('create', {
     multi: false, hasData: false,

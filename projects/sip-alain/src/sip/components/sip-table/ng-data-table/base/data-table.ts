@@ -1,3 +1,5 @@
+import { Injector } from '@angular/core';
+import { SipTableSettings } from '../../sip-table/base/sip-table-settings';
 import { CellEventArgs, Row } from '../types';
 import { Column } from './column';
 import { ColumnBase } from './column-base';
@@ -51,8 +53,8 @@ export class DataTable {
 
   private _rows: Row[] = [];
 
-  constructor(columns: ColumnBase[], settings: Settings, messages?: Message) {
-    this.settings = new Settings(settings);
+  constructor(columns: ColumnBase[], settings: Settings, messages?: Message, injector?: Injector) {
+    this.settings = new SipTableSettings(settings, injector);
     this.messages = new Message();
     this.sequence = new Sequence();
     this.createColumns(columns);
