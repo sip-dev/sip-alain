@@ -3,8 +3,8 @@
 
 ## 0.5.0 (none)
 
-* update ng-alain 1.1.5
-* update angular 6.0.9
+* update ng-alain 1.3.2
+* update angular ^6.1.0
 
 ## 0.4.0
 

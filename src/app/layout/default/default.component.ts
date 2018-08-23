@@ -1,5 +1,5 @@
-import { Component, ViewChild, forwardRef } from '@angular/core';
-import { NavigationEnd, NavigationError, RouteConfigLoadStart, Router } from '@angular/router';
+import { Component, forwardRef, ViewChild } from '@angular/core';
+import { NavigationCancel, NavigationEnd, NavigationError, RouteConfigLoadStart, Router } from '@angular/router';
 import { SipConfigService } from '@core/sip/services/sip-config.service';
 import { ReuseTabComponent, ReuseTabService } from '@delon/abc';
 import { MenuService, ScrollService, SettingsService } from '@delon/theme';
@@ -32,9 +32,11 @@ export class LayoutDefaultComponent implements SipLayout {
       if (!this.isFetching && evt instanceof RouteConfigLoadStart) {
         this.isFetching = true;
       }
-      if (evt instanceof NavigationError) {
+      if (evt instanceof NavigationError || evt instanceof NavigationCancel) {
         this.isFetching = false;
-        _message.error(`无法加载${evt.url}路由`, { nzDuration: 1000 * 3 });
+        if (evt instanceof NavigationError) {
+          _message.error(`无法加载${evt.url}路由`, { nzDuration: 1000 * 3 });
+        }
         return;
       }
       if (!(evt instanceof NavigationEnd)) {
