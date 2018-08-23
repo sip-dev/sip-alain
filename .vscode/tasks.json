@@ -18,7 +18,7 @@
         },
         {
             "group": "build",
-            "label": "! 编译 web (build)",
+            "label": "!! 发布 web (build to dist)",
             "type": "npm",
             "script": "build",
             "problemMatcher": []
@@ -40,6 +40,12 @@
             "label": "测试 web",
             "type": "npm",
             "script": "test",
+            "problemMatcher": []
+        },
+        {
+            "label": "!! 发布 sip-alain (to npm)",
+            "type": "npm",
+            "script": "publish-sip-alain",
             "problemMatcher": []
         }
     ]

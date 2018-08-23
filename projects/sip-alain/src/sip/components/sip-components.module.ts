@@ -19,11 +19,6 @@ import { SipPageComponent } from './page/sip-page.component';
 import { SipAppContainerComponent } from './sip-app-container.component';
 import { SipSearchConentComponent } from './sip-search-conent.component';
 import { SipTableModule } from './sip-table/sip-table/sip-table.module';
-import { SipTabsetBodyComponent } from './tabset/sip-tabset-body.component';
-import { SipTabsetContentComponent } from './tabset/sip-tabset-content.component';
-import { SipTabsetHeaderComponent } from './tabset/sip-tabset-header.component';
-import { SipTabsetTitleComponent } from './tabset/sip-tabset-title.component';
-import { SipTabsetComponent } from './tabset/sip-tabset.component';
 
 @NgModule({
     imports: [
@@ -48,11 +43,6 @@ import { SipTabsetComponent } from './tabset/sip-tabset.component';
         SipPageToolbarComponent,
         SipPageComponent,
         SipSearchConentComponent,
-        SipTabsetComponent,
-        SipTabsetTitleComponent,
-        SipTabsetHeaderComponent,
-        SipTabsetContentComponent,
-        SipTabsetBodyComponent,
         SipAppContainerComponent
     ],
     providers: [],
@@ -72,11 +62,6 @@ import { SipTabsetComponent } from './tabset/sip-tabset.component';
         SipPageToolbarComponent,
         SipPageComponent,
         SipSearchConentComponent,
-        SipTabsetComponent,
-        SipTabsetTitleComponent,
-        SipTabsetHeaderComponent,
-        SipTabsetContentComponent,
-        SipTabsetBodyComponent,
         SipTableModule
     ],
     entryComponents:[SipModalComponent, SipAppContainerComponent]
