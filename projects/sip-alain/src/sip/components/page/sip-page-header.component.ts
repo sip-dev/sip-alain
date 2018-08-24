@@ -1,6 +1,4 @@
-import { Component, OnInit, Input, ContentChild, TemplateRef, Optional } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
-import { ReuseTabService } from '@delon/abc';
+import { Component, ContentChild, Input, OnInit, Optional, TemplateRef } from '@angular/core';
 import { SipPageComponent } from './sip-page.component';
 
 @Component({
@@ -17,7 +15,7 @@ import { SipPageComponent } from './sip-page.component';
             <ng-container [ngTemplateOutlet]="desc"></ng-container>
             </ng-template>
         </small>
-        <a (click)="close()" *ngIf="opener" class="sip-page-close" ><i class="icon-arrow-left-circle"></i></a>
+        <a (click)="close()" *ngIf="opener" class="sip-page-close" ><i class="anticon anticon-left-circle-o"></i></a>
         </h1>
     </div>`,
 	styles: []
