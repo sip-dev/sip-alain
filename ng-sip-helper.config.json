@@ -179,11 +179,11 @@
                     "fileName": "@{input}.@{type}",
                     "htmlContent": "",
                     "importToModue": "",
-                    "input": "sip-data-table",
+                    "input": "test2",
                     "path": "",
                     "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  it('should create an instance', () => {\n    const directive = new @{className}();\n    expect(directive).toBeTruthy();\n  });\n});\n",
                     "styleContent": "",
-                    "tsContent": "import { Directive } from \"@angular/core\";\n\n@Directive({\n  selector: '[@{prefix}@{#input}]'\n})\nexport class @{className} {\n\n  constructor() { }\n\n}\n",
+                    "tsContent": "import { Directive, ElementRef, HostListener, Input } from \"@angular/core\";\n\n@Directive({\n  selector: '[@{prefix}@{#input}]'\n})\nexport class @{className} {\n\n  constructor(private _el: ElementRef) { }\n\n  @Input('@{prefix}@{#input}')\n  private _highlightColor: string;\n\n  @HostListener('mouseenter')\n  private _onMouseEnter() {\n    this._highlight(this._highlightColor || 'yellow');\n  }\n\n  @HostListener('mouseleave')\n  private _onMouseLeave() {\n    this._highlight(null);\n  }\n\n  private _highlight(color: string) {\n    this._el.nativeElement.style.backgroundColor = color;\n  }\n\n}\n",
                     "type": "directive",
                     "typeInfo": {
                         "importToModue": true,
@@ -454,13 +454,100 @@
                     "active": true,
                     "className": "@{#fileName}",
                     "fileName": "@{input}.@{type}",
-                    "htmlContent": "<sip-page>\n  <sip-page-header navigator=\"页面\">\n    <ng-template #title>@{input} page</ng-template>\n    <ng-template #desc>\n      页面\n      <nz-tooltip [nzTitle]=\"'了解更多实例介绍'\">\n        <a nz-tooltip [sipRouterLink]>更多…</a>\n      </nz-tooltip>\n    </ng-template>\n  </sip-page-header>\n\n  <sip-page-body>\n    <!-- 卡片 -->\n    <nz-card [nzBordered]=\"false\">\n        @{input} body\n    </nz-card>\n  </sip-page-body>\n</sip-page>",
+                    "htmlContent": "",
                     "importToModue": "",
-                    "input": "sip-logger",
+                    "input": "test",
+                    "path": "",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  it('should create an instance', () => {\n    const directive = new @{className}();\n    expect(directive).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { Directive, ElementRef, HostListener, Input, ViewContainerRef } from \"@angular/core\";\nimport { SipDirective } from \"sip-alain\";\n\n@Directive({\n  selector: '[@{prefix}@{#input}]'\n})\nexport class @{className} extends SipDirective {\n\n  constructor(vcf: ViewContainerRef, private _el: ElementRef) {\n    super(vcf);\n  }\n\n  @Input('@{prefix}@{#input}')\n  private _highlightColor: string;\n\n  @HostListener('mouseenter')\n  private _onMouseEnter() {\n    this._highlight(this._highlightColor || 'yellow');\n  }\n\n  @HostListener('mouseleave')\n  private _onMouseLeave() {\n    this._highlight(null);\n  }\n\n  private _highlight(color: string) {\n    this._el.nativeElement.style.backgroundColor = color;\n  }\n\n}\n",
+                    "type": "directive",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleDeclaration": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 11,
+            "title": "sip-directive"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "<p>\n  @{input} works!\n</p>\n",
+                    "importToModue": "",
+                    "input": "test",
                     "path": "@{input}",
                     "specContent": "import { async, ComponentFixture, TestBed } from '@angular/core/testing';\n\nimport { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let component: @{className};\n  let fixture: ComponentFixture<@{className}>;\n\n  beforeEach(async(() => {\n    TestBed.configureTestingModule({\n      declarations: [ @{className}]\n    })\n    .compileComponents();\n  }));\n\n  beforeEach(() => {\n    fixture = TestBed.createComponent(@{className});\n    component = fixture.componentInstance;\n    fixture.detectChanges();\n  });\n\n  it('should create', () => {\n    expect(component).toBeTruthy();\n  });\n});\n",
                     "styleContent": "",
-                    "tsContent": "import { Component, ViewContainerRef } from '@angular/core';\nimport { SipNgInit, SipPage, SipProvidePages } from 'sip-alain';\n\n@Component({\n  selector: '@{prefix}-@{input}',\n  templateUrl: './@{fileName}.html',\n  styleUrls: ['./@{fileName}.@{styleType}'],\n  providers: [...SipProvidePages(@{className})]\n})\nexport class @{className} extends SipPage {\n\n  constructor(vcf: ViewContainerRef) {\n    super(vcf);\n  }\n\n  params = { id: '' };\n\n  /**等效于ngOnInit, 但可以多次使用 */\n  @SipNgInit()\n  private _init() {\n    this.params = this.$params(this.params);\n    console.log('init', this.params);\n  }\n\n}\n",
+                    "tsContent": "import { Component, ViewContainerRef } from '@angular/core';\nimport { SipComponent, SipNgDestroy, SipNgInit } from 'sip-alain';\n\n@Component({\n  selector: '@{prefix}-@{input}',\n  templateUrl: './@{fileName}.html',\n  styleUrls: ['./@{fileName}.@{styleType}']\n})\nexport class @{className} extends SipComponent {\n\n  constructor(vcf: ViewContainerRef) {\n    super(vcf);\n  }\n\n  @SipNgInit()\n  private _init() {\n    this.$logger.debug('init @{className}');\n  }\n\n  @SipNgDestroy()\n  private _destroy() {\n    this.$logger.debug('destroy @{className}');\n  }\n}\n",
+                    "type": "component",
+                    "typeInfo": {
+                        "html": true,
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleDeclaration": true,
+                        "spec": false,
+                        "style": true,
+                        "styleType": "less",
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 12,
+            "title": "sip-component"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "<p>\n  @{input} works!\n</p>\n",
+                    "importToModue": "",
+                    "input": "test2",
+                    "path": "@{input}",
+                    "specContent": "import { async, ComponentFixture, TestBed } from '@angular/core/testing';\n\nimport { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let component: @{className};\n  let fixture: ComponentFixture<@{className}>;\n\n  beforeEach(async(() => {\n    TestBed.configureTestingModule({\n      declarations: [ @{className}]\n    })\n    .compileComponents();\n  }));\n\n  beforeEach(() => {\n    fixture = TestBed.createComponent(@{className});\n    component = fixture.componentInstance;\n    fixture.detectChanges();\n  });\n\n  it('should create', () => {\n    expect(component).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { Component, ViewContainerRef } from '@angular/core';\nimport { SipModal, SipNgDestroy, SipNgInit, SipProvideModals } from 'sip-alain';\n\n@Component({\n  selector: '@{prefix}-@{input}',\n  templateUrl: './@{fileName}.html',\n  styleUrls: ['./@{fileName}.@{styleType}'],\n  providers: [...SipProvideModals(@{className})]\n})\nexport class @{className} extends SipModal {\n\n  constructor(vcf: ViewContainerRef) {\n    super(vcf);\n  }\n\n  @SipNgInit()\n  private _init() {\n    let params = this.$params({ id: 0 });\n    this.$logger.debug('init @{className}', params);\n  }\n\n  @SipNgDestroy()\n  private _destroy() {\n    this.$logger.debug('destroy @{className}');\n  }\n}\n",
+                    "type": "component",
+                    "typeInfo": {
+                        "html": true,
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleDeclaration": true,
+                        "spec": false,
+                        "style": true,
+                        "styleType": "less",
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 13,
+            "title": "sip-modal"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "<sip-page>\n  <sip-page-header navigator=\"页面\">\n    <ng-template #title>@{input} page</ng-template>\n    <ng-template #desc>\n      页面\n      <nz-tooltip [nzTitle]=\"'了解更多实例介绍'\">\n        <a nz-tooltip [sipRouterLink]>更多…</a>\n      </nz-tooltip>\n    </ng-template>\n  </sip-page-header>\n\n  <sip-page-body>\n    <!-- 卡片 -->\n    <nz-card [nzBordered]=\"false\">\n        @{input} body\n    </nz-card>\n  </sip-page-body>\n</sip-page>",
+                    "importToModue": "",
+                    "input": "test2",
+                    "path": "@{input}",
+                    "specContent": "import { async, ComponentFixture, TestBed } from '@angular/core/testing';\n\nimport { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let component: @{className};\n  let fixture: ComponentFixture<@{className}>;\n\n  beforeEach(async(() => {\n    TestBed.configureTestingModule({\n      declarations: [ @{className}]\n    })\n    .compileComponents();\n  }));\n\n  beforeEach(() => {\n    fixture = TestBed.createComponent(@{className});\n    component = fixture.componentInstance;\n    fixture.detectChanges();\n  });\n\n  it('should create', () => {\n    expect(component).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { Component, ViewContainerRef } from '@angular/core';\nimport { SipNgDestroy, SipNgInit, SipPage, SipProvidePages } from 'sip-alain';\n\n@Component({\n  selector: '@{prefix}-@{input}',\n  templateUrl: './@{fileName}.html',\n  styleUrls: ['./@{fileName}.@{styleType}'],\n  providers: [...SipProvidePages(@{className})]\n})\nexport class @{className} extends SipPage {\n\n  constructor(vcf: ViewContainerRef) {\n    super(vcf);\n  }\n\n  params = { id: '' };\n\n  /**等效于ngOnInit, 但可以多次使用 */\n  @SipNgInit()\n  private _init() {\n    this.params = this.$params(this.params);\n    this.$logger.debug('init @{className}', this.params);\n  }\n\n  @SipNgDestroy()\n  private _destroy() {\n    this.$logger.debug('destroy @{className}');\n  }\n}\n",
                     "type": "component",
                     "typeInfo": {
                         "html": true,
@@ -475,7 +562,7 @@
                     }
                 }
             ],
-            "index": 11,
+            "index": 14,
             "title": "sip-page"
         },
         {
@@ -501,7 +588,7 @@
                     }
                 }
             ],
-            "index": 12,
+            "index": 15,
             "title": "sip-service"
         },
         {
@@ -525,8 +612,161 @@
                     }
                 }
             ],
-            "index": 13,
+            "index": 16,
             "title": "sip-model"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": false,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}-list.@{type}",
+                    "htmlContent": "<sip-page>\n  <sip-page-header navigator=\"页面\">\n    <ng-template #title>@{input} page</ng-template>\n    <ng-template #desc>\n      页面\n      <nz-tooltip [nzTitle]=\"'了解更多实例介绍'\">\n        <a nz-tooltip [sipRouterLink]>更多…</a>\n      </nz-tooltip>\n    </ng-template>\n  </sip-page-header>\n\n  <sip-page-body>\n    <!-- 卡片 -->\n    <nz-card [nzBordered]=\"false\">\n        @{input} body\n    </nz-card>\n  </sip-page-body>\n</sip-page>",
+                    "importToModue": "../@{input}.module.ts",
+                    "importToRouting": "../@{input}-routing.module.ts",
+                    "input": "app",
+                    "path": "@{input}/@{input}-list",
+                    "specContent": "import { async, ComponentFixture, TestBed } from '@angular/core/testing';\n\nimport { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let component: @{className};\n  let fixture: ComponentFixture<@{className}>;\n\n  beforeEach(async(() => {\n    TestBed.configureTestingModule({\n      declarations: [ @{className}]\n    })\n    .compileComponents();\n  }));\n\n  beforeEach(() => {\n    fixture = TestBed.createComponent(@{className});\n    component = fixture.componentInstance;\n    fixture.detectChanges();\n  });\n\n  it('should create', () => {\n    expect(component).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { Component, ViewContainerRef } from '@angular/core';\nimport { SipNgInit, SipPage, SipProvidePages } from 'sip-alain';\n\n@Component({\n  selector: '@{prefix}-@{input}',\n  templateUrl: './@{fileName}.html',\n  styleUrls: ['./@{fileName}.@{styleType}'],\n  providers: [...SipProvidePages(@{className})]\n})\nexport class @{className} extends SipPage {\n\n  constructor(vcf: ViewContainerRef) {\n    super(vcf);\n  }\n\n  params = { id: '' };\n\n  /**等效于ngOnInit, 但可以多次使用 */\n  @SipNgInit()\n  private _init() {\n    this.params = this.$params(this.params);\n    console.log('init', this.params);\n  }\n\n}\n",
+                    "type": "component",
+                    "typeInfo": {
+                        "html": true,
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleDeclaration": true,
+                        "moduleExport": true,
+                        "spec": false,
+                        "style": true,
+                        "styleType": "less",
+                        "ts": true
+                    }
+                },
+                {
+                    "active": false,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}-info.@{type}",
+                    "htmlContent": "<sip-page>\n  <sip-page-header navigator=\"页面\">\n    <ng-template #title>@{input} page</ng-template>\n    <ng-template #desc>\n      页面\n      <nz-tooltip [nzTitle]=\"'了解更多实例介绍'\">\n        <a nz-tooltip [sipRouterLink]>更多…</a>\n      </nz-tooltip>\n    </ng-template>\n  </sip-page-header>\n\n  <sip-page-body>\n    <!-- 卡片 -->\n    <nz-card [nzBordered]=\"false\">\n        @{input} body\n    </nz-card>\n  </sip-page-body>\n</sip-page>",
+                    "importToModue": "../@{input}.module.ts",
+                    "importToRouting": "../@{input}-routing.module.ts",
+                    "input": "app",
+                    "path": "@{input}/@{input}-info",
+                    "specContent": "import { async, ComponentFixture, TestBed } from '@angular/core/testing';\n\nimport { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let component: @{className};\n  let fixture: ComponentFixture<@{className}>;\n\n  beforeEach(async(() => {\n    TestBed.configureTestingModule({\n      declarations: [ @{className}]\n    })\n    .compileComponents();\n  }));\n\n  beforeEach(() => {\n    fixture = TestBed.createComponent(@{className});\n    component = fixture.componentInstance;\n    fixture.detectChanges();\n  });\n\n  it('should create', () => {\n    expect(component).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { Component, ViewContainerRef } from '@angular/core';\nimport { SipNgInit, SipPage, SipProvidePages } from 'sip-alain';\n\n@Component({\n  selector: '@{prefix}-@{input}',\n  templateUrl: './@{fileName}.html',\n  styleUrls: ['./@{fileName}.@{styleType}'],\n  providers: [...SipProvidePages(@{className})]\n})\nexport class @{className} extends SipPage {\n\n  constructor(vcf: ViewContainerRef) {\n    super(vcf);\n  }\n\n  params = { id: '' };\n\n  /**等效于ngOnInit, 但可以多次使用 */\n  @SipNgInit()\n  private _init() {\n    this.params = this.$params(this.params);\n    console.log('init', this.params);\n  }\n\n}\n",
+                    "type": "component",
+                    "typeInfo": {
+                        "html": true,
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleDeclaration": true,
+                        "moduleExport": true,
+                        "spec": false,
+                        "style": true,
+                        "styleType": "less",
+                        "ts": true
+                    }
+                },
+                {
+                    "active": false,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.model",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "app",
+                    "path": "@{input}/shared/models",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  it('should create an instance', () => {\n    expect(new @{className}()).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "export interface @{className} {\n\n}\n",
+                    "type": "class",
+                    "typeInfo": {
+                        "spec": false,
+                        "ts": true
+                    }
+                },
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "../@{input}-shared.module.ts",
+                    "input": "app",
+                    "path": "@{input}/shared/services",
+                    "specContent": "import { TestBed, inject } from '@angular/core/testing';\n\nimport { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  beforeEach(() => {\n    TestBed.configureTestingModule({\n      providers: [@{className}]\n    });\n  });\n\n  it('should be created', inject([@{className}], (service: @{className}) => {\n    expect(service).toBeTruthy();\n  }));\n});",
+                    "styleContent": "",
+                    "tsContent": "import { Injectable, Injector } from '@angular/core';\nimport { SipService } from 'sip-alain';\n\n@Injectable()\nexport class @{className} extends SipService {\n\n  constructor(injector: Injector) {\n    super(injector);\n  }\n\n}\n",
+                    "type": "service",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "moduleProvider": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                },
+                {
+                    "active": false,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}-shared.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "../@{input}.module.ts",
+                    "input": "app",
+                    "path": "@{input}/shared",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let testModule: @{className};\n\n  beforeEach(() => {\n    testModule = new @{className}();\n  });\n\n  it('should create an instance', () => {\n    expect(testModule).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\n\n@NgModule({\n  imports: [\n    CommonModule\n  ],\n  declarations: []\n})\nexport class @{className} { }\n",
+                    "type": "module",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleImport": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                },
+                {
+                    "active": false,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "app",
+                    "path": "@{input}",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let testModule: @{className};\n\n  beforeEach(() => {\n    testModule = new @{className}();\n  });\n\n  it('should create an instance', () => {\n    expect(testModule).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\nimport { SharedModule } from '@shared/shared.module';\nimport { @{#input}RoutingModule } from './@{input}-routing.module';\n\n@NgModule({\n  imports: [\n    CommonModule,\n    SharedModule,\n    @{#input}RoutingModule\n  ],\n  declarations: []\n})\nexport class @{className} { }\n",
+                    "type": "module",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleImport": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                },
+                {
+                    "active": false,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}-routing.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "./@{input}.@{type}.ts",
+                    "input": "app",
+                    "path": "@{input}",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let testRoutingModule: @{className};\n\n  beforeEach(() => {\n    testRoutingModule = new @{className}();\n  });\n\n  it('should create an instance', () => {\n    expect(testRoutingModule).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { NgModule } from '@angular/core';\nimport { Routes, RouterModule } from '@angular/router';\n\nconst routes: Routes = [];\n\n@NgModule({\n  imports: [RouterModule.forChild(routes)],\n  exports: [RouterModule]\n})\nexport class @{className} { }\n",
+                    "type": "module",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleImport": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 17,
+            "title": "sip-module-full"
         }
     ]
 }
