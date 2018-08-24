@@ -141,7 +141,7 @@
     "prefix": "sip",
     "templates": [
         {
-            "active": true,
+            "active": false,
             "files": [
                 {
                     "active": true,
@@ -767,6 +767,69 @@
             ],
             "index": 17,
             "title": "sip-module-full"
+        },
+        {
+            "active": true,
+            "files": [
+                {
+                    "active": false,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.model",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "ng-crud-table",
+                    "path": "shared/models",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  it('should create an instance', () => {\n    expect(new @{className}()).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "export interface @{className} {\n\n}\n",
+                    "type": "class",
+                    "typeInfo": {
+                        "spec": false,
+                        "ts": true
+                    }
+                },
+                {
+                    "active": false,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "../@{input}-shared.module.ts",
+                    "input": "ng-crud-table",
+                    "path": "shared/services",
+                    "specContent": "import { TestBed, inject } from '@angular/core/testing';\n\nimport { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  beforeEach(() => {\n    TestBed.configureTestingModule({\n      providers: [@{className}]\n    });\n  });\n\n  it('should be created', inject([@{className}], (service: @{className}) => {\n    expect(service).toBeTruthy();\n  }));\n});",
+                    "styleContent": "",
+                    "tsContent": "import { Injectable, Injector } from '@angular/core';\nimport { SipService } from 'sip-alain';\n\n@Injectable()\nexport class @{className} extends SipService {\n\n  constructor(injector: Injector) {\n    super(injector);\n  }\n\n}\n",
+                    "type": "service",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "moduleProvider": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                },
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}-shared.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "../@{input}.module.ts",
+                    "input": "ng-crud-table",
+                    "path": "shared",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let testModule: @{className};\n\n  beforeEach(() => {\n    testModule = new @{className}();\n  });\n\n  it('should create an instance', () => {\n    expect(testModule).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\n\n@NgModule({\n  imports: [\n    CommonModule\n  ],\n  declarations: []\n})\nexport class @{className} { }\n",
+                    "type": "module",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleImport": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 18,
+            "title": "sip-shared-full"
         }
     ]
 }
