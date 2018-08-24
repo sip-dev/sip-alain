@@ -1,10 +1,14 @@
 
 # 更新
 
-## 0.5.0 (none)
+## 0.5.0
 
-* update ng-alain 1.3.2
-* update angular ^6.1.0
+* Update ng-alain 1.3.2
+* Update angular ^6.1.0
+* Add: crud-table
+* Remove: minitable
+* Remove: sip-card
+* Remove: sip-tabset
 
 ## 0.4.0
 
