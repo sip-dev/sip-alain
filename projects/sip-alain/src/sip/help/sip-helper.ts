@@ -1365,8 +1365,9 @@ export class SipPage extends SipBusinessComponent {
             this.$uiLink.publish(p);
         let reuseTabSrv: ReuseTabService = this.$injector(ReuseTabService);
         let url = this.$url;
-        reuseTabSrv.close(url);
-
+        let rTab = reuseTabSrv.get(url);
+        if (rTab && rTab.closable)
+            reuseTabSrv.close(url);
     }
 
     $closeOther() {
