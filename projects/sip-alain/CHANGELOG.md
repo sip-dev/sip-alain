@@ -1,6 +1,10 @@
 
 # 更新
 
+## 0.5.1
+
+* OPT: ISipFormGroupParams<T>
+
 ## 0.5.0
 
 * Update ng-alain 1.3.2
