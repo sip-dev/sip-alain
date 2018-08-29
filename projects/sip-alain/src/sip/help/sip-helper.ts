@@ -752,13 +752,13 @@ export interface ISipFormGroup<T=any> extends FormGroup {
     $toJSONObject: () => T
     [key: string]: any;
 }
-export interface ISipFormGroupParams {
-    model: object;
+export interface ISipFormGroupParams<T> {
+    model: T;
     validators?: { [key: string]: any };
     extra?: { [key: string]: any };
 }
 
-export function SipFormGroup<T>(factory: (target: any) => ISipFormGroupParams) {
+export function SipFormGroup<T=object>(factory: (target: any) => ISipFormGroupParams<T>) {
     return function (target: any, propKey: string) {
 
         _pushEvent(target, 'sipOnConstructor', function () {
