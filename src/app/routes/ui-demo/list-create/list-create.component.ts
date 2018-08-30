@@ -1,5 +1,5 @@
 import { Component, forwardRef, ViewChild, ViewContainerRef } from '@angular/core';
-import { SipBusinessComponent, SipNgInit, SipOnShow, SipPage } from 'sip-alain';
+import { SipBusinessComponent, SipNgInit, SipPage } from 'sip-alain';
 import { FormComponent } from '../ui-demo-shared/components/form/form.component';
 
 @Component({
@@ -24,11 +24,6 @@ export class ListCreateComponent extends SipPage {
         this.params = this.$params(this.params);
         if (this.params.datas)
             this.form1.form.$model = JSON.parse(this.params.datas);
-    }
-
-    @SipOnShow()
-    private _show() {
-        console.log('_show');
     }
 
     save() {

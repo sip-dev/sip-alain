@@ -1,5 +1,5 @@
 import { Component, ViewChild, ViewContainerRef } from '@angular/core';
-import { SipModal, SipNgDestroy, SipNgInit, SipOnShow, SipProvideModals } from 'sip-alain';
+import { SipModal, SipNgDestroy, SipNgInit, SipProvideModals } from 'sip-alain';
 import { FormComponent } from '../ui-demo-shared/components/form/form.component';
 
 @Component({
@@ -25,11 +25,6 @@ export class ListFormComponent extends SipModal {
         this.params = this.$params(this.params);
         // if (this.params.datas)
             this.form1.form.$model = this.params.datas;
-    }
-
-    @SipOnShow()
-    private _show() {
-        console.log('_show');
     }
 
     @SipNgDestroy()

@@ -194,9 +194,6 @@ export class SipRestService {
                 }));
             }
 
-            if ('$showPreLoad' in owner)
-                http = owner.$showPreLoad(http);
-
             return http;
         } else
             return http;

@@ -9,6 +9,6 @@ import { Component } from '@angular/core';
     styles: []
 })
 export class SipPageBodyComponent {
-    showed = false;
-    loading = true;
+    showed = true;
+    loading = false;
 }

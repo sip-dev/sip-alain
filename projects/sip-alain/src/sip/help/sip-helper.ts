@@ -1,4 +1,4 @@
-import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, ChangeDetectorRef, ComponentFactoryResolver, ComponentRef, DoCheck, EventEmitter, forwardRef, Injector, OnChanges, OnDestroy, OnInit, QueryList, ReflectiveInjector, TemplateRef, Type, ViewContainerRef, ViewRef } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, ChangeDetectorRef, ComponentFactoryResolver, ComponentRef, DoCheck, forwardRef, Injector, OnChanges, OnDestroy, OnInit, QueryList, ReflectiveInjector, TemplateRef, Type, ViewContainerRef, ViewRef } from '@angular/core';
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from "@angular/router";
 import { ReuseTabService } from "@delon/abc";
@@ -6,7 +6,7 @@ import { Menu, MenuService } from "@delon/theme";
 import { NzMessageService } from 'ng-zorro-antd';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { breakOff, Lib } from 'sip-lib';
+import { Lib } from 'sip-lib';
 import { SipAlainConfig } from '../base/sip-alain-config';
 import { SipAppContainerService } from '../services/sip-app-container.service';
 import { SipEventService } from '../services/sip-event.service';
@@ -132,20 +132,13 @@ export function SipWatch(...args: any[]) {
 //#region component events
 
 /**_pushSipEvent(target, '$onShow', target[propKey]) */
-let _pushSipEvent = function (target: any, eventName: string, newFn: Function) {
+// let _pushSipEvent = function (target: any, eventName: string, newFn: Function) {
 
-    _pushEvent(target, 'sipOnConstructor', function () {
-        this[eventName] && this[eventName].subscribe(() => { newFn.call(this); });
-    });
+//     _pushEvent(target, 'sipOnConstructor', function () {
+//         this[eventName] && this[eventName].subscribe(() => { newFn.call(this); });
+//     });
 
-};
-
-/**UI $onShow事件， 用于在SipNgInit处理rest加载数据后的事件 */
-export function SipOnShow() {
-    return function (target: any, propKey: string) {
-        _pushSipEvent(target, '$onShow', target[propKey]);
-    };
-};
+// };
 
 
 /**_pushEvent(target, 'ngOnInit', target[propKey]) */
@@ -1011,51 +1004,8 @@ export class SipUiBase extends SipParent implements OnInit, OnDestroy, OnChanges
         super($vcf.injector);
     }
 
-    $showed = false;
-    $loading = true;
-
-    private _$showPreLoad: { list: Observable<any>[]; timeId: any; };
-    private _$checkPreLoad(obs: Observable<any>) {
-        if (this.$showed || this.$isDestroyed) return;
-
-        setTimeout(() => {
-            if (this.$showed || this.$isDestroyed) return;
-            let list = this._$showPreLoad ? this._$showPreLoad.list : [];
-            let index = obs ? list.indexOf(obs) : -1;
-            if (index >= 0) {
-                list.splice(index, 1);
-            }
-            if (list.length == 0) {
-                this.$showed = true;
-                this.$loading = false;
-                this._$showPreLoad = null;
-                this.$onShow.emit();
-            }
-        }, 1);
-    }
-    $showPreLoad(obs: Observable<any>) {
-        if (this.$showed || this.$isDestroyed) return obs;
-        if (!this._$showPreLoad) {
-            this._$showPreLoad = {
-                list: [],
-                timeId: null
-            };
-        }
-        this._$showPreLoad.list.push(obs);
-        return obs.pipe(breakOff(() => {
-            this._$checkPreLoad(obs);
-            return false;
-        }));
-    }
-    @SipNgInit()
-    private _$sip_init() {
-        this._$checkPreLoad(null);
-    }
-
-    private _$onShow: EventEmitter<any>;
-    get $onShow(): EventEmitter<any> {
-        return this._$onShow || (this._$onShow = new EventEmitter<any>());
-    }
+    $showed = true;
+    $loading = false;
 
     @SipInject(FormBuilder) $formBuilder: FormBuilder;
 
@@ -1186,7 +1136,6 @@ export class SipUiBase extends SipParent implements OnInit, OnDestroy, OnChanges
     @SipNgDestroy()
     private _$ngDestroy() {
         this.$destroy();
-        this._$onShow = this._$sipWatch = null;
     }
 
 }

@@ -12,7 +12,6 @@ export class FormComponent extends SipComponent {
 
     constructor(vcf: ViewContainerRef) {
         super(vcf);
-        console.log(this)
     }
 
     @SipFormGroup((target: FormComponent) => {

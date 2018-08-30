@@ -1,4 +1,4 @@
-import { Component, ViewChild, TemplateRef } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'sip-modal-body',
@@ -16,7 +16,7 @@ export class SipModalBodyComponent {
   @ViewChild('content') content: TemplateRef<any>;
   height = 'auot';
 
-  showed = false;
-  loading = true;
+  showed = true;
+  loading = false;
 
 }
