@@ -75,7 +75,7 @@
     "qrious": "^4.0.2",
     "rxjs": "^6.0.0",
     "screenfull": "^3.3.1",
-    "sip-alain": "^0.5.0",
+    "sip-alain": "^0.5.1",
     "sip-lib": "^0.1.0",
     "zone.js": "^0.8.26"
   },
