@@ -1,7 +1,7 @@
 
 # 更新
 
-## 0.5.1 (none)
+## 0.5.1
 
 * OPT: ISipFormGroupParams<T>
 * OPT: rTab.closable
