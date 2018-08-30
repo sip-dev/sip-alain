@@ -5,6 +5,7 @@
 
 * OPT: ISipFormGroupParams<T>
 * OPT: rTab.closable
+* Add: SipFormGroup 验证不通过可以定义提示信息
 
 ## 0.5.0
 

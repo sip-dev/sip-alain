@@ -715,35 +715,42 @@ export function SipRestDictDef<T=any>(params: ISipRestDictDefParams) {
 
 //#endregion SipRestDef
 
+export interface ISipFormSubmitOption {
+    form: string;
+    message?: string | boolean;
+}
+
 /**
  * 提交方法
  * @param form form
  * @example @SipSubmitForm('this.form', 'this.form1')
  */
-export function SipFormSubmit(...forms: string[]) {
-    let formFnList = forms.map(function (form) { return new Function('return ' + form); });
-    return function (target: any, propKey: string) {
+export function SipFormSubmit(...forms: (string | ISipFormSubmitOption)[]) {
+    let formFnList = forms.map(function (form: any) { return new Function('return ' + (Lib.isString(form) ? form : form.form)); });
+    return function (target: any, propKey: string, descriptor: PropertyDescriptor) {
         let oldFn = target[propKey];
-        _pushEvent(target, 'sipOnConstructor', function () {
-            this[propKey] = function () {
-                let formList = formFnList.map((formFn) => {
-                    return formFn.call(this);
-                });
-                let valid = true;
-                Lib.each(formList, function (form) {
-                    for (const i in form.controls) {
-                        form.controls[i].markAsDirty();
-                        form.controls[i].updateValueAndValidity();
-                    }
-                    if (!form.valid) {
-                        valid = false;
-                        return false;
-                    }
-                });
-                if (!valid) return;
-                return oldFn.apply(this, arguments);
-            };
-        });
+        descriptor.value = function () {
+            let formList = formFnList.map((formFn) => {
+                return formFn.call(this);
+            });
+            let valid = true;
+            Lib.each(formList, function (form, idx) {
+                for (const i in form.controls) {
+                    form.controls[i].markAsDirty();
+                    form.controls[i].updateValueAndValidity();
+                }
+                if (!form.valid) {
+                    let fParam: any = forms[idx];
+                    let msg = Lib.isString(fParam) ? false : fParam.message;
+                    if (msg) this.$message.warning(msg === true ? '数据验证不通过!' : msg);
+                    valid = false;
+                    return false;
+                }
+            }, this);
+            if (!valid) return;
+            return oldFn.apply(this, arguments);
+        };
+
     };
 }
 
@@ -760,62 +767,67 @@ export interface ISipFormGroupParams<T> {
 
 export function SipFormGroup<T=object>(factory: (target: any) => ISipFormGroupParams<T>) {
     return function (target: any, propKey: string) {
+        let key = '_$' + propKey + '$_';
 
-        _pushEvent(target, 'sipOnConstructor', function () {
-            let params = factory(this);
-            let valids = {};
-            let modelObj = {};
-            let modelThis = params.model;
-            let validatorsTemp = params.validators;
-            Lib.eachProp(modelThis, function (item, name) {
-                if (validatorsTemp[name])
-                    valids[name] = [item, validatorsTemp[name]];
-                else
-                    valids[name] = [item];
-                Object.defineProperty(modelObj, name, {
+        Object.defineProperty(target, propKey, {
+            configurable: false,
+            get: function () {
+                if (this[key]) return this[key];
+                let params = factory(this);
+                let valids = {};
+                let modelObj = {};
+                let modelThis = params.model;
+                let validatorsTemp = params.validators;
+                Lib.eachProp(modelThis, function (item, name) {
+                    if (validatorsTemp[name])
+                        valids[name] = [item, validatorsTemp[name]];
+                    else
+                        valids[name] = [item];
+                    Object.defineProperty(modelObj, name, {
+                        enumerable: true, configurable: false,
+                        get: function () {
+                            return formGroup.get(name).value;
+                        },
+                        set: function (value) {
+                            let obj = {};
+                            obj[name] = value;
+                            formGroup.patchValue(obj, { onlySelf: true, emitEvent: false });
+                        }
+                    });
+                }, this);
+                let extraTemp = params.extra;
+                let formGroup: FormGroup = this.$formBuilder.group(valids, extraTemp);
+                this[key] = formGroup;
+                Lib.eachProp(modelThis, function (item, name) {
+                    Object.defineProperty(formGroup, '$' + name, {
+                        enumerable: true, configurable: false,
+                        get: function () {
+                            return this.controls[name];
+                        }
+                    });
+                }, this);
+                Object.defineProperty(formGroup, '$model', {
                     enumerable: true, configurable: false,
                     get: function () {
-                        return formGroup.get(name).value;
+                        return modelObj;
                     },
                     set: function (value) {
-                        let obj = {};
-                        obj[name] = value;
-                        formGroup.patchValue(obj, { onlySelf: true, emitEvent: false });
+                        Object.assign(modelObj, value || {});
                     }
                 });
-            }, this);
-            let extraTemp = params.extra;
-            let formGroup: FormGroup = this.$formBuilder.group(valids, extraTemp);
-            this[propKey] = formGroup;
-            Lib.eachProp(modelThis, function (item, name) {
-                Object.defineProperty(formGroup, '$' + name, {
+                Object.defineProperty(formGroup, '$toJSONObject', {
                     enumerable: true, configurable: false,
-                    get: function () {
-                        return this.controls[name];
+                    writable: false,
+                    value: function () {
+                        let obj = Lib.extend({}, this.$model);
+                        return obj;
                     }
                 });
-            }, this);
-            Object.defineProperty(formGroup, '$model', {
-                enumerable: true, configurable: false,
-                get: function () {
-                    return modelObj;
-                },
-                set: function (value) {
-                    Object.assign(modelObj, value || {});
-                }
-            });
-            Object.defineProperty(formGroup, '$toJSONObject', {
-                enumerable: true, configurable: false,
-                writable: false,
-                value: function () {
-                    let obj = Lib.extend({}, this.$model);
-                    return obj;
-                }
-            });
-
+                return formGroup;
+            }
         });
         _pushEvent(target, 'ngOnDestroy', function () {
-            this[propKey] = null;
+            this[key] = null;
         });
     };
 }
@@ -951,9 +963,9 @@ export class SipParent {
 
     /**SipRestService */
     @SipInject(SipRestService) $httpSrv: SipRestService;
-    @SipInject(NzMessageService) $message:NzMessageService;
+    @SipInject(NzMessageService) $message: NzMessageService;
 
-    @SipInject(ChangeDetectorRef) $cdRef:ChangeDetectorRef;
+    @SipInject(ChangeDetectorRef) $cdRef: ChangeDetectorRef;
 
     private _$isDestroyed: boolean = false;
     public get $isDestroyed(): boolean {
@@ -1367,7 +1379,7 @@ export class SipPage extends SipBusinessComponent {
         let reuseTabSrv: ReuseTabService = this.$injector(ReuseTabService);
         let url = this.$url;
         let rTab = reuseTabSrv.get(url);
-        if (rTab && rTab.closable)
+        if ((!rTab && this.$isChild) || (rTab && rTab.closable))
             reuseTabSrv.close(url);
     }
 

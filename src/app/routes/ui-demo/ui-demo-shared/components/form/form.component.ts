@@ -12,6 +12,7 @@ export class FormComponent extends SipComponent {
 
     constructor(vcf: ViewContainerRef) {
         super(vcf);
+        console.log(this)
     }
 
     @SipFormGroup((target: FormComponent) => {
@@ -49,7 +50,7 @@ export class FormComponent extends SipComponent {
         { version: '2.0' }
     ];
 
-    @SipFormSubmit('this.form')
+    @SipFormSubmit({ form: 'this.form', message: true })
     getSaveData(): object {
         return this.form.$toJSONObject();
     }
