@@ -11,6 +11,7 @@ export class PlayerService extends SipService {
   }
 
   @SipRestSqlDef<PlayerModel[]>({
+      url:'api/demo/loadGridData',
       sqlType: SipRestSqlType.List,
       sqlId: 'iaas.instlist', connstr: 'iaas',
       sortName: 'name', sortOrder: 'asc',

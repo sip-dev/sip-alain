@@ -241,11 +241,11 @@ export class SipRestService {
 
         }
         return this.getHttp(this.http.post(url, formData, p && p.httpOptions), url, 'post', p)
-        .pipe(
-            map(this.mapRestData),
-            map(mapData),
-            catchError(this.makeCatchData)
-        );
+            .pipe(
+                map(this.mapRestData),
+                map(mapData),
+                catchError(this.makeCatchData)
+            );
     }
 
     /**
@@ -260,11 +260,11 @@ export class SipRestService {
         url = this.absolutelyUrl(url);
         url = this.queryString(url, params);
         return this.getHttp(this.http.delete(url, p && p.httpOptions), url, 'delete', p)
-        .pipe(
-            map(this.mapRestData),
-            map(mapData),
-            catchError(this.makeCatchData)
-        );
+            .pipe(
+                map(this.mapRestData),
+                map(mapData),
+                catchError(this.makeCatchData)
+            );
     }
 
     /**
@@ -279,11 +279,11 @@ export class SipRestService {
         url = this.absolutelyUrl(url);
         url = this.queryString(url, params);
         return this.getHttp(this.http.delete(url, p && p.httpOptions), url, 'put', p)
-        .pipe(
-            map(this.mapRestData),
-            map(mapData),
-            catchError(this.makeCatchData)
-        );
+            .pipe(
+                map(this.mapRestData),
+                map(mapData),
+                catchError(this.makeCatchData)
+            );
     }
 
     dict(code: string, conStr?: string, p?: SipRestParam): Observable<SipRestRet<ISipRestDict[]>> {
@@ -297,15 +297,16 @@ export class SipRestService {
      * @param p 
      */
     sql<T=any[]>(p: SipSqlParam): Observable<SipRestSqlRet<T>> {
-        let param: any = Lib.extend({}, p.params);
-
-        param.connstr = p.connstr || '';
-        param.sqlId = p.sqlId || '';
-        param.rows = p.pageSize || 10;
-        param.page = p.pageIndex || 1;
-        param.sidx = p.sortName || '';
-        param.sord = p.sortOrder || '';
-        param.searchparam = p.searchparam;
+        let param: any = Lib.extend({
+            connstr: p.connstr || '',
+            sqlId: p.sqlId || '',
+            rows: p.pageSize || 10,
+            page: p.pageIndex || 1,
+            sidx: p.sortName || '',
+            sord: p.sortOrder || '',
+            searchparam: p.searchparam,
+            url: p.url
+        }, p.params);
 
         let url = param.url || this.config.rest.sql.pageList;
         param.url = undefined;

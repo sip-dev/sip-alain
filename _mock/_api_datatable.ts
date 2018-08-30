@@ -2,7 +2,7 @@
 export const API_DataTable = {
     '(.*)/api/demo/data-table/players': () => { return getPlayers() },
     '(.*)/api/demo/data-table/tree': () => { return getTree() },
-    '(.*)/api/basicData/loadGridData': () => {
+    '(.*)/api/demo/loadGridData': () => {
         let start:number = ~~(Math.random()*10);
         let totalPages = 15;
         let pageSize = 10;
