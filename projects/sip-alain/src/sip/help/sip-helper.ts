@@ -760,12 +760,13 @@ export interface ISipFormGroupParams<T> {
 
 export function SipFormGroup<T=object>(factory: (target: any) => ISipFormGroupParams<T>) {
     return function (target: any, propKey: string) {
-        let key = '_$' + propKey + '$_';
+        let key = '_$sip_formgroup_' + propKey + '$_';
 
         Object.defineProperty(target, propKey, {
             configurable: false,
             get: function () {
-                if (this[key]) return this[key];
+                if (key in this) return this[key];
+                this[key] = null;
                 let params = factory(this);
                 let valids = {};
                 let modelObj = {};

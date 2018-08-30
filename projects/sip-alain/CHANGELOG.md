@@ -1,6 +1,10 @@
 
 # 更新
 
+## 0.5.2
+
+* Fix: SipFormGroup
+
 ## 0.5.1
 
 * OPT: ISipFormGroupParams<T>
