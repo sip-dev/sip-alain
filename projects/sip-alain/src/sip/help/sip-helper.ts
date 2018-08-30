@@ -1,4 +1,4 @@
-import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, ComponentFactoryResolver, ComponentRef, DoCheck, EventEmitter, forwardRef, Injector, OnChanges, OnDestroy, OnInit, QueryList, ReflectiveInjector, TemplateRef, Type, ViewContainerRef, ViewRef } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, ChangeDetectorRef, ComponentFactoryResolver, ComponentRef, DoCheck, EventEmitter, forwardRef, Injector, OnChanges, OnDestroy, OnInit, QueryList, ReflectiveInjector, TemplateRef, Type, ViewContainerRef, ViewRef } from '@angular/core';
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from "@angular/router";
 import { ReuseTabService } from "@delon/abc";
@@ -951,8 +951,9 @@ export class SipParent {
 
     /**SipRestService */
     @SipInject(SipRestService) $httpSrv: SipRestService;
-    @SipInject(NzMessageService)
-    private $message:NzMessageService;
+    @SipInject(NzMessageService) $message:NzMessageService;
+
+    @SipInject(ChangeDetectorRef) $cdRef:ChangeDetectorRef;
 
     private _$isDestroyed: boolean = false;
     public get $isDestroyed(): boolean {
