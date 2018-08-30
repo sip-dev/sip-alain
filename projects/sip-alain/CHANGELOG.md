@@ -7,6 +7,7 @@
 * OPT: rTab.closable
 * Add: SipFormGroup 验证不通过可以定义提示信息
 * 去掉自动loading, SipOnShow
+* table 过滤值是数组
 
 ## 0.5.0
 

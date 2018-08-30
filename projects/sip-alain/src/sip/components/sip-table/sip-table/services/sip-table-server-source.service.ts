@@ -37,7 +37,7 @@ export class SipTableServerSourceService extends SipTableDataSource {
     let searchparams = this.searchparams || {};
     param.searchparam = searchparams;
     Lib.eachProp(filters, function (item, name) {
-      searchparams[name] = item.value;
+      searchparams[name] = Lib.isArray(item.value) ? item.value.join(',') : item.value;
     });
     let sortMetaLen = sortMeta.length;
     if (sortMeta && sortMetaLen > 0) {
