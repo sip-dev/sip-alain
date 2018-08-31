@@ -1,10 +1,10 @@
-import { HttpClient, HttpHandler, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHandler, HttpRequest } from '@angular/common/http';
 import { Type } from '@angular/core';
 import { AdPageHeaderConfig, ReuseTabMatchMode } from '@delon/abc';
 import { DelonAuthConfig } from '@delon/auth';
 import { SipTableSettings } from '../components/sip-table/sip-table/base/sip-table-settings';
-import { IConfigResetMapRet } from './i-config-reset-map-ret';
 import { SipLoggerOptions } from './sip-logger-options';
+import { SipRestParam, SipRestRet, SipRestSqlRet, SipSqlParam } from './sip-rest-base';
 
 /**配置基类 */
 export abstract class SipAlainConfig {
@@ -69,12 +69,15 @@ export abstract class SipAlainConfig {
         /**
          * rest 数据结构改造
          */
-        map: (rs) => IConfigResetMapRet;
-
+        map: (url: string, response: any) => SipRestRet<any>;
+        mapParam: (p: SipRestParam) => SipRestParam;
+        catchError: (url: string, response: HttpErrorResponse) => SipRestRet<any>;
         sql: {
+            map: (url: string, rs: SipRestRet<any>) => SipRestSqlRet<any>;
+            mapParam: (p: SipSqlParam) => any;
             /**
-             * sql数据，有分页
-             */
+                 * sql数据，有分页
+                 */
             pageList: string;
             /**
              * sql数据，无分页

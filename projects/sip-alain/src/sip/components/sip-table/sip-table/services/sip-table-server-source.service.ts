@@ -1,6 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
 import { Lib } from 'sip-lib';
-import { SipRestService, SipRestSqlRet, SipSqlParam } from '../../../../services/sip-rest.service';
+import { SipRestSqlRet, SipSqlParam } from '../../../../base/sip-rest-base';
+import { SipRestService } from '../../../../services/sip-rest.service';
 import { Filter, SortMeta } from '../../ng-data-table';
 import { SipTableDataSource } from '../base/sip-table-data-source';
 import { SipTableSettings } from '../base/sip-table-settings';

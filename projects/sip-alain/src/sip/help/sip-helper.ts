@@ -8,10 +8,11 @@ import { Observable, Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Lib } from 'sip-lib';
 import { SipAlainConfig } from '../base/sip-alain-config';
+import { ISipRestDict, SipRestParam, SipRestRet, SipRestSqlRet, SipSqlParam } from '../base/sip-rest-base';
 import { SipAppContainerService } from '../services/sip-app-container.service';
 import { SipEventService } from '../services/sip-event.service';
 import { SipLoggerService } from '../services/sip-logger.service';
-import { ISipRestDict, SipHttpOptions, SipRestRet, SipRestService, SipRestSqlRet } from '../services/sip-rest.service';
+import { SipRestService } from '../services/sip-rest.service';
 
 let undef;
 
@@ -558,16 +559,9 @@ export enum SipRestSqlType {
     EntityEx = 'EntityEx'
 }
 
-export interface ISipRestDefParamsBase<T> {
-    url?: string;
-    params?: any;
-    httpOptions?: SipHttpOptions;
-    /**拥有者，一般是UI，处理释放问题 */
-    owner?: any;
-    /**是否缓存，必须设置owner */
-    cache?: boolean;
+export interface ISipRestDefParamsBase<T=any> extends SipRestParam {
     //改造数据
-    map?: (rs: SipRestRet<T>, target?: any) => T;
+    map?: (rs: SipRestRet<T>, target?: any) => any;
 }
 
 export interface ISipRestDefParams<T=any> extends ISipRestDefParamsBase<T> {
@@ -617,16 +611,8 @@ export function SipRestDef<T=any>(params: ISipRestDefParams<T>) {
     };
 }
 
-export interface ISipRestSqlDefParams<T> extends ISipRestDefParamsBase<T> {
+export interface ISipRestSqlDefParams<T=any> extends SipSqlParam, ISipRestDefParamsBase<T> {
     sqlType?: SipRestSqlType;
-
-    connstr?: string;
-    sqlId?: string;
-    pageSize?: number;
-    pageIndex?: number;
-    sortName?: string;
-    sortOrder?: '' | 'asc' | 'desc';
-    searchparam?: object;
 }
 
 export interface SipRestSqlFunction<I, O> {

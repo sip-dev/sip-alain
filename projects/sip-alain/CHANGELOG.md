@@ -1,6 +1,10 @@
 
 # 更新
 
+## 0.5.3
+
+* 调整: rest 相关配置到config
+
 ## 0.5.2
 
 * Fix: SipFormGroup

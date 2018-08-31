@@ -9,7 +9,8 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NzMessageService } from 'ng-zorro-antd';
 import { Observable, of } from 'rxjs';
 import { catchError, mergeMap } from 'rxjs/operators';
-import { IConfigResetMapRet, SipAlainConfig, SipTableSettings } from 'sip-alain';
+import { SipAlainConfig, SipRestParam, SipRestRet, SipRestSqlRet, SipSqlParam, SipTableSettings } from 'sip-alain';
+import { Lib } from 'sip-lib';
 
 
 let _rmPathSplitRegex = /\/{2,}/g;
@@ -150,6 +151,28 @@ export class SipConfigService implements SipAlainConfig {
         );
     }
 
+    mapRest(url: string, response: any): SipRestRet<any> {
+        if ('version' in response && 'returnValue' in response) {
+            return {
+                isSucc: response.returnCode == 200,
+                status: response.returnCode,
+                statusText: 'Ok',
+                datas: response.returnValue,
+                error: response.error,
+                message: response.returnDesc
+            };
+        } else {
+            return {
+                isSucc: true,
+                status: 200,
+                statusText: 'Ok',
+                datas: response,
+                error: '',
+                message: ''
+            };
+        }
+    }
+
     /**rest相关处理 */
     rest = {
         /**
@@ -169,22 +192,51 @@ export class SipConfigService implements SipAlainConfig {
         /**
          * rest 数据结构改造
          */
-        map: function (rs): IConfigResetMapRet {
-            if ('version' in rs && 'returnValue' in rs)
-                return rs;
-            else {
-                return {
-                    "version": 1,
-                    "returnCode": 200,
-                    "returnValue": rs,
-                    "returnStatus": "OK",
-                    "returnDesc": "",
-                    "error": ""
-                }
-            }
+        map: (url: string, response: any): SipRestRet<any> => {
+            return this.mapRest(url, response);
         },
-
+        mapParam: function (p: SipRestParam): SipRestParam {
+            return p;
+        },
+        catchError: (url: string, response: HttpErrorResponse): SipRestRet<any> => {
+            return {
+                isSucc: false,
+                status: response.status,
+                statusText: response.statusText,
+                datas: null,
+                error: response.error,
+                message: response.message
+            };
+        },
         sql: {
+            /**
+             * sql 数据结构改造
+             */
+            map: (url: string, rs: SipRestRet<any>): SipRestSqlRet<any> => {
+                let sqlData = rs.datas;
+                let retData: any = Lib.extend(rs, {
+                    pageIndex: sqlData ? sqlData.PageIndex : 0,
+                    pageSize: sqlData ? sqlData.PageSize : 10,
+                    totalPages: sqlData ? sqlData.TotalPages : 0,
+                    total: sqlData ? sqlData.TotalRecords : 0
+                });
+                retData.datas = sqlData ? sqlData.Data : [];
+
+                return retData as SipRestSqlRet<any>;
+            },
+            mapParam: function (p: SipSqlParam): any {
+                let param: any = Lib.extend({
+                    connstr: p.connstr || '',
+                    sqlId: p.sqlId || '',
+                    rows: p.pageSize || 10,
+                    page: p.pageIndex || 1,
+                    sidx: p.sortName || '',
+                    sord: p.sortOrder || '',
+                    searchparam: p.searchparam,
+                    url: p.url
+                }, p.params);
+                return param;
+            },
             /**
              * sql数据，有分页
              */

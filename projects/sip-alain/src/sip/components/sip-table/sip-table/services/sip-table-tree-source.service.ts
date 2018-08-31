@@ -1,5 +1,6 @@
 import { Injectable, Injector } from '@angular/core';
-import { SipRestService, SipSqlParam } from '../../../../services/sip-rest.service';
+import { SipSqlParam } from '../../../../base/sip-rest-base';
+import { SipRestService } from '../../../../services/sip-rest.service';
 import { TreeNode } from '../../ng-tree-table/base/tree-node';
 import { SipTableSettings } from '../base/sip-table-settings';
 import { SipTreeDataSource } from '../base/sip-tree-data-source';
