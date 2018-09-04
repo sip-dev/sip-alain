@@ -28,6 +28,7 @@
 		}
 	}
 }
+
 .aside-collapsed .nav:not(.nav-sub) > li > a{
 	padding: 10px 0;
 }
@@ -35,13 +36,16 @@
 
 // sip-page
 .content__title{
-	background-color: #fff;
+	
     position: relative;
-    padding:12px @gutter*2;
+    padding:12px @gutter*3;
     margin-bottom: @gutter *2;
-
+    margin-left:@gutter*-2;
+    border-bottom-color:#e8e8e8;
+    background-color: #fff;
     >h1{
         color:@baseTitle;
+        font-size:20px;
         >small{
             padding-top: @gutter/2;
             color: @baseCaption;
@@ -54,8 +58,9 @@
     right: 24px;
     top: 50%;
     font-size: 30px;
-    margin-top: -15px;
+   // margin-top: -15px;
     color: #777;
+    transform: translateY(-50%);
 }
 
 
@@ -68,11 +73,15 @@
 // nz-tabset 导航tab控制，前台隐藏
 .reuse-tab-hide {
 	.content{
-        margin-top: @layoutHeaderHeight;
+        margin-top: 100px;
         margin-right:@gutter *2;
         margin-left: 216px;
-	}
-	
+	}	
+} 
+.mutil-tab-hide {
+	.content{
+    margin-top: @layoutHeaderHeight;
+	}	
 	reuse-tab{
 		padding: 0 24px;
 	
@@ -85,11 +94,28 @@
 			margin-bottom: 0 !important;
 		}
 	}
+} 
+
+//不可点击样式
+.disabled{
+	color: rgba(0, 0, 0, 0.25);
+  background-color: #f5f5f5;
+  cursor: not-allowed;
 }
+
 
 
 @media (max-width: 991px){
 	reuse-tab.fixed {
 		top: -32px;
 	}
+}
+// Desktop
+@media (min-width: 768px) {
+
+  .aside-collapsed {
+    .content {
+      margin-left: 80px;
+    }
+  }
 }
