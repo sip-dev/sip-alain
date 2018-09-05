@@ -1,12 +1,13 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
-import { UiDemoSharedModule } from './ui-demo-shared/ui-demo-shared.module';
+import { AlertComponent } from './alert/alert.component';
 import { ListCreateComponent } from './list-create/list-create.component';
 import { ListDetailComponent } from './list-detail/list-detail.component';
 import { ListFormComponent } from './list-form/list-form.component';
 import { ServerListComponent } from './server-list/server-list.component';
 import { UiDemoRoutingModule } from './ui-demo-routing.module';
+import { UiDemoSharedModule } from './ui-demo-shared/ui-demo-shared.module';
 
 @NgModule({
     imports: [
@@ -19,7 +20,8 @@ import { UiDemoRoutingModule } from './ui-demo-routing.module';
         ListCreateComponent,
         ListDetailComponent,
 		ListFormComponent,
-        ServerListComponent
+        ServerListComponent,
+        AlertComponent
     ],
     providers: [],
     exports:[
@@ -28,10 +30,12 @@ import { UiDemoRoutingModule } from './ui-demo-routing.module';
         ListDetailComponent,
 		ListFormComponent,
         ServerListComponent,
-        UiDemoRoutingModule
+        UiDemoRoutingModule,
+        AlertComponent
     ],
     entryComponents:[
-        ListFormComponent
+        ListFormComponent,
+        AlertComponent
     ]
 })
 export class UiDemoModule { }

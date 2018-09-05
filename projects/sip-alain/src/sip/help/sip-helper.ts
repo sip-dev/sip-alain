@@ -14,8 +14,6 @@ import { SipEventService } from '../services/sip-event.service';
 import { SipLoggerService } from '../services/sip-logger.service';
 import { SipRestService } from '../services/sip-rest.service';
 
-let undef;
-
 //#region equals
 
 let _equalArrayIn = function (array1: Array<any>, array2: Array<any>) {

@@ -1,8 +1,10 @@
 import { Component, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd';
 import { SipAccessItem, SipInject, SipNgInit, SipPage, SipProvidePages, SipTableColumn, SipTableServerManager, SipTableSettings } from 'sip-alain';
+import { AlertComponent } from '../../ui-demo/alert/alert.component';
 import { ListFormComponent } from '../../ui-demo/list-form/list-form.component';
 import { getColumnsPlayers } from '../shared/base/column';
+import { PlayerModel } from '../shared/models/player.model';
 import { PlayerService } from '../shared/services/player.service';
 
 @Component({
@@ -46,7 +48,7 @@ export class ServerTableComponent extends SipPage {
   }
 
   public columns: SipTableColumn[];
-  public tableManager: SipTableServerManager;
+  public tableManager: SipTableServerManager<PlayerModel>;
 
   @SipInject(PlayerService)
   private _playerSrv:PlayerService;
@@ -148,5 +150,14 @@ export class ServerTableComponent extends SipPage {
     }
   }
 
+  alert(){
+    let data = this.tableManager.getSelectedFirstData();
+    if (!data) return;
+    this.$modal(AlertComponent, { id: data.id }).subscribe(r => {
+        if (!r) return;
+        this.tableManager.refresh();
+        console.log('AlertComponent', r);
+    });
+  }
 
 }

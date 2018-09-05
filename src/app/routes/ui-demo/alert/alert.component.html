@@ -1,0 +1,14 @@
+<sip-modal width="720px" height="380px">
+  <sip-modal-header>
+    <span>alert</span>
+  </sip-modal-header>
+  <sip-modal-body>
+    test alert
+  </sip-modal-body>
+  <sip-modal-footer>
+    <button nz-button (click)="save()" [nzType]="'primary'" [nzSize]="'large'" [disabled]="loading" [nzLoading]="loading">
+      提 交
+    </button>
+    <button nz-button (click)="$close()">取消</button>
+  </sip-modal-footer>
+</sip-modal>
