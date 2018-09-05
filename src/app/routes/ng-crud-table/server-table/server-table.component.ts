@@ -2,6 +2,8 @@ import { Component, TemplateRef, ViewChild, ViewContainerRef } from '@angular/co
 import { NzMessageService } from 'ng-zorro-antd';
 import { SipAccessItem, SipInject, SipNgInit, SipPage, SipProvidePages, SipTableColumn, SipTableServerManager, SipTableSettings } from 'sip-alain';
 import { AlertComponent } from '../../ui-demo/alert/alert.component';
+import { ConfirmComponent } from '../../ui-demo/confirm/confirm.component';
+import { PromptComponent } from '../../ui-demo/prompt/prompt.component';
 import { ListFormComponent } from '../../ui-demo/list-form/list-form.component';
 import { getColumnsPlayers } from '../shared/base/column';
 import { PlayerModel } from '../shared/models/player.model';
@@ -154,6 +156,26 @@ export class ServerTableComponent extends SipPage {
     let data = this.tableManager.getSelectedFirstData();
     if (!data) return;
     this.$modal(AlertComponent, { id: data.id }).subscribe(r => {
+        if (!r) return;
+        this.tableManager.refresh();
+        console.log('AlertComponent', r);
+    });
+  }
+
+  confirm(){
+    let data = this.tableManager.getSelectedFirstData();
+    if (!data) return;
+    this.$modal(ConfirmComponent, { id: data.id }).subscribe(r => {
+        if (!r) return;
+        this.tableManager.refresh();
+        console.log('AlertComponent', r);
+    });
+  }
+
+  prompt(){
+    let data = this.tableManager.getSelectedFirstData();
+    if (!data) return;
+    this.$modal(PromptComponent, { id: data.id }).subscribe(r => {
         if (!r) return;
         this.tableManager.refresh();
         console.log('AlertComponent', r);

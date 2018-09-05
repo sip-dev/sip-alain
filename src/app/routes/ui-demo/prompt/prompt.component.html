@@ -1,14 +1,15 @@
-<sip-modal :class="sip-alert" width="720px" height="30px">
+<sip-modal width="720px" height="100px">
   <sip-modal-header>
-    <span>alert提示</span>
+    <span>prompt提示</span>
   </sip-modal-header>
   <sip-modal-body>
-    您确定进行以下操作吗？
+    <p>请输入内容</p>
+    <input nz-input placeholder="请输入内容" [nzSize]="'large'"/>
   </sip-modal-body>
   <sip-modal-footer>
     <button nz-button (click)="save()" [nzType]="'primary'" [nzSize]="'large'" [disabled]="loading" [nzLoading]="loading">
-      确定
+      提 交
     </button>
-    <!-- <button nz-button  [nzSize]="'large'" (click)="$close()">取消</button> -->
+    <button nz-button  [nzSize]="'large'" (click)="$close()">取消</button>
   </sip-modal-footer>
 </sip-modal>

@@ -30,6 +30,14 @@
                         <i class="anticon anticon-caret-right"></i>
                         <span>alert</span>
                     </button>
+                    <button nz-button (click)="confirm()" [nzType]="'default'">
+                        <i class="anticon anticon-caret-right"></i>
+                        <span>confirm</span>
+                    </button>
+                    <button nz-button (click)="prompt()" [nzType]="'default'">
+                        <i class="anticon anticon-caret-right"></i>
+                        <span>prompt</span>
+                    </button>
                     <nz-dropdown [nzTrigger]="'hover'" [nzPlacement]="'bottomLeft'">
                         <button nz-button nz-dropdown>
                             <i class="fa fa-ellipsis-v mr-sm"></i>
