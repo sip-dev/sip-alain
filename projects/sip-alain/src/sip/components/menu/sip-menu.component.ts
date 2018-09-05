@@ -14,7 +14,8 @@ import { SipMenuChildren } from './sip-menu-children';
 			<ng-template #itemtmpl let-item="item">
 				<li *ngIf="showItem(item)" nz-menu-item
 					[nzSelected]="item.selected"
-					(click)="item.onClick && item.onClick(item)">
+					[class.sip-disabled]="item.disabled"
+					(click)="clickItem(item)">
 					<i *ngIf="item.icon" [class]="item.icon"></i>{{item.title}}
 				</li>
 				<li *ngIf="showItemDivider(item)" nz-menu-item-divider></li>
@@ -22,20 +23,22 @@ import { SipMenuChildren } from './sip-menu-children';
 			<ng-template ngFor let-item [ngForOf]="datas" let-i="index">
 				<ng-container [ngTemplateOutlet]="itemtmpl" [ngTemplateOutletContext]="{item:item}"></ng-container>
 				<li *ngIf="showItemSub(item)" nz-submenu [nzOpen]="item.open">
-					<span title (click)="item.onClick && item.onClick(item)">
+					<span title
+						[class.sip-disabled]="item.disabled"
+						(click)="clickItem(item)">
 						<i *ngIf="item.icon" [class]="item.icon"></i>{{item.title}}
 					</span>
-					<ul>
+					<ul *ngIf="!item.disabled">
 						<ng-template ngFor let-citem [ngForOf]="item.children">
 							<ng-container [ngTemplateOutlet]="itemtmpl" [ngTemplateOutletContext]="{item:citem}"></ng-container>
 						</ng-template>
 					</ul>
 				</li>
 				<li *ngIf="showItemGroup(item)" nz-menu-group>
-					<span title>
+					<span title [class.sip-disabled]="item.disabled">
 						<i *ngIf="item.icon" class="anticon {{item.icon}}"></i>{{item.title}}
 					</span>
-					<ul>
+					<ul *ngIf="!item.disabled">
 						<ng-template ngFor let-citem [ngForOf]="item.children">
 							<ng-container [ngTemplateOutlet]="itemtmpl" [ngTemplateOutletContext]="{item:citem}"></ng-container>
 						</ng-template>
@@ -60,24 +63,28 @@ export class SipMenuComponent implements SipMenuChildren {
 	private _menuItem: ISipMenuItem;
 
 	showItem(item: ISipMenuItem) {
-		return !item.disabled && !item.group && !item.divider && !item.children;
+		return !item.show && !item.group && !item.divider && !item.children;
 	}
 
 	showItemSub(item: ISipMenuItem) {
-		return !item.disabled && !item.group && item.children;
+		return !item.show && !item.group && item.children;
 	}
 
 	showItemGroup(item: ISipMenuItem) {
-		return !item.disabled && item.group;
+		return !item.show && item.group;
 	}
 
 	showItemDivider(item: ISipMenuItem) {
-		return !item.disabled && item.divider;
+		return !item.show && item.divider;
 	}
 
 	@Input() datas: ISipMenuItem[] = [];
 	addChild(menu: ISipMenuItem) {
 		this.datas.push(menu);
+	}
+
+	clickItem(item: ISipMenuItem) {
+		if (!item.disabled && item.onClick) item.onClick(item);
 	}
 
 }

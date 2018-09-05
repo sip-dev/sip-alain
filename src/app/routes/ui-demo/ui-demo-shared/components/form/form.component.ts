@@ -51,6 +51,7 @@ export class FormComponent extends SipComponent {
 
     @SipFormSubmit({ form: 'this.form', message: true })
     getSaveData(): object {
+        return null;
         return this.form.$toJSONObject();
     }
 }

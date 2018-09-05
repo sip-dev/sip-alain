@@ -32,18 +32,24 @@ export class SipTableServerSourceService extends SipTableDataSource {
     this.pageSize = this.settings.pageSize || 10;
   }
 
+  private _oldfilterKeys: string[];
   private makeSqlParam(page: number, filters: Filter, sortMeta: SortMeta[]): SipSqlParam {
     let param: SipSqlParam = <SipSqlParam>this.settings;
     param.pageIndex = page;
     let searchparams = this.searchparams || {};
     param.searchparam = searchparams;
+    let oldfilterKeys = this._oldfilterKeys;
+    if (oldfilterKeys && oldfilterKeys.length > 0) {
+      oldfilterKeys.forEach((key) => searchparams[key] = undefined);
+    }
+    this._oldfilterKeys = filters ? Object.keys(filters) : null;
     Lib.eachProp(filters, function (item, name) {
       searchparams[name] = Lib.isArray(item.value) ? item.value.join(',') : item.value;
     });
     let sortMetaLen = sortMeta.length;
     if (sortMeta && sortMetaLen > 0) {
       if (sortMetaLen > 1) {
-        let sortnames = []
+        let sortnames = [];
         Lib.each(sortMeta, function (item: SortMeta) {
           sortnames.push([item.field, item.order < 0 ? 'desc' : 'asc'].join(' '));
         });
