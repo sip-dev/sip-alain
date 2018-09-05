@@ -736,6 +736,7 @@ export interface ISipFormGroup<T=any> extends FormGroup {
     $toJSONObject: () => T
     [key: string]: any;
 }
+
 export interface ISipFormGroupParams<T> {
     model: T;
     validators?: { [key: string]: any };
@@ -776,14 +777,6 @@ export function SipFormGroup<T=object>(factory: (target: any) => ISipFormGroupPa
                 let extraTemp = params.extra;
                 let formGroup: FormGroup = this.$formBuilder.group(valids, extraTemp);
                 this[key] = formGroup;
-                Lib.eachProp(modelThis, function (item, name) {
-                    Object.defineProperty(formGroup, '$' + name, {
-                        enumerable: true, configurable: false,
-                        get: function () {
-                            return this.controls[name];
-                        }
-                    });
-                }, this);
                 Object.defineProperty(formGroup, '$model', {
                     enumerable: true, configurable: false,
                     get: function () {

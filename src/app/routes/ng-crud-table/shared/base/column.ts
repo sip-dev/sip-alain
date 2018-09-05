@@ -10,7 +10,7 @@ export function getColumnsPlayers(): SipTableColumn[] {
             frozen: true,
             width: 100,
             formHidden: true,
-            type: 'number',
+            type: 'number'
         },
         {
             title: 'Name',
