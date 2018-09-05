@@ -49,8 +49,9 @@ export class SipAccessDirective {
         if (this._preCheckOk === checkOk) return;
         this._preCheckOk = checkOk;
 
-        let notPassClass = acItem && acItem.notPassClass || 'disabled';
-        notPassClass || (notPassClass = 'disabled');
+        let clDisabled = 'sip-disabled';
+        let notPassClass = acItem && acItem.notPassClass || clDisabled;
+        notPassClass || (notPassClass = clDisabled);
 
         let type = acItem && acItem.type;
         type || (type = 'enabled');
