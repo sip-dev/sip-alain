@@ -15,13 +15,15 @@
           <sip-form #form1></sip-form>
           <nz-divider nzTitle="" nzDashed></nz-divider>
           <nz-form-item>
-            <nz-form-label nzXs="24" nzSm="4">&nbsp;</nz-form-label>
-            <nz-form-control nzXs="24" nzSm="18">
-              <div class="mt-sm">
-                <button nz-button [nzType]="'primary'" class="mr-sm" (click)="save()">申请</button>
-                <button nz-button (click)="$close()">取消</button>
+            <div nz-row>
+              <div nz-col nzXs="24" nzSm="4"></div>
+              <div nz-col nzXs="24" nzSm="18">
+                <div class="mt-sm">
+                  <button nz-button [nzType]="'primary'" class="mr-sm" (click)="save()">申请</button>
+                  <button nz-button (click)="$close()">取消</button>
+                </div>
               </div>
-            </nz-form-control>
+            </div>
           </nz-form-item>
         </nz-card>
       </div>
