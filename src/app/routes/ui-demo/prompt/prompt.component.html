@@ -1,15 +1,15 @@
-<sip-modal width="720px" height="100px">
+<sip-modal width="620px">
   <sip-modal-header>
     <span>prompt提示</span>
   </sip-modal-header>
   <sip-modal-body>
     <p>请输入内容</p>
-    <input nz-input placeholder="请输入内容" [nzSize]="'large'"/>
+    <input nz-input placeholder="请输入内容" nzSize="large"/>
   </sip-modal-body>
   <sip-modal-footer>
-    <button nz-button (click)="save()" [nzType]="'primary'" [nzSize]="'large'" [disabled]="loading" [nzLoading]="loading">
-      提 交
+    <button nz-button (click)="save()" nzType="primary" nzSize="large">
+      确 认
     </button>
-    <button nz-button  [nzSize]="'large'" (click)="$close()">取消</button>
+    <button nz-button  nzSize="large" (click)="$close()">取消</button>
   </sip-modal-footer>
 </sip-modal>

@@ -1,4 +1,4 @@
-<sip-modal width="720px" height="50px">
+<sip-modal width="620px">
   <sip-modal-header>
     <span>confirm提示</span>
   </sip-modal-header>
@@ -6,9 +6,9 @@
     <nz-alert nzBanner nzMessage="你确定进行如下操作吗？"></nz-alert>
   </sip-modal-body>
   <sip-modal-footer>
-    <button nz-button (click)="save()" [nzType]="'primary'" [nzSize]="'large'" [disabled]="loading" [nzLoading]="loading">
-      提 交
+    <button nz-button (click)="save()" nzType="primary" nzSize="large">
+      确 认
     </button>
-    <button nz-button  [nzSize]="'large'" (click)="$close()">取消</button>
+    <button nz-button  nzSize="large" (click)="$close()">取消</button>
   </sip-modal-footer>
 </sip-modal>

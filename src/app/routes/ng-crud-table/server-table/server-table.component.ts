@@ -3,8 +3,8 @@ import { NzMessageService } from 'ng-zorro-antd';
 import { SipAccessItem, SipInject, SipNgInit, SipPage, SipProvidePages, SipTableColumn, SipTableServerManager, SipTableSettings } from 'sip-alain';
 import { AlertComponent } from '../../ui-demo/alert/alert.component';
 import { ConfirmComponent } from '../../ui-demo/confirm/confirm.component';
-import { PromptComponent } from '../../ui-demo/prompt/prompt.component';
 import { ListFormComponent } from '../../ui-demo/list-form/list-form.component';
+import { PromptComponent } from '../../ui-demo/prompt/prompt.component';
 import { getColumnsPlayers } from '../shared/base/column';
 import { PlayerModel } from '../shared/models/player.model';
 import { PlayerService } from '../shared/services/player.service';
@@ -70,6 +70,7 @@ export class ServerTableComponent extends SipPage {
         width: '100px',
         items: [{
           title: 'test',
+          disabled: !this.$access.hasAccess('test'),
           onClick: (p) => {
             this.$logger.log('test', row);
           }
@@ -152,6 +153,12 @@ export class ServerTableComponent extends SipPage {
     }
   }
 
+  @SipAccessItem<ServerTableComponent>('alert', {
+    multi: false, hasData: true,
+    check: function () {
+      return true;
+    }
+  })
   alert(){
     let data = this.tableManager.getSelectedFirstData();
     if (!data) return;
@@ -162,23 +169,35 @@ export class ServerTableComponent extends SipPage {
     });
   }
 
+  @SipAccessItem<ServerTableComponent>('confirm', {
+    multi: false, hasData: true,
+    check: function () {
+      return true;
+    }
+  })
   confirm(){
     let data = this.tableManager.getSelectedFirstData();
     if (!data) return;
     this.$modal(ConfirmComponent, { id: data.id }).subscribe(r => {
         if (!r) return;
         this.tableManager.refresh();
-        console.log('AlertComponent', r);
+        console.log('ConfirmComponent', r);
     });
   }
 
+  @SipAccessItem<ServerTableComponent>('prompt', {
+    multi: false, hasData: true,
+    check: function () {
+      return true;
+    }
+  })
   prompt(){
     let data = this.tableManager.getSelectedFirstData();
     if (!data) return;
     this.$modal(PromptComponent, { id: data.id }).subscribe(r => {
         if (!r) return;
         this.tableManager.refresh();
-        console.log('AlertComponent', r);
+        console.log('PromptComponent', r);
     });
   }
 

@@ -13,6 +13,10 @@ export class AlertComponent extends SipModal {
     super(vcf);
   }
 
+  text = `您确定进行以下操作吗？<br />
+  您确定进行以下操作吗？<br />
+  您确定进行以下操作吗？<br />`;
+
   @SipNgInit()
   private _init() {
     let params = this.$params({ id: 0 });
