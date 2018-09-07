@@ -245,6 +245,7 @@ export interface ISipSubscribeParams {
 
 let _pushSubscribe = function (target: any, event: string, params: ISipSubscribeParams, fn: any) {
     _pushEvent(target, 'sipOnConstructor', function () {
+        if (!this.$subscribe) return;
         let tFn = function () {
             fn.apply(this, arguments);
         }.bind(this);
@@ -253,7 +254,7 @@ let _pushSubscribe = function (target: any, event: string, params: ISipSubscribe
 };
 
 /**
- * 订阅, 可以用于service
+ * 订阅，（注意：在服务[service]里只会订阅全局，要手动使用$unSubscribe解除订阅）
  * @param event 事件名称
  * @param params 参数
  * @example SipSubscribe('test-list.testsubs') 
@@ -813,7 +814,7 @@ export class SipParent {
     /**SipNgEvent占用 */
     private _$sipEvents: any;
 
-    constructor(private _$injector: Injector) {
+    constructor(private _$injector: Injector, public readonly $vcf: ViewContainerRef) {
         let $this: any = this;
         $this['sipOnConstructor'] && $this['sipOnConstructor']();
     }
@@ -906,8 +907,45 @@ export class SipParent {
 
     //#endregion Router
 
+    //#region Observable
 
-    //#endregion Router
+    @SipInject(SipEventService)
+    private _$eventSrv: SipEventService;
+
+    /**
+     * 订阅信息, （注意：在服务[service]里只会订阅全局，要手动使用$unSubscribe解除订阅）
+     * @param event 事件名称
+     * @param callback 成功内容
+     * @param error 失败内容
+     * @param complete 完成内容
+     */
+    public $subscribe(event: string, callback?: (value?: any) => void, error?: (error?: any) => void, complete?: () => void): Subscription {
+        return this._$eventSrv.subscribe(event, callback, error, complete, this.$vcf ? this : null);
+    }
+
+    /**
+     * 取消订阅信息
+     * @param event 事件名称
+     */
+    $unSubscribe(event?: string) {
+        if (event)
+            this._$eventSrv.unSubscribe(event, this);
+        else
+            this._$eventSrv.removeOwner(this);
+    }
+
+    /**
+     * 发布信息，（注意：在服务[service]里只会发布全局信息）
+     * @param event 事件名称
+     * @param eventObject 发布内容
+     * @param global 是否发布到全部，默认为否（只向本身发布）, （注意：在服务[service]里只会发布全局信息）
+     */
+    public $publish(event: string, eventObject?: any, global?: boolean) {
+        return this._$eventSrv.publish(event, eventObject, (!this.$vcf || global === true) ? null : this);
+    }
+
+    //#endregion Observable
+
 
     //#region modal
 
@@ -918,7 +956,7 @@ export class SipParent {
      * @param isApp 是否添加到App, 默认为(false)添加到本组件
     */
     $appendTemplate(tmpl: TemplateRef<any>, context?: any, isApp?: boolean): ViewRef {
-        let vcf = this['$vcf'];
+        let vcf = this.$vcf;
         if (isApp || !vcf) {
             let appContainer: SipAppContainerService = this.$injector(SipAppContainerService);
             if (appContainer) return appContainer.appendTemplate(tmpl, context);
@@ -935,7 +973,7 @@ export class SipParent {
      * @param isLayout 是否添加到layout, 默认添加到本组件
      */
     $appendComponent<T>(type: Type<T>, params?: Object, isLayout?: boolean): ComponentRef<T> {
-        let vcf = this['$vcf'];
+        let vcf = this.$vcf;
         if (isLayout || !vcf) {
             let appContainer: SipAppContainerService = this.$injector(SipAppContainerService);
             if (appContainer) return appContainer.appendComponent(type, params, this.$injector(ComponentFactoryResolver));
@@ -1014,6 +1052,7 @@ export class SipParent {
             });
             this._$navigateChildren = null;
         }
+        this.$unSubscribe();
         if (this._$ijdestroys.length)
             this._$ijdestroys.forEach((item) => { item.$destroy && item.$destroy(); });
         setTimeout(() => {
@@ -1038,8 +1077,8 @@ export class SipUiBase extends SipParent implements OnInit, OnDestroy, OnChanges
     /**@SipWatch占用 */
     private _$sipWatch: any;
 
-    constructor(public readonly $vcf: ViewContainerRef) {
-        super($vcf.injector);
+    constructor(vcf: ViewContainerRef) {
+        super(vcf.injector, vcf);
     }
 
     $showed = true;
@@ -1053,45 +1092,6 @@ export class SipUiBase extends SipParent implements OnInit, OnDestroy, OnChanges
         return this._$menuItem
             || (this._$menuItem = this.$getMenuByUrl(this.$url));
     }
-
-
-    //#region Observable
-
-    @SipInject(SipEventService)
-    private _$eventSrv: SipEventService;
-
-    /**
-     * 订阅信息
-     * @param event 事件名称
-     */
-    // public $subscribe(event: string): Observable<any>;
-    /**
-     * 订阅信息
-     * @param event 事件名称
-     * @param callback 成功内容
-     * @param error 失败内容
-     * @param complete 完成内容
-     */
-    // public $subscribe(event: string, callback: (value?: any) => void, error?: (error?: any) => void, complete?: () => void): Subscription;
-    public $subscribe(event: string, callback?: (value?: any) => void, error?: (error?: any) => void, complete?: () => void): Subscription {
-        // if (!Lib.isFunction(callback))
-        //     return this._$eventSrv.subscribe(event, this);
-        // else
-        return this._$eventSrv.subscribe(event, callback, error, complete, this);
-    }
-
-    /**
-     * 发布信息
-     * @param event 事件名称
-     * @param eventObject 发布内容
-     * @param global 是否发布到全部，默认为否（只向本身发布）
-     */
-    public $publish(event: string, eventObject?: any, global?: boolean) {
-        return this._$eventSrv.publish(event, eventObject, global === true ? null : this);
-    }
-
-    //#endregion Observable
-
 
 
     /**ActivatedRoute */
@@ -1140,7 +1140,6 @@ export class SipUiBase extends SipParent implements OnInit, OnDestroy, OnChanges
 
     @SipNgDestroy()
     private _$ngDestroy() {
-        this._$eventSrv.removeOwner(this);
         this.$destroy();
     }
 
@@ -1149,7 +1148,7 @@ export class SipUiBase extends SipParent implements OnInit, OnDestroy, OnChanges
 /**服务基础类 */
 export class SipService extends SipParent {
     constructor(injector: Injector) {
-        super(injector);
+        super(injector, null);
     }
 }
 

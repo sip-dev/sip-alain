@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { Lib } from 'sip-lib';
 
 let _notEvent = '[SipEventService] => Subscription method must get event name.';
 let _ownerEventKey = '_$sipEvents';
@@ -32,6 +33,12 @@ export class SipEventService {
         if (index >= 0) {
             this._owners.splice(index, 1);
             this._owners.length || (this._owners = []);
+            let events = this._ownerEvents(owner, true);
+            if (events) {
+                Lib.eachProp(events, function (item: Subject<any>) {
+                    item && item.unsubscribe && item.unsubscribe();
+                });
+            }
         }
         return owner;
     }
@@ -40,9 +47,9 @@ export class SipEventService {
         if (index < 0) this._owners.push(owner);
         return owner;
     }
-    private _ownerEvents(owner: any): { [key: string]: Subject<any> } {
+    private _ownerEvents(owner: any, isGet?: boolean): { [key: string]: Subject<any> } {
         let events = owner[_ownerEventKey];
-        if (!events)
+        if (!events && isGet !== true)
             events = owner[_ownerEventKey] = {};
         return events;
     }
@@ -71,8 +78,17 @@ export class SipEventService {
      * @param complete 完成内容
      * @param owner 订阅者
      */
-    public subscribe(event: string, callback?: (value: any) => void, error?: (error: any) => void, complete?: () => void, owner?: any):any {
+    public subscribe(event: string, callback?: (value: any) => void, error?: (error: any) => void, complete?: () => void, owner?: any): any {
         return this._setEvent(event, owner).subscribe(callback, error, complete);
+    }
+
+    /**
+     * 取消订阅信息
+     * @param event 事件名称
+     * @param owner 订阅者
+     */
+    public unSubscribe(event: string, owner?: any) {
+        this._setEvent(event, owner).unsubscribe();
     }
 
     /**
@@ -81,11 +97,11 @@ export class SipEventService {
      * @param eventObject 发布内容
      * @param owner 只发布到owner，如果为空发布到所有
      */
-    public publish(event: string, eventObject?: any, owner?:any) {
+    public publish(event: string, eventObject?: any, owner?: any) {
         if (!event) {
             throw new Error(_notEvent);
         } else {
-            if (owner){
+            if (owner) {
                 let ev = owner[_ownerEventKey];
                 ev && ev[event] && ev[event].next(eventObject);
             } else {
