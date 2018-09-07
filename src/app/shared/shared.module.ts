@@ -32,7 +32,7 @@ const DIRECTIVES = [];
     // SipAlainModule,
     // third libs
     ...THIRDMODULES
-  ],
+    ],
   declarations: [
     // your components
     ...COMPONENTS,
@@ -49,6 +49,6 @@ const DIRECTIVES = [];
     // your components
     ...COMPONENTS,
     ...DIRECTIVES
-  ]
+    ]
 })
 export class SharedModule {}

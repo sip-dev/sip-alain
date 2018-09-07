@@ -49,6 +49,16 @@ export abstract class SipAlainConfig {
         autoCloseChild: boolean
     };
 
+    /**ui相关配置 */
+    ui?:{
+        /**alert组件类 */
+        alert?:any;
+        /**confirm组件类 */
+        confirm?:any;
+        /**prompt组件类 */
+        prompt?:any;
+    };
+
     rest: {
         /**
          * rest url 改造路径

@@ -1,9 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
-import { AlertComponent } from './alert/alert.component';
-import { ConfirmComponent } from './confirm/confirm.component';
-import { PromptComponent } from './prompt/prompt.component';
 import { ListCreateComponent } from './list-create/list-create.component';
 import { ListDetailComponent } from './list-detail/list-detail.component';
 import { ListFormComponent } from './list-form/list-form.component';
@@ -22,10 +19,7 @@ import { UiDemoSharedModule } from './ui-demo-shared/ui-demo-shared.module';
         ListCreateComponent,
         ListDetailComponent,
 		ListFormComponent,
-        ServerListComponent,
-        AlertComponent,
-        ConfirmComponent,
-        PromptComponent
+        ServerListComponent
     ],
     providers: [],
     exports:[
@@ -34,16 +28,10 @@ import { UiDemoSharedModule } from './ui-demo-shared/ui-demo-shared.module';
         ListDetailComponent,
 		ListFormComponent,
         ServerListComponent,
-        UiDemoRoutingModule,
-        AlertComponent,
-        ConfirmComponent,
-        PromptComponent
+        UiDemoRoutingModule
     ],
     entryComponents:[
-        ListFormComponent,
-        AlertComponent,
-        ConfirmComponent,
-        PromptComponent
+        ListFormComponent
     ]
 })
 export class UiDemoModule { }

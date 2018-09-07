@@ -15,6 +15,9 @@ import { throwIfAlreadyLoaded } from '../delon/module-import-guard';
 import { DefaultInterceptor } from '../delon/net/default.interceptor';
 import { StartupService } from '../delon/startup/startup.service';
 import { SipAlainConfig } from './base/sip-alain-config';
+import { AlertComponent } from './components/alert/alert.component';
+import { ConfirmComponent } from './components/confirm/confirm.component';
+import { PromptComponent } from './components/prompt/prompt.component';
 import { SipAlainCoreModule } from './sip-alain-core.module';
 import { SipAlainSharedModule } from './sip-alain-shared.module';
 
@@ -29,7 +32,11 @@ export function HttpLoaderFactory(http: HttpClient, config: SipAlainConfig) {
 }
 
 export function StartupServiceFactory(startupService: StartupService, config: SipAlainConfig): Function {
-    let a;
+    let ui = config.ui || (config.ui = {});
+    ui.alert || (ui.alert = AlertComponent);
+    ui.confirm || (ui.confirm = ConfirmComponent);
+    ui.prompt || (ui.prompt = PromptComponent);
+
     return () => startupService.load(config).then(function () { return config.startup(); });
 }
 

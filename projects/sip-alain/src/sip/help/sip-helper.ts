@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from "@angular/router";
 import { ReuseTabService } from "@delon/abc";
 import { Menu, MenuService } from "@delon/theme";
-import { NzMessageService } from 'ng-zorro-antd';
+import { NzMessageService, NzNotificationService } from 'ng-zorro-antd';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Lib } from 'sip-lib';
@@ -865,6 +865,196 @@ export class SipParent {
     /**日志服务 */
     @SipInject(SipLoggerService) $logger: SipLoggerService;
 
+    /**通知 */
+    @SipInject(NzNotificationService) $notifies: NzNotificationService;
+    /**消息 */
+    @SipInject(NzMessageService) $message: NzMessageService;
+
+    /**SipRestService */
+    @SipInject(SipRestService) $httpSrv: SipRestService;
+
+    /**NG 变化检测器 */
+    @SipInject(ChangeDetectorRef) $cdRef: ChangeDetectorRef;
+
+    //#region Router
+
+    /**Router */
+    @SipInject(Router) $router: Router;
+
+    /**
+     * router 链接
+     * @param url 
+     * @param queryParams 参数
+     * @example this.$navigate('/sip/test-create', {id:1});
+     */
+    public $navigate(url: string, queryParams?: object): SipUiLink {
+        let params = Object.assign({}, queryParams);
+        let link = _createNavigateLink(this, params);
+        if (this._$navigateChildren && this.$config.page.onceChild) {
+            this._$navigateChildren.forEach(function (item) { item.close() });
+        }
+        let navChilds = this._$navigateChildren || (this._$navigateChildren = []);
+        navChilds.push(link);
+        this.$router.navigate([url, params]);
+        return link;
+    }
+
+    private _$navigateChildren: SipUiLink[];
+    public get $navigateChildren(): SipUiLink[] {
+        return this._$navigateChildren;
+    }
+
+    //#endregion Router
+
+
+    //#endregion Router
+
+    //#region modal
+
+    /**
+     * 动态添加模板
+     * @param tmpl TemplateRef内容
+     * @param context 传入模板的参数内容
+     * @param isApp 是否添加到App, 默认为(false)添加到本组件
+    */
+    $appendTemplate(tmpl: TemplateRef<any>, context?: any, isApp?: boolean): ViewRef {
+        let vcf = this['$vcf'];
+        if (isApp || !vcf) {
+            let appContainer: SipAppContainerService = this.$injector(SipAppContainerService);
+            if (appContainer) return appContainer.appendTemplate(tmpl, context);
+        } else {
+            let view = vcf.insert(tmpl.createEmbeddedView(context))
+            return view;
+        }
+    }
+
+    /**
+     * 动态添加组件
+     * @param type 组件类名
+     * @param params 传入参数
+     * @param isLayout 是否添加到layout, 默认添加到本组件
+     */
+    $appendComponent<T>(type: Type<T>, params?: Object, isLayout?: boolean): ComponentRef<T> {
+        let vcf = this['$vcf'];
+        if (isLayout || !vcf) {
+            let appContainer: SipAppContainerService = this.$injector(SipAppContainerService);
+            if (appContainer) return appContainer.appendComponent(type, params, this.$injector(ComponentFactoryResolver));
+        } else {
+            let cfr: ComponentFactoryResolver = this.$injector(ComponentFactoryResolver);
+            let componentFactory = cfr.resolveComponentFactory(type);
+            let compRef = vcf.createComponent(componentFactory);
+
+            if (params) {
+                let instance: any = compRef.instance;
+                Object.assign(instance, params);
+            }
+
+            return compRef;
+        }
+    }
+
+    /**
+     * 打开对话框
+     * @param type 定义类
+     * @param params 参数
+     * @example this.$modal(TestModalComponent, {id:1}) 
+     */
+    public $modal(type: Type<SipModal>, params?: Object): SipUiLink {
+        params = params ? Object.assign({}, params) : {};
+        let link = _createNavigateLink(this, params);
+        _$modalParams = params;
+        let compRef = this.$appendComponent(type);
+        let instance: SipModal = compRef.instance;
+        instance.$publish('SipModal._$sipcompRef', compRef);
+        return link;
+    }
+
+    //#endregion modal
+
+    $alert(content: string | TemplateRef<any>, title?: string | TemplateRef<any>): SipUiLink {
+        let cp = this.$config.ui.alert;
+        return this.$modal(cp, { content: content, title: title });
+    }
+
+    $confirm(content: string | TemplateRef<any>, title?: string | TemplateRef<any>): SipUiLink {
+        let cp = this.$config.ui.confirm;
+        return this.$modal(cp, { content: content, title: title });
+        this.$prompt('')
+    }
+
+    $prompt(content: string | TemplateRef<any>, p?: { value?: any; textarea?: boolean }, title?: string | TemplateRef<any>): SipUiLink {
+        let cp = this.$config.ui.prompt;
+        return this.$modal(cp, { content: content, title: title, p: p });
+    }
+
+    /**MenuService */
+    @SipInject(MenuService) $menuSrv: MenuService;
+
+    $getMenuByUrl(url: string): Menu {
+        let menus = this.$menuSrv.getPathByUrl(url);
+        let len = menus ? menus.length : 0;
+        return len ? menus[len - 1] : null;
+    }
+
+    private _$isDestroyed: boolean = false;
+    public get $isDestroyed(): boolean {
+        return this._$isDestroyed;
+    }
+
+    /**销毁 */
+    $destroy() {
+        if (this._$isDestroyed) return;
+        this._$isDestroyed = true;
+        if (this._$navigateChildren) {
+            let page = this.$config.page
+            this._$navigateChildren.forEach((p) => {
+                if (p.isDestory) return;
+                p.opener = null;
+                page.autoCloseChild && p.close();
+            });
+            this._$navigateChildren = null;
+        }
+        if (this._$ijdestroys.length)
+            this._$ijdestroys.forEach((item) => { item.$destroy && item.$destroy(); });
+        setTimeout(() => {
+            this._$ijs = this._$ijTokens = this._$injector = null;
+        }, 1);
+    }
+
+}
+
+/**Sip UI 基础类 */
+export class SipUiBase extends SipParent implements OnInit, OnDestroy, OnChanges, DoCheck, AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit {
+
+    ngOnChanges() { }
+    ngOnInit() { }
+    ngDoCheck() { }
+    ngAfterContentInit() { }
+    ngAfterContentChecked() { }
+    ngAfterViewInit() { }
+    ngAfterViewChecked() { }
+    ngOnDestroy() { }
+
+    /**@SipWatch占用 */
+    private _$sipWatch: any;
+
+    constructor(public readonly $vcf: ViewContainerRef) {
+        super($vcf.injector);
+    }
+
+    $showed = true;
+    $loading = false;
+
+    @SipInject(FormBuilder) $formBuilder: FormBuilder;
+
+    private _$menuItem: Menu;
+    /**页面当前对象的Menu项 */
+    public get $menuItem(): Menu {
+        return this._$menuItem
+            || (this._$menuItem = this.$getMenuByUrl(this.$url));
+    }
+
+
     //#region Observable
 
     @SipInject(SipEventService)
@@ -902,108 +1092,7 @@ export class SipParent {
 
     //#endregion Observable
 
-    //#region Router
 
-    /**Router */
-    @SipInject(Router) $router: Router;
-
-    /**
-     * router 链接
-     * @param url 
-     * @param queryParams 参数
-     * @example this.$navigate('/sip/test-create', {id:1});
-     */
-    public $navigate(url: string, queryParams?: object): SipUiLink {
-        let params = Object.assign({}, queryParams);
-        let link = _createNavigateLink(this, params);
-        if (this._$navigateChildren && this.$config.page.onceChild) {
-            this._$navigateChildren.forEach(function (item) { item.close() });
-        }
-        let navChilds = this._$navigateChildren || (this._$navigateChildren = []);
-        navChilds.push(link);
-        this.$router.navigate([url, params]);
-        return link;
-    }
-
-    private _$navigateChildren: SipUiLink[];
-    public get $navigateChildren(): SipUiLink[] {
-        return this._$navigateChildren;
-    }
-
-    //#endregion Router
-
-    /**SipRestService */
-    @SipInject(SipRestService) $httpSrv: SipRestService;
-    @SipInject(NzMessageService) $message: NzMessageService;
-
-    @SipInject(ChangeDetectorRef) $cdRef: ChangeDetectorRef;
-
-    private _$isDestroyed: boolean = false;
-    public get $isDestroyed(): boolean {
-        return this._$isDestroyed;
-    }
-
-    /**销毁 */
-    $destroy() {
-        if (this._$isDestroyed) return;
-        this._$isDestroyed = true;
-        if (this._$navigateChildren) {
-            let page = this.$config.page
-            if (page.autoCloseChild)
-                this._$navigateChildren.forEach((p) => { p.isDestory || p.close(); });
-            this._$navigateChildren = null;
-        }
-        this._$eventSrv.removeOwner(this);
-        if (this._$ijdestroys.length)
-            this._$ijdestroys.forEach((item) => { item.$destroy && item.$destroy(); });
-        setTimeout(() => {
-            this._$ijs = this._$ijTokens = this._$injector = null;
-        }, 1);
-    }
-
-}
-
-/**Sip UI 基础类 */
-export class SipUiBase extends SipParent implements OnInit, OnDestroy, OnChanges, DoCheck, AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit {
-
-    ngOnChanges() { }
-    ngOnInit() { }
-    ngDoCheck() { }
-    ngAfterContentInit() { }
-    ngAfterContentChecked() { }
-    ngAfterViewInit() { }
-    ngAfterViewChecked() { }
-    ngOnDestroy() { }
-
-    /**@SipWatch占用 */
-    private _$sipWatch: any;
-
-    constructor(public readonly $vcf: ViewContainerRef) {
-        super($vcf.injector);
-    }
-
-    $showed = true;
-    $loading = false;
-
-    @SipInject(FormBuilder) $formBuilder: FormBuilder;
-
-    /**MenuService */
-    @SipInject(MenuService) $menuSrv: MenuService;
-
-    private _$menuItem: Menu;
-    /**页面当前对象的Menu项 */
-    public get $menuItem(): Menu {
-        return this._$menuItem
-            || (this._$menuItem = this.$getMenuByUrl(this.$url));
-    }
-
-    $getMenuByUrl(url: string): Menu {
-        let menus = this.$menuSrv.getPathByUrl(url);
-        let len = menus ? menus.length : 0;
-        return len ? menus[len - 1] : null;
-    }
-
-    //#region Router
 
     /**ActivatedRoute */
     @SipInject(ActivatedRoute) $activatedRoute: ActivatedRoute;
@@ -1049,70 +1138,9 @@ export class SipUiBase extends SipParent implements OnInit, OnDestroy, OnChanges
             || (this._$url = this._$getUrl(this.$activatedRoute));
     }
 
-    //#endregion Router
-
-    //#region modal
-
-    /**
-     * 动态添加模板
-     * @param tmpl TemplateRef内容
-     * @param context 传入模板的参数内容
-     * @param isApp 是否添加到App, 默认为(false)添加到本组件
-    */
-    $appendTemplate(tmpl: TemplateRef<any>, context?: any, isApp?: boolean): ViewRef {
-        if (isApp) {
-            let appContainer: SipAppContainerService = this.$injector(SipAppContainerService);
-            if (appContainer) return appContainer.appendTemplate(tmpl, context);
-        } else {
-            let view = this.$vcf.insert(tmpl.createEmbeddedView(context))
-            return view;
-        }
-    }
-
-    /**
-     * 动态添加组件
-     * @param type 组件类名
-     * @param params 传入参数
-     * @param isLayout 是否添加到layout, 默认添加到本组件
-     */
-    $appendComponent<T>(type: Type<T>, params?: Object, isLayout?: boolean): ComponentRef<T> {
-        if (isLayout) {
-            let appContainer: SipAppContainerService = this.$injector(SipAppContainerService);
-            if (appContainer) return appContainer.appendComponent(type, params, this.$injector(ComponentFactoryResolver));
-        } else {
-            let cfr: ComponentFactoryResolver = this.$injector(ComponentFactoryResolver);
-            let componentFactory = cfr.resolveComponentFactory(type);
-            let compRef = this.$vcf.createComponent(componentFactory);
-
-            if (params) {
-                let instance: any = compRef.instance;
-                Object.assign(instance, params);
-            }
-
-            return compRef;
-        }
-    }
-
-    /**
-     * 打开对话框
-     * @param type 定义类
-     * @param params 参数
-     * @example this.$modal(TestModalComponent, {id:1}) 
-     */
-    public $modal(type: Type<SipModal>, params?: Object): SipUiLink {
-        params = params ? Object.assign({}, params) : {};
-        let link = _createNavigateLink(this, params);
-        _$modalParams = params;
-        let compRef = this.$appendComponent(type, params);
-        let instance: SipModal = compRef.instance;
-        instance.$publish('SipModal._$sipcompRef', compRef);
-        return link;
-    }
-
-    //#endregion modal
-
     @SipNgDestroy()
     private _$ngDestroy() {
+        this._$eventSrv.removeOwner(this);
         this.$destroy();
     }
 
@@ -1153,7 +1181,7 @@ export class SipComponent extends SipUiBase {
 
 /**具体业务的组件 */
 export class SipBusinessComponent extends SipUiBase {
-    constructor(vcf: ViewContainerRef) {
+    constructor(vcf: ViewContainerRef, private _$params?: any) {
         super(vcf);
         let params = this.$params();
         let link = this._$uiLink = _getNavigateLink(params) || new SipUiLink(null);
@@ -1174,7 +1202,8 @@ export class SipBusinessComponent extends SipUiBase {
      * @example this.params = this.$params({id:0});
      */
     public $params(defaultValue?: any): any {
-        return {};
+        return defaultValue ? Lib.extend({}, defaultValue, this._$params)
+            : this._$params;
     }
 
     /**打开者 */
@@ -1188,11 +1217,12 @@ export class SipBusinessComponent extends SipUiBase {
         return this._$uiLink;
     }
 
-    @SipNgDestroy()
-    private _$sipBusDestroy() {
+    $destroy() {
+        if (this.$isDestroyed) return;
         this.$uiLink.destory();
 
-        this.$access = this._$uiLink = null;
+        this.$access = this._$params = this._$uiLink = null;
+        super.$destroy();
     }
 }
 
@@ -1200,8 +1230,7 @@ export class SipBusinessComponent extends SipUiBase {
 export class SipModal extends SipBusinessComponent {
 
     constructor(vcf: ViewContainerRef) {
-        super(vcf);
-        this._$params = _$modalParams;
+        super(vcf, _$modalParams);
         _$modalParams = null;
     }
 
@@ -1209,17 +1238,6 @@ export class SipModal extends SipBusinessComponent {
     @SipSubscribe('SipModal._$sipcompRef')
     private _$setSipcompRef(p: any) {
         this._$sipcompRef = p;
-    }
-
-    private _$params: any;
-    /**
-     * 获取参数
-     * @param defaultValue 默认内容
-     * @example this.params = this.$params({id:0});
-     */
-    $params(defaultValue?: any): any {
-        return defaultValue ? Lib.extend({}, defaultValue, this._$params)
-            : this._$params;
     }
 
     private _$modal: any;
@@ -1255,10 +1273,11 @@ export class SipModal extends SipBusinessComponent {
         this._$sipcompRef = null;
     }
 
-    @SipNgDestroy()
-    private _$sipModelDestroy() {
-        this._$modal = this._$params
-            = this._$sipcompRef = null;
+    $destroy() {
+        if (!this.$isDestroyed) {
+            this._$modal = this._$sipcompRef = null;
+            super.$destroy();
+        }
     }
 
 }

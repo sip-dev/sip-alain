@@ -13,7 +13,7 @@
         <!-- 卡片 -->
         <nz-card [nzBordered]="false">
             <div class="table-list">
-                 <!-- 操作栏 -->
+                <!-- 操作栏 -->
                 <sip-page-toolbar class="sip-page-toolbar">
                     <button nz-button [nzType]="'default'" (click)="refresh()">
                         <i class="anticon anticon-reload"></i>
@@ -69,12 +69,12 @@
                                     </li>
                                 </ul>
                             </li>
-    
+
                         </ul>
                     </nz-dropdown>
                     <sip-search-conent [params]="searchContent"></sip-search-conent>
                 </sip-page-toolbar>
-    
+
                 <div class="table-alert">
                     <nz-alert [nzType]="'info'">
                         <span alert-body>
@@ -86,6 +86,15 @@
                     <a [sipRouterLink]="['/ui-demo/list-detail', {id:row.$$data.id}]">{{value}}</a>
                 </ng-template>
                 <sip-table [manager]="tableManager"></sip-table>
+                <ng-template #alertTilel>
+                    <a href="javascript:;">alert title</a>
+                </ng-template>
+                <ng-template #alertTilel>
+                    <a href="javascript:;">alert title</a>
+                </ng-template>
+                <ng-template #alertContent>
+                    <a href="javascript:;">alert content</a>
+                </ng-template>
             </div>
         </nz-card>
     </sip-page-body>

@@ -19,6 +19,9 @@ import { SipPageComponent } from './page/sip-page.component';
 import { SipAppContainerComponent } from './sip-app-container.component';
 import { SipSearchConentComponent } from './sip-search-conent.component';
 import { SipTableModule } from './sip-table/sip-table/sip-table.module';
+import { AlertComponent } from './alert/alert.component';
+import { ConfirmComponent } from './confirm/confirm.component';
+import { PromptComponent } from './prompt/prompt.component';
 
 @NgModule({
     imports: [
@@ -43,7 +46,10 @@ import { SipTableModule } from './sip-table/sip-table/sip-table.module';
         SipPageToolbarComponent,
         SipPageComponent,
         SipSearchConentComponent,
-        SipAppContainerComponent
+        SipAppContainerComponent,
+        AlertComponent,
+        ConfirmComponent,
+        PromptComponent
     ],
     providers: [],
     exports:[
@@ -62,8 +68,15 @@ import { SipTableModule } from './sip-table/sip-table/sip-table.module';
         SipPageToolbarComponent,
         SipPageComponent,
         SipSearchConentComponent,
-        SipTableModule
+        SipTableModule,
+        AlertComponent,
+        ConfirmComponent,
+        PromptComponent
     ],
-    entryComponents:[SipModalComponent, SipAppContainerComponent]
+    entryComponents:[SipModalComponent, SipAppContainerComponent,
+        AlertComponent,
+        ConfirmComponent,
+        PromptComponent
+    ]
 })
 export class SipComponentsModule { }

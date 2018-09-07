@@ -1,0 +1,18 @@
+<sip-modal width="520px">
+  <sip-modal-header>
+    <span *ngIf="!titleTextTmpl">{{titleText}}</span>
+    <ng-template [ngIf]="titleTextTmpl" [ngTemplateOutlet]="titleTextTmpl"></ng-template>
+  </sip-modal-header>
+  <sip-modal-body>
+    <p *ngIf="!contentTmpl">{{content}}</p>
+    <ng-template [ngIf]="contentTmpl" [ngTemplateOutlet]="contentTmpl"></ng-template>
+    <input *ngIf="!textarea" nz-input [(ngModel)]="value" name="value" placeholder="请输入内容" nzSize="large" />
+    <textarea *ngIf="textarea" nz-input [(ngModel)]="value" name="value" [nzAutosize]="{minRows: 2}" placeholder="请输入内容"></textarea>
+  </sip-modal-body>
+  <sip-modal-footer>
+    <button nz-button (click)="save()" nzType="primary" class="mr-sm">
+      确 认
+    </button>
+    <button nz-button class="mr-sm" (click)="$close()">取消</button>
+  </sip-modal-footer>
+</sip-modal>

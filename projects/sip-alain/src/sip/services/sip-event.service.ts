@@ -73,7 +73,6 @@ export class SipEventService {
      */
     public subscribe(event: string, callback?: (value: any) => void, error?: (error: any) => void, complete?: () => void, owner?: any):any {
         return this._setEvent(event, owner).subscribe(callback, error, complete);
-
     }
 
     /**

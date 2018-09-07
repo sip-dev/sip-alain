@@ -1,0 +1,15 @@
+<sip-modal width="520px">
+  <sip-modal-header>
+    <span *ngIf="!titleTextTmpl">{{titleText}}</span>
+    <ng-template [ngIf]="titleTextTmpl" [ngTemplateOutlet]="titleTextTmpl"></ng-template>
+  </sip-modal-header>
+  <sip-modal-body>
+    <div *ngIf="!contentTmpl">{{content}}</div>
+    <ng-template [ngIf]="contentTmpl" [ngTemplateOutlet]="contentTmpl"></ng-template>
+  </sip-modal-body>
+  <sip-modal-footer>
+    <button nz-button (click)="save()" nzType="primary" class="mr-sm">
+      确 认
+    </button>
+  </sip-modal-footer>
+</sip-modal>
