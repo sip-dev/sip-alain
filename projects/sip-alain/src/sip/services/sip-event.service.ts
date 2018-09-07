@@ -10,7 +10,7 @@ export class SipEventService {
 
     constructor() { }
 
-    private _events = {};
+    private _events: { [key: string]: Subject<any> } = {};
     private _setEvent(event: string, owner?: any): Subject<any> {
         if (owner) return this._setOwnerEvent(event, owner);
 
@@ -88,7 +88,20 @@ export class SipEventService {
      * @param owner 订阅者
      */
     public unSubscribe(event: string, owner?: any) {
-        this._setEvent(event, owner).unsubscribe();
+        let ev = this._events[event];
+        if (ev) {
+            ev.unsubscribe();
+            this._events[event] = undefined;
+        }
+        this._owners.forEach(function (ownerItem) {
+            if (owner && owner != ownerItem) return;
+            let events = ownerItem[_ownerEventKey];
+            let ev = events[event];
+            if (ev) {
+                ev.unsubscribe();
+                events[event] = undefined;
+            }
+        });
     }
 
     /**
