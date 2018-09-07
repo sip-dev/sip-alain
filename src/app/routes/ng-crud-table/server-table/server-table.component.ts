@@ -1,5 +1,5 @@
 import { Component, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
-import { SipAccessItem, SipInject, SipNgInit, SipPage, SipProvidePages, SipTableColumn, SipTableServerManager, SipTableSettings } from 'sip-alain';
+import { SipAccessItem, SipInject, SipNgInit, SipPage, SipProvidePages, SipSubscribe, SipTableColumn, SipTableServerManager, SipTableSettings } from 'sip-alain';
 import { ListFormComponent } from '../../ui-demo/list-form/list-form.component';
 import { getColumnsPlayers } from '../shared/base/column';
 import { PlayerModel } from '../shared/models/player.model';
@@ -195,10 +195,19 @@ export class ServerTableComponent extends SipPage {
     if (!data) return;
     this.$prompt('test', null, 'title').subscribe(r => {
       if (!r) return;
-      this.$prompt(this.alertTilel, {value:'111', textarea:true}, this.alertContent).subscribe(r => {
+      this.$logger.debug('$prompt', r);
+      this.$prompt(this.alertTilel, { value: '111', textarea: true }, this.alertContent).subscribe(r => {
         if (!r) return;
+        this.$logger.debug('$promptEx', r);
       });
     });
+
+    this.$publish('testsubs', data);
+  }
+
+  @SipSubscribe('testsubs')
+  private _testSubscribe(p: any) {
+    this.$logger.debug('_testSubscribe', p);
   }
 
 }
