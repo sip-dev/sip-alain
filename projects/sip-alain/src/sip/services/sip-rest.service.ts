@@ -88,29 +88,33 @@ export class SipRestService {
             return http;
     }
 
-    private mapRestData = <T>(url: string, p?: SipRestParam): (response: any) => SipRestRet<T> => {
+    private _showNotice(ret:SipRestRet, p: SipRestParam){
+        let message = Object.assign({}, this._config.rest.message, p.message);
+        let notifis = Object.assign({}, this._config.rest.notifis, p.notifis);
+        let temp;
+        if (ret.isWarn) {
+            temp = message.warn;
+            temp && this._notice.message.warning(temp === true ? ret.message : temp);
+            temp = notifis.warn;
+            temp && this._notice.notifies.warning(p.desc || '警告信息', temp === true ? ret.message : temp)
+        } else if (ret.isSucc) {
+            temp = message.success;
+            let defText = '操作成功！';
+            temp && this._notice.message.success(temp === true ? defText : temp);
+            temp = notifis.success;
+            temp && this._notice.notifies.success(p.desc || '成功信息', temp === true ? defText : temp)
+        } else {
+            temp = message.error;
+            temp && this._notice.message.error(temp === true ? ret.message : temp);
+            temp = notifis.success;
+            temp && this._notice.notifies.error(p.desc || '出错信息', temp === true ? ret.message : temp)
+        }
+    }
+
+    private mapRestData = <T>(url: string, p: SipRestParam): (response: any) => SipRestRet<T> => {
         return response => {
             let ret = this._config.rest.map(url, response);
-            let message = Object.assign({}, this._config.rest.message, p.message);
-            let notifis = Object.assign({}, this._config.rest.notifis, p.notifis);
-            let temp;
-            if (ret.isWarn) {
-                temp = message.warn;
-                temp && this._notice.message.warning(temp === true ? ret.message : temp);
-                temp = notifis.warn;
-                temp && this._notice.notifies.warning(p.desc || '警告信息', temp === true ? ret.message : temp)
-            } else if (ret.isSucc) {
-                temp = message.success;
-                let defText = '操作成功！';
-                temp && this._notice.message.success(temp === true ? defText : temp);
-                temp = notifis.success;
-                temp && this._notice.notifies.success(p.desc || '成功信息', temp === true ? defText : temp)
-            } else {
-                temp = message.error;
-                temp && this._notice.message.error(temp === true ? ret.message : temp);
-                temp = notifis.success;
-                temp && this._notice.notifies.error(p.desc || '出错信息', temp === true ? ret.message : temp)
-            }
+            this._showNotice(ret, p);
             return ret;
         }
     };
@@ -124,9 +128,12 @@ export class SipRestService {
      * 生成rest cacth返回数据
      * @param rs 
      */
-    private makeCatchData = <T>(url: string): (response: any) => Observable<SipRestRet<T>> => {
+    private makeCatchData = <T>(url: string, p: SipRestParam): (response: any) => Observable<SipRestRet<T>> => {
         return (response: HttpErrorResponse) => {
-            return of(this._config.rest.catchError(url, response));
+            let ret = this._config.rest.catchError(url, response);
+            this._showNotice(ret, p);
+
+            return of(ret);
         }
     };
 
@@ -156,7 +163,7 @@ export class SipRestService {
             .pipe(
                 map(this.mapRestData<T>(url, p)),
                 // map(mapData),
-                catchError(this.makeCatchData<T>(url))
+                catchError(this.makeCatchData<T>(url, p))
             )
     }
 
@@ -183,9 +190,9 @@ export class SipRestService {
         }
         return this.getHttp(this._http.post(url, formData, p.httpOptions), url, 'post', p)
             .pipe(
-                map(this.mapRestData<T>(url)),
+                map(this.mapRestData<T>(url, p)),
                 // map(mapData),
-                catchError(this.makeCatchData<T>(url))
+                catchError(this.makeCatchData<T>(url, p))
             );
     }
 
@@ -203,9 +210,9 @@ export class SipRestService {
         url = this.queryString(url, params);
         return this.getHttp(this._http.delete(url, p.httpOptions), url, 'delete', p)
             .pipe(
-                map(this.mapRestData<T>(url)),
+                map(this.mapRestData<T>(url, p)),
                 // map(mapData),
-                catchError(this.makeCatchData<T>(url))
+                catchError(this.makeCatchData<T>(url, p))
             );
     }
 
@@ -223,9 +230,9 @@ export class SipRestService {
         url = this.queryString(url, params);
         return this.getHttp(this._http.delete(url, p.httpOptions), url, 'put', p)
             .pipe(
-                map(this.mapRestData<T>(url)),
+                map(this.mapRestData<T>(url, p)),
                 // map(mapData),
-                catchError(this.makeCatchData<T>(url))
+                catchError(this.makeCatchData<T>(url, p))
             );
     }
 

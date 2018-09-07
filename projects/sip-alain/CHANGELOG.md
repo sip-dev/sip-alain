@@ -6,6 +6,9 @@
 * 过滤器clear时不正确
 * 右菜单disabled不应该隐藏
 * 调整: rest 相关配置到config
+* 优化：@SipSubscribe
+* 添加：alert, confirm, prompt
+* 添加：rest message, notifis config
 
 ## 0.5.2
 
