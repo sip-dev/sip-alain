@@ -5,13 +5,15 @@ import { catchError, map } from 'rxjs/operators';
 import { breakOff, cacheToObject, Lib } from 'sip-lib';
 import { SipAlainConfig } from '../base/sip-alain-config';
 import { ISipRestDict, SipRestParam, SipRestRet, SipRestSqlRet, SipSqlParam } from '../base/sip-rest-base';
+import { SipNoticeService } from './sip-notice.service';
 
 
 @Injectable()
 export class SipRestService {
 
-    constructor(private config: SipAlainConfig,
-        private http: HttpClient) { }
+    constructor(private _config: SipAlainConfig,
+        private _http: HttpClient,
+        private _notice: SipNoticeService) { }
 
     /**
      * 获取url部分，去除query部分
@@ -60,7 +62,7 @@ export class SipRestService {
      */
     absolutelyUrl(url: string): string {
         // return url;
-        return this.config.rest.mapPath(url);
+        return this._config.rest.mapPath(url);
     }
 
     private getHttp(http: Observable<Object>, url: string, type: string, p?: SipRestParam): Observable<object> {
@@ -86,14 +88,35 @@ export class SipRestService {
             return http;
     }
 
-    private mapRestData = <T>(url: string):(response:any)=> SipRestRet<T> => {
+    private mapRestData = <T>(url: string, p?: SipRestParam): (response: any) => SipRestRet<T> => {
         return response => {
-            return this.config.rest.map(url, response);
+            let ret = this._config.rest.map(url, response);
+            let message = Object.assign({}, this._config.rest.message, p.message);
+            let notifis = Object.assign({}, this._config.rest.notifis, p.notifis);
+            let temp;
+            if (ret.isWarn) {
+                temp = message.warn;
+                temp && this._notice.message.warning(temp === true ? ret.message : temp);
+                temp = notifis.warn;
+                temp && this._notice.notifies.warning(p.desc || '警告信息', temp === true ? ret.message : temp)
+            } else if (ret.isSucc) {
+                temp = message.success;
+                let defText = '操作成功！';
+                temp && this._notice.message.success(temp === true ? defText : temp);
+                temp = notifis.success;
+                temp && this._notice.notifies.success(p.desc || '成功信息', temp === true ? defText : temp)
+            } else {
+                temp = message.error;
+                temp && this._notice.message.error(temp === true ? ret.message : temp);
+                temp = notifis.success;
+                temp && this._notice.notifies.error(p.desc || '出错信息', temp === true ? ret.message : temp)
+            }
+            return ret;
         }
     };
-    private mapSqlData = <T>(url: string):(response:any)=> SipRestSqlRet<T> => {
+    private mapSqlData = <T>(url: string): (response: any) => SipRestSqlRet<T> => {
         return response => {
-            return this.config.rest.sql.map(url, response);
+            return this._config.rest.sql.map(url, response);
         }
     };
 
@@ -101,34 +124,21 @@ export class SipRestService {
      * 生成rest cacth返回数据
      * @param rs 
      */
-    private makeCatchData = <T>(url: string):(response:any)=> Observable<SipRestRet<T>> => {
+    private makeCatchData = <T>(url: string): (response: any) => Observable<SipRestRet<T>> => {
         return (response: HttpErrorResponse) => {
-            return of(this.config.rest.catchError(url, response));
+            return of(this._config.rest.catchError(url, response));
         }
     };
-    // private makeCatchData = (response: HttpErrorResponse) => {
-    //     if (rs.url && /\/sso\//i.test(rs.url))
-    //         window.location.href = this.config.site.loginUrl;
 
-    //     return of({
-    //         isSucc: false,
-    //         status: rs.status,
-    //         statusText: rs.statusText,
-    //         datas: null,
-    //         error: rs.error,
-    //         message: rs.message
-    //     });
-    // };
-
-    private mapRestParam(url:string, p:SipRestParam):SipRestParam{
+    private mapRestParam(url: string, p: SipRestParam): SipRestParam {
         p || (p = {});
         p.url = url;
-        return this.config.rest.mapParam(p);
+        return this._config.rest.mapParam(p);
     }
 
-    private mapSqlParam(p:SipSqlParam):any{
+    private mapSqlParam(p: SipSqlParam): any {
         p || (p = {});
-        return this.config.rest.sql.mapParam(p);
+        return this._config.rest.sql.mapParam(p);
     }
 
     /**
@@ -142,9 +152,9 @@ export class SipRestService {
         let params: any = p && p.params;
         url = this.absolutelyUrl(p.url);
         url = this.queryString(url, params);
-        return this.getHttp(this.http.get(url, p.httpOptions), url, 'get', p)
+        return this.getHttp(this._http.get(url, p.httpOptions), url, 'get', p)
             .pipe(
-                map(this.mapRestData<T>(url)),
+                map(this.mapRestData<T>(url, p)),
                 // map(mapData),
                 catchError(this.makeCatchData<T>(url))
             )
@@ -162,7 +172,7 @@ export class SipRestService {
         let params: any = p && p.params,
             postType: string = p && p.postType;
 
-        postType || (postType = this.config.rest.postType);
+        postType || (postType = this._config.rest.postType);
         let formData = params || null;
         if (postType == 'form') {
             formData = new FormData();
@@ -171,7 +181,7 @@ export class SipRestService {
             });
 
         }
-        return this.getHttp(this.http.post(url, formData, p.httpOptions), url, 'post', p)
+        return this.getHttp(this._http.post(url, formData, p.httpOptions), url, 'post', p)
             .pipe(
                 map(this.mapRestData<T>(url)),
                 // map(mapData),
@@ -191,7 +201,7 @@ export class SipRestService {
 
         url = this.absolutelyUrl(p.url);
         url = this.queryString(url, params);
-        return this.getHttp(this.http.delete(url, p.httpOptions), url, 'delete', p)
+        return this.getHttp(this._http.delete(url, p.httpOptions), url, 'delete', p)
             .pipe(
                 map(this.mapRestData<T>(url)),
                 // map(mapData),
@@ -211,7 +221,7 @@ export class SipRestService {
 
         url = this.absolutelyUrl(p.url);
         url = this.queryString(url, params);
-        return this.getHttp(this.http.delete(url, p.httpOptions), url, 'put', p)
+        return this.getHttp(this._http.delete(url, p.httpOptions), url, 'put', p)
             .pipe(
                 map(this.mapRestData<T>(url)),
                 // map(mapData),
@@ -221,8 +231,8 @@ export class SipRestService {
 
     dict(code: string, conStr?: string, p?: SipRestParam): Observable<SipRestRet<ISipRestDict[]>> {
         p = Lib.extend({}, p);
-        p.params = { dictionaryCode: code, conStr: conStr || this.config.rest.dictConnstr || 'boss' };
-        return this.get(this.config.rest.dict, p);
+        p.params = { dictionaryCode: code, conStr: conStr || this._config.rest.dictConnstr || 'boss' };
+        return this.get(this._config.rest.dict, p);
     }
 
     /**
@@ -230,8 +240,8 @@ export class SipRestService {
      * @param p 
      */
     sql<T=any[]>(p: SipSqlParam): Observable<SipRestSqlRet<T>> {
-        p.url || (p.url = this.config.rest.sql.pageList);
-        let param:any = this.mapSqlParam(p);
+        p.url || (p.url = this._config.rest.sql.pageList);
+        let param: any = this.mapSqlParam(p);
 
         let url = param.url;
         param.url = undefined;
@@ -248,7 +258,7 @@ export class SipRestService {
      * 返回 sqlList数据
      */
     sqlList<T=any[]>(p: SipSqlParam): Observable<SipRestSqlRet<T>> {
-        p = Lib.extend({ url: this.config.rest.sql.list, pageSize: 999999 }, p);
+        p = Lib.extend({ url: this._config.rest.sql.list, pageSize: 999999 }, p);
         return this.sql(p);
     }
 
@@ -256,7 +266,7 @@ export class SipRestService {
      * 通过sql形式，返回实体, 实体的boolean类型为true|false
      */
     sqlEntity<T=any>(p: SipSqlParam): Observable<SipRestSqlRet<T>> {
-        p = Lib.extend({ url: this.config.rest.sql.entity }, p);
+        p = Lib.extend({ url: this._config.rest.sql.entity }, p);
         return this.sql(p);
     }
 
@@ -264,7 +274,7 @@ export class SipRestService {
      * 通过sql形式，返回原始的sql实体, 实体的boolean类型为1|0
      */
     sqlEntityEx<T=any>(p: SipSqlParam): Observable<SipRestSqlRet<T>> {
-        p = Lib.extend({ url: this.config.rest.sql.entityEx }, p);
+        p = Lib.extend({ url: this._config.rest.sql.entityEx }, p);
         return this.sql(p);
     }
 
@@ -273,7 +283,7 @@ export class SipRestService {
      * @param p 
      */
     sqlExecute<T=any>(p: SipSqlParam): Observable<SipRestSqlRet<T>> {
-        p = Lib.extend({ url: this.config.rest.sql.execute }, p);
+        p = Lib.extend({ url: this._config.rest.sql.execute }, p);
         return this.sql(p);
     }
 
@@ -282,7 +292,7 @@ export class SipRestService {
      * @param p 
      */
     sqlInsert<T=any>(p: SipSqlParam): Observable<SipRestSqlRet<T>> {
-        p = Lib.extend({ url: this.config.rest.sql.insert }, p);
+        p = Lib.extend({ url: this._config.rest.sql.insert }, p);
         return this.sql(p);
     }
 

@@ -12,6 +12,7 @@ import { ISipRestDict, SipRestParam, SipRestRet, SipRestSqlRet, SipSqlParam } fr
 import { SipAppContainerService } from '../services/sip-app-container.service';
 import { SipEventService } from '../services/sip-event.service';
 import { SipLoggerService } from '../services/sip-logger.service';
+import { SipNoticeService } from '../services/sip-notice.service';
 import { SipRestService } from '../services/sip-rest.service';
 
 //#region equals
@@ -628,7 +629,7 @@ export function SipRestSqlDef<T=any>(params: ISipRestSqlDefParams<T>) {
                     let tempParams: ISipRestSqlDefParams<T> = Lib.extend({}, params, options);
                     tempParams.searchparam = Lib.extend({}, tempParams.searchparam, p);
                     let httpSrv: SipRestService = this.$httpSrv;
-                    let url = tempParams.url;
+                    // let url = tempParams.url;
                     let sqlType = tempParams.sqlType;
                     let obs: Observable<any>;
                     switch (sqlType) {
@@ -866,10 +867,16 @@ export class SipParent {
     /**日志服务 */
     @SipInject(SipLoggerService) $logger: SipLoggerService;
 
+    @SipInject(SipNoticeService)
+    private _$notice: SipNoticeService;
     /**通知 */
-    @SipInject(NzNotificationService) $notifies: NzNotificationService;
+    get $notifies(): NzNotificationService {
+        return this._$notice.notifies;
+    }
     /**消息 */
-    @SipInject(NzMessageService) $message: NzMessageService;
+    get $message(): NzMessageService {
+        return this._$notice.message;
+    }
 
     /**SipRestService */
     @SipInject(SipRestService) $httpSrv: SipRestService;
@@ -1017,7 +1024,6 @@ export class SipParent {
     $confirm(content: string | TemplateRef<any>, title?: string | TemplateRef<any>): SipUiLink {
         let cp = this.$config.ui.confirm;
         return this.$modal(cp, { content: content, title: title });
-        this.$prompt('')
     }
 
     $prompt(content: string | TemplateRef<any>, p?: { value?: any; textarea?: boolean }, title?: string | TemplateRef<any>): SipUiLink {

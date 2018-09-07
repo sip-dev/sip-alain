@@ -155,6 +155,7 @@ export class SipConfigService implements SipAlainConfig {
         if ('version' in response && 'returnValue' in response) {
             return {
                 isSucc: response.returnCode == 200,
+                isWarn: false,
                 status: response.returnCode,
                 statusText: 'Ok',
                 datas: response.returnValue,
@@ -164,6 +165,7 @@ export class SipConfigService implements SipAlainConfig {
         } else {
             return {
                 isSucc: true,
+                isWarn: false,
                 status: 200,
                 statusText: 'Ok',
                 datas: response,
@@ -205,6 +207,7 @@ export class SipConfigService implements SipAlainConfig {
         catchError: (url: string, response: HttpErrorResponse): SipRestRet<any> => {
             return {
                 isSucc: false,
+                isWarn: false,
                 status: response.status,
                 statusText: response.statusText,
                 datas: null,

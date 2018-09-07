@@ -6,6 +6,7 @@ import { SipEventService } from './sip-event.service';
 import { SipAppContainerService } from './sip-app-container.service';
 import { SipContextMenuService } from './sip-context-menu.service';
 import { SipLoggerService } from './sip-logger.service';
+import { SipNoticeService } from './sip-notice.service';
 
 @NgModule({
     imports: [
@@ -18,7 +19,8 @@ import { SipLoggerService } from './sip-logger.service';
         SipEventService,
         SipAppContainerService,
         SipContextMenuService,
-        SipLoggerService
+        SipLoggerService,
+        SipNoticeService
     ],
     exports:[],
     entryComponents:[]
