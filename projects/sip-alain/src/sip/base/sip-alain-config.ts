@@ -50,13 +50,13 @@ export abstract class SipAlainConfig {
     };
 
     /**ui相关配置 */
-    ui?:{
+    ui?: {
         /**alert组件类 */
-        alert?:any;
+        alert?: any;
         /**confirm组件类 */
-        confirm?:any;
+        confirm?: any;
         /**prompt组件类 */
-        prompt?:any;
+        prompt?: any;
     };
 
     rest: {
@@ -76,6 +76,10 @@ export abstract class SipAlainConfig {
          * 字典接口的connstr, 默认为:boss
          */
         dictConnstr?: string;
+        /**定义rest结果提示信息 */
+        message: { success: boolean | string; warn: boolean | string; error: boolean | string; };
+        /**定义rest结果提示通知 */
+        notifis: { success: boolean | string; warn: boolean | string; error: boolean | string; };
         /**
          * rest 数据结构改造
          */

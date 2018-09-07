@@ -189,6 +189,10 @@ export class SipConfigService implements SipAlainConfig {
          * 字典接口
          */
         dict: 'api/basicData/getDictionaryItems',
+        /**定义rest结果提示信息 */
+        message: { success: '操作成功！', warn: true, error: true },
+        /**定义rest结果提示通知 */
+        notifis: { success: false, warn: false, error: false },
         /**
          * rest 数据结构改造
          */

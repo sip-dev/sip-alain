@@ -22,10 +22,15 @@ export interface SipRestParam {
     owner?: any;
     /**是否缓存，必须设置owner */
     cache?: boolean;
+    /**定义rest结果提示信息 */
+    message?: { success?: boolean | string; warn?: boolean | string; error?: boolean | string; };
+    /**定义rest结果提示通知 */
+    notifis?: { success?: boolean | string; warn?: boolean | string; error?: boolean | string; };
 }
 
 export interface SipRestRet<T=any> {
     isSucc: boolean;
+    isWarn: boolean;
     status: number;
     statusText?: string;
     datas: T;
