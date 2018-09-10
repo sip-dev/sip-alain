@@ -42,9 +42,9 @@
     "@types/node": "~8.9.4",
     "core-js": "^2.5.4",
     "rxjs": "^6.0.0",
-    "ng-zorro-antd": "^1.2.0",
+    "ng-zorro-antd": "^1.5.0",
     "sip-lib": "^0.1.0",
-    "typescript": "~2.7.2",
+    "typescript": "2.9.x",
     "zone.js": "^0.8.26"
   }
 }
