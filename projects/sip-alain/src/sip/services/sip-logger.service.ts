@@ -1,4 +1,4 @@
-import { Injectable, Injector } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { SipAlainConfig } from '../base/sip-alain-config';
 import { SipLoggerLevel } from '../base/sip-logger-level';
 import { SipLoggerOptions } from '../base/sip-logger-options';
@@ -14,7 +14,7 @@ export class SipLoggerService {
   private _level: SipLoggerLevel;
   private _globalAs: string;
 
-  constructor(injector: Injector, config:SipAlainConfig) {
+  constructor(config:SipAlainConfig) {
 
     // Move this to the constructor definition when optional parameters are working with @Injectable: https://github.com/angular/angular/issues/7344
     let { level, global, globalAs } = Object.assign({}, DEFAULT_OPTIONS, config.loggerOptions);

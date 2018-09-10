@@ -6,9 +6,8 @@ import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 import { _HttpClient } from '@delon/theme';
 import { environment } from '@env/environment';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { NzMessageService } from 'ng-zorro-antd';
 import { Observable, of } from 'rxjs';
-import { catchError, mergeMap } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 import { SipAlainConfig, SipRestParam, SipRestRet, SipRestSqlRet, SipSqlParam, SipTableSettings } from 'sip-alain';
 import { Lib } from 'sip-lib';
 
@@ -117,9 +116,9 @@ export class SipConfigService implements SipAlainConfig {
             case 404:
             case 500:
                 if (/\/api\//.test(event.url)) {
-                    let msgSrv: NzMessageService = this.injector.get(NzMessageService);
-                    let ev: HttpErrorResponse = event as HttpErrorResponse;
-                    msgSrv.error(ev.message, { nzDuration: 3000 });
+                    // let msgSrv: NzMessageService = this.injector.get(NzMessageService);
+                    // let ev: HttpErrorResponse = event as HttpErrorResponse;
+                    // msgSrv.error(ev.message, { nzDuration: 3000 });
                 }
                 else
                     this.goTo(`/${event.status}`);
@@ -146,8 +145,8 @@ export class SipConfigService implements SipAlainConfig {
                     return this.handleData(event);
                 // 若一切都正常，则后续操作
                 return of(event);
-            }),
-            catchError((err: HttpErrorResponse) => this.handleData(err))
+            })//,
+            // catchError((err: HttpErrorResponse) => this.handleData(err))
         );
     }
 
@@ -192,9 +191,9 @@ export class SipConfigService implements SipAlainConfig {
          */
         dict: 'api/basicData/getDictionaryItems',
         /**定义rest结果提示信息 */
-        message: { success: '操作成功！', warn: true, error: true },
+        message: { success: '操作成功！', warn: true, error: false },
         /**定义rest结果提示通知 */
-        notifis: { success: false, warn: false, error: false },
+        notifis: { success: false, warn: false, error: true },
         /**
          * rest 数据结构改造
          */

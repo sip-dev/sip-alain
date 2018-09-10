@@ -12,8 +12,8 @@ import { ISipRestDict, SipRestParam, SipRestRet, SipRestSqlRet, SipSqlParam } fr
 import { SipAppContainerService } from '../services/sip-app-container.service';
 import { SipEventService } from '../services/sip-event.service';
 import { SipLoggerService } from '../services/sip-logger.service';
-import { SipNoticeService } from '../services/sip-notice.service';
 import { SipRestService } from '../services/sip-rest.service';
+import { SipNoticeService } from '../services/sip-notice.service';
 
 //#region equals
 

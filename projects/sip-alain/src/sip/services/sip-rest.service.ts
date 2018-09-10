@@ -7,6 +7,11 @@ import { SipAlainConfig } from '../base/sip-alain-config';
 import { ISipRestDict, SipRestParam, SipRestRet, SipRestSqlRet, SipSqlParam } from '../base/sip-rest-base';
 import { SipNoticeService } from './sip-notice.service';
 
+function _makeNoticeText(msg: string, conf: string | boolean, msgConfig: string | boolean, defText: string) {
+    if (msgConfig === false || msgConfig === undefined) return '';
+    if (!msg) msg = (msgConfig === true ? defText : msgConfig as string);
+    return msg ? msg : (conf === true ? defText : conf);
+}
 
 @Injectable()
 export class SipRestService {
@@ -88,26 +93,43 @@ export class SipRestService {
             return http;
     }
 
-    private _showNotice(ret:SipRestRet, p: SipRestParam){
-        let message = Object.assign({}, this._config.rest.message, p.message);
-        let notifis = Object.assign({}, this._config.rest.notifis, p.notifis);
-        let temp;
+    private _showNotice(ret: SipRestRet, p: SipRestParam) {
+        let messageConf = this._config.rest.message;
+        let notifisConf = this._config.rest.notifis;
+        let notifis = Object.assign({}, p.notifis);
+        let text, defText;
         if (ret.isWarn) {
-            temp = message.warn;
-            temp && this._notice.message.warning(temp === true ? ret.message : temp);
-            temp = notifis.warn;
-            temp && this._notice.notifies.warning(p.desc || '警告信息', temp === true ? ret.message : temp)
+            defText = '操作警告！';
+            Lib.isUndefined(notifis.warn) && (notifis.warn = true);
+            if (messageConf.warn) {
+                text = _makeNoticeText(ret.message, messageConf.warn, notifis.warn, defText);
+                text && this._notice.message.warning(text);
+            }
+            if (notifisConf.warn) {
+                text = _makeNoticeText(ret.message, notifisConf.warn, notifis.warn, defText);
+                text && this._notice.notifies.warning(p.desc || '告警信息', text)
+            }
         } else if (ret.isSucc) {
-            temp = message.success;
-            let defText = '操作成功！';
-            temp && this._notice.message.success(temp === true ? defText : temp);
-            temp = notifis.success;
-            temp && this._notice.notifies.success(p.desc || '成功信息', temp === true ? defText : temp)
+            defText = '操作成功！';
+            if (messageConf.success) {
+                text = _makeNoticeText(ret.message, messageConf.success, notifis.success, defText);
+                text && this._notice.message.success(text);
+            }
+            if (notifisConf.success) {
+                text = _makeNoticeText(ret.message, notifisConf.success, notifis.success, defText);
+                text && this._notice.notifies.success(p.desc || '成功信息', text)
+            }
         } else {
-            temp = message.error;
-            temp && this._notice.message.error(temp === true ? ret.message : temp);
-            temp = notifis.success;
-            temp && this._notice.notifies.error(p.desc || '出错信息', temp === true ? ret.message : temp)
+            defText = '操作失败！';
+            Lib.isUndefined(notifis.error) && (notifis.error = true);
+            if (messageConf.error) {
+                text = _makeNoticeText(ret.message, messageConf.error, notifis.error, defText);
+                text && this._notice.message.error(text);
+            }
+            if (notifisConf.error) {
+                text = _makeNoticeText(ret.message, notifisConf.error, notifis.error, defText);
+                text && this._notice.notifies.error(p.desc || '出错信息', text)
+            }
         }
     }
 
@@ -255,6 +277,9 @@ export class SipRestService {
         return this.get(url, {
             params: param,
             owner: p.owner, cache: p.cache,
+            notifis: p.notifis,
+            postType: p.postType,
+            desc: p.desc,
             httpOptions: p.httpOptions
         }).pipe(
             map(this.mapSqlData<T>(url)),

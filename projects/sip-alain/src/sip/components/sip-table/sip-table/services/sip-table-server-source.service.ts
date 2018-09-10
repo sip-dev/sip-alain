@@ -77,9 +77,9 @@ export class SipTableServerSourceService extends SipTableDataSource {
         const result = {
           'items': rows,
           '_meta': {
-            'totalCount': rs.total,
-            'pageCount': rs.totalPages,
-            'currentPage': rs.pageIndex,
+            'totalCount': rs.total || 0,
+            'pageCount': rs.totalPages || 0,
+            'currentPage': rs.pageIndex || 1,
             'perPage': this.pageSize
           }
         };

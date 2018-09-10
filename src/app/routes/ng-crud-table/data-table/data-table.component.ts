@@ -31,8 +31,8 @@ export class DataTableComponent extends SipPage {
     this.columns = getColumnsPlayers();
     this.tableManager = new SipTableDataManager(this.$injector(), this.columns, this.settings);
     this.tableManager.events.onLoading(true);
-    this._playerSrv.getList().subscribe(rs => {
-      this.tableManager.datas = rs.datas;
+    this._playerSrv.getList(null).subscribe(rs => {
+      this.tableManager.datas = rs.isSucc ? rs.datas : [];
       this.tableManager.events.onLoading(false);
     });
     this.tableManager.events.selectionSource$.subscribe(() => {
