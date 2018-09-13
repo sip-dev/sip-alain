@@ -55,7 +55,13 @@ export class SipCacheService {
   private _content = {};
 
   /**
-   * 设置或获取内容
+   * 获取内容
+   * @param key 
+   * @param value 值，可选，如果没此参数为获取内容
+   */
+  public content(key:string):any;
+  /**
+   * 设置内容
    * @param key 
    * @param value 值，可选，如果没此参数为获取内容
    */
@@ -66,9 +72,20 @@ export class SipCacheService {
       return this._content[key] = value;
   }
 
+  /**删除一个项 */
   public remove(key:string){
     if (key in this._content)
       delete this._content[key];
+  }
+
+  /**是否存在 */
+  public exists(key:string){
+    return (key in this._content);
+  }
+
+  /**删除所有 */
+  public removeAll(){
+    this._content = {};
   }
 
   //#endregion objectCaches
