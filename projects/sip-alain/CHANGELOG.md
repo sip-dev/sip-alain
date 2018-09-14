@@ -1,7 +1,7 @@
 
 # 更新
 
-## 0.7.0 (none)
+## 0.6.1 (none)
 
 * 优化：sip-cache.service
 
