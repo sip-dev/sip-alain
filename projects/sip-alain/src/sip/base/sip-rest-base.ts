@@ -15,7 +15,7 @@ export interface SipHttpOptions {
 
 export interface SipRestParam {
     url?: string;
-    params?: object;
+    params?: any;
     postType?: '' | 'form' | 'body';
     httpOptions?: SipHttpOptions;
     /**拥有者，一般是UI，处理释放问题 */
@@ -58,7 +58,7 @@ export interface SipSqlParam extends SipRestParam {
     /**排序方向 */
     sortOrder?: '' | 'asc' | 'desc';
     /**搜索参数 */
-    searchparam?: object;
+    searchparam?: any;
 }
 
 export interface SipRestSqlRet<T=any> extends SipRestRet<T> {
