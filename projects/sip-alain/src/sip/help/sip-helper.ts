@@ -12,8 +12,8 @@ import { ISipRestDict, SipRestParam, SipRestRet, SipRestSqlRet, SipSqlParam } fr
 import { SipAppContainerService } from '../services/sip-app-container.service';
 import { SipEventService } from '../services/sip-event.service';
 import { SipLoggerService } from '../services/sip-logger.service';
-import { SipRestService } from '../services/sip-rest.service';
 import { SipNoticeService } from '../services/sip-notice.service';
+import { SipRestService } from '../services/sip-rest.service';
 
 //#region equals
 
@@ -144,6 +144,29 @@ export function SipWatch(...args: any[]) {
 /**_pushEvent(target, 'ngOnInit', target[propKey]) */
 let _pushEvent = function (target: any, eventName: string, newFn: Function) {
 
+    let sipEventName = ['_$sip', eventName].join('_');
+    let sipFnBak = target[sipEventName];
+    target[sipEventName] = function () {
+        sipFnBak && sipFnBak.apply(this, arguments);
+        newFn && newFn.apply(this, arguments);
+    };
+
+    let oldFn = target[eventName];
+    if (!oldFn) {
+        target[eventName] = function () {
+            this[sipEventName] && this[sipEventName].apply(this, arguments);
+        };
+        target[eventName].sipInject = true;
+    } else if (!oldFn.sipInject) {
+        target[eventName] = function () {
+            oldFn.apply(this, arguments);
+            this[sipEventName] && this[sipEventName].apply(this, arguments);
+        };
+        target[eventName].sipInject = true;
+    }
+};
+
+let _pushSipEvent = function (target: any, eventName: string, newFn: Function) {
     let oldFn = target[eventName];
     target[eventName] = function () {
         oldFn && oldFn.apply(this, arguments);

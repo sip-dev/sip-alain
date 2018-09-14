@@ -4,6 +4,7 @@
 ## 0.6.1 (none)
 
 * 优化：sip-cache.service
+* 优化：ng生命周期事件
 
 ## 0.6.0
 
