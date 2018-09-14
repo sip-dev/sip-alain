@@ -166,19 +166,10 @@ let _pushEvent = function (target: any, eventName: string, newFn: Function) {
     }
 };
 
-let _pushSipEvent = function (target: any, eventName: string, newFn: Function) {
-    let oldFn = target[eventName];
-    target[eventName] = function () {
-        oldFn && oldFn.apply(this, arguments);
-        newFn && newFn.apply(this, arguments);
-    };
-};
-
 /**
  * 在Angular第一次显示数据绑定和设置指令/组件的输入属性之后，初始化指令/组件。在第一轮EventChange()完成之后调用，只调用一次。
  */
 export function SipNgInit() {
-    let a;
     return function (target: any, propKey: string) {
         _pushEvent(target, 'ngOnInit', target[propKey]);
     };
