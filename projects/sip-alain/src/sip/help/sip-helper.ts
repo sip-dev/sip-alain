@@ -4,7 +4,7 @@ import { ActivatedRoute, ActivatedRouteSnapshot, Router } from "@angular/router"
 import { ReuseTabService } from "@delon/abc";
 import { Menu, MenuService } from "@delon/theme";
 import { NzMessageService, NzNotificationService } from 'ng-zorro-antd';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Observable, of, Subject, Subscription, zip } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Lib } from 'sip-lib';
 import { SipAlainConfig } from '../base/sip-alain-config';
@@ -83,7 +83,7 @@ let _pushWatch = function (target: any, args: any[], watchFn: Function) {
     });
 
     let name = Lib.makeAutoId();
-    _pushEvent(target, 'ngDoCheck', function () {
+    _pushNgEvent(target, 'ngDoCheck', function () {
         let values = _getWatchContext(this, name);
         let isInit = values.length > 0;
         let fn = watchFn,
@@ -141,8 +141,8 @@ export function SipWatch(...args: any[]) {
 // };
 
 
-/**_pushEvent(target, 'ngOnInit', target[propKey]) */
-let _pushEvent = function (target: any, eventName: string, newFn: Function) {
+/**_pushNgEvent(target, 'ngOnInit', target[propKey]) */
+let _pushNgEvent = function (target: any, eventName: string, newFn: Function) {
 
     let sipEventName = ['_$sip', eventName].join('_');
     let sipFnBak = target[sipEventName];
@@ -152,18 +152,34 @@ let _pushEvent = function (target: any, eventName: string, newFn: Function) {
     };
 
     let oldFn = target[eventName];
+    let afterEventName = _getNgEventAfterName(eventName);
     if (!oldFn) {
         target[eventName] = function () {
             this[sipEventName] && this[sipEventName].apply(this, arguments);
+            this[afterEventName] && this[afterEventName].apply(this, arguments);
         };
         target[eventName].sipInject = true;
     } else if (!oldFn.sipInject) {
         target[eventName] = function () {
             oldFn.apply(this, arguments);
             this[sipEventName] && this[sipEventName].apply(this, arguments);
+            this[afterEventName] && this[afterEventName].apply(this, arguments);
         };
         target[eventName].sipInject = true;
     }
+};
+
+let _getNgEventAfterName= function(eventName: string){
+    return [eventName, 'After'].join('_');
+};
+
+let _pushNgEventAfter = function (target: any, eventName: string, newFn: Function) {
+    eventName = _getNgEventAfterName(eventName);
+    let oldFn = target[eventName];
+    target[eventName] = function () {
+        oldFn && oldFn.apply(this, arguments);
+        newFn && newFn.apply(this, arguments);
+    };
 };
 
 /**
@@ -171,7 +187,7 @@ let _pushEvent = function (target: any, eventName: string, newFn: Function) {
  */
 export function SipNgInit() {
     return function (target: any, propKey: string) {
-        _pushEvent(target, 'ngOnInit', target[propKey]);
+        _pushNgEvent(target, 'ngOnInit', target[propKey]);
     };
 }
 
@@ -181,7 +197,7 @@ export function SipNgInit() {
 export function SipNgCheck() {
     let a;
     return function (target: any, propKey: string) {
-        _pushEvent(target, 'ngDoCheck', target[propKey]);
+        _pushNgEvent(target, 'ngDoCheck', target[propKey]);
     };
 }
 
@@ -191,7 +207,7 @@ export function SipNgCheck() {
 export function SipNgChange() {
     let a;
     return function (target: any, propKey: string) {
-        _pushEvent(target, 'ngOnChanges', target[propKey]);
+        _pushNgEvent(target, 'ngOnChanges', target[propKey]);
     };
 }
 
@@ -201,7 +217,7 @@ export function SipNgChange() {
 export function SipNgAfterContentInit() {
     let a;
     return function (target: any, propKey: string) {
-        _pushEvent(target, 'ngAfterContentInit', target[propKey]);
+        _pushNgEvent(target, 'ngAfterContentInit', target[propKey]);
     };
 }
 
@@ -211,7 +227,7 @@ export function SipNgAfterContentInit() {
 export function SipNgAfterContentChecked() {
     let a;
     return function (target: any, propKey: string) {
-        _pushEvent(target, 'ngAfterContentChecked', target[propKey]);
+        _pushNgEvent(target, 'ngAfterContentChecked', target[propKey]);
     };
 }
 
@@ -221,7 +237,7 @@ export function SipNgAfterContentChecked() {
 export function SipNgAfterViewInit() {
     let a;
     return function (target: any, propKey: string) {
-        _pushEvent(target, 'ngAfterViewInit', target[propKey]);
+        _pushNgEvent(target, 'ngAfterViewInit', target[propKey]);
     };
 }
 
@@ -231,7 +247,7 @@ export function SipNgAfterViewInit() {
 export function SipNgAfterViewChecked() {
     let a;
     return function (target: any, propKey: string) {
-        _pushEvent(target, 'ngAfterViewChecked', target[propKey]);
+        _pushNgEvent(target, 'ngAfterViewChecked', target[propKey]);
     };
 }
 
@@ -241,7 +257,7 @@ export function SipNgAfterViewChecked() {
 export function SipNgDestroy() {
     let a;
     return function (target: any, propKey: string) {
-        _pushEvent(target, 'ngOnDestroy', target[propKey]);
+        _pushNgEvent(target, 'ngOnDestroy', target[propKey]);
     };
 }
 
@@ -259,7 +275,7 @@ export interface ISipSubscribeParams {
 }
 
 let _pushSubscribe = function (target: any, event: string, params: ISipSubscribeParams, fn: any) {
-    _pushEvent(target, 'sipOnConstructor', function () {
+    _pushNgEvent(target, 'sipOnConstructor', function () {
         if (!this.$subscribe) return;
         let tFn = function () {
             fn.apply(this, arguments);
@@ -304,6 +320,11 @@ export function SipInject(token: any, params?: ISipInjectParams) {
     if (params && params.singleton)
         params.autoDestroy = true;
     return function (target: any, propKey: string) {
+        if (token.$sipPreDatas){
+            _pushPrepareFn(target.constructor, function(){
+                return this[propKey].$loadPreDatas();
+            });
+        }
         Object.defineProperty(target, propKey, {
             configurable: false,
             enumerable: true,
@@ -377,7 +398,7 @@ export interface ISipAccessManager<T> {
 export function SipAccess<T=object>(params?: { [key: string]: ISipAccessParams<T> }) {
     return function (target: any, propKey: string) {
         let _oldFn = target[propKey], _has = false;
-        _pushEvent(target, 'sipOnConstructor', function () {
+        _pushNgEvent(target, 'sipOnConstructor', function () {
             let aP;
             if (params) {
                 aP = {}
@@ -418,7 +439,7 @@ export function SipAccessItem<T=object>(key: string, params?: ISipAccessParams<T
 
     return function (target: any, propKey: string) {
         let _oldFn = target[propKey], _has = false;
-        _pushEvent(target, 'ngOnInit', function () {
+        _pushNgEvent(target, 'ngOnInit', function () {
             let access: SipAccessManager = this.$access;
             if (access && params) {
                 _has = true;
@@ -708,6 +729,8 @@ export function SipRestDictDef<T=any>(params: ISipRestDictDefParams) {
 
 //#endregion SipRestDef
 
+//#region SipFormGroup
+
 export interface ISipFormSubmitOption {
     form: string;
     message?: string | boolean;
@@ -813,18 +836,60 @@ export function SipFormGroup<T=object>(factory: (target: any) => ISipFormGroupPa
                 return formGroup;
             }
         });
-        _pushEvent(target, 'ngOnDestroy', function () {
+        _pushNgEvent(target, 'ngOnDestroy', function () {
             this[key] = null;
         });
     };
 }
 
+//#endregion SipFormGroup
+
+function _pushPrepareFn(classFn:any, fn:any){
+    classFn.$sipPreDatas = (classFn.$sipPreDatas || []).concat(fn);
+}
+
+/**准备数据 */
+export function SipPrepareData() {
+    return function (target: any, propKey: string) {
+        let obs: Observable<any>;
+        let fn = function () {
+            if (obs) return obs;
+            obs = target[propKey].apply(this, arguments);
+    
+            return obs.pipe(map((r) => { obs = null; return r }));
+        };
+        _pushPrepareFn(target.constructor, fn);
+    }
+}
+
+/**Sip初始化, 自动准备数据(SipPrepareData) */
+export function SipInit() {
+    return function (target: any, propKey: string) {
+        let initFn = target[propKey];
+        _pushNgEventAfter(target, 'ngOnInit', function(){
+            this.$loadPreDatas().subscribe(() => initFn.call(this));
+        });
+    }
+}
 
 /**modal传参数时用 */
 let _$modalParams: any;
 
 /** Sip Parent 类 */
 export class SipParent {
+    static readonly $sipPreDatas: any[];
+    $loadPreDatas(): Observable<any> {
+        let thisClass: any = this.constructor;
+        let dataFns: any[] = thisClass.$sipPreDatas;
+        if (dataFns && dataFns.length > 0) {
+            let obs = [];
+            Lib.each(dataFns, function (fn) {
+                obs.push(fn.call(this));
+            }, this);
+            return zip(...obs);
+        }
+        return of(null);
+    }
 
     /**SipNgEvent占用 */
     private _$sipEvents: any;
