@@ -9,16 +9,17 @@ export class UserService extends SipService {
 
   constructor(injector: Injector) {
     super(injector);
-    /**使用getUserList */
-    this.getUserList({content:'111'}).subscribe((rs)=>{
-      console.log(rs.datas);
-    })
    }
 
    @SipPrepareData()
    private _preData(owner){
        this.$logger.debug('UserService _preData', owner);
        return of(null).pipe(delay(3000));
+   }
+   @SipPrepareData()
+   private _preData1(owner){
+       this.$logger.debug('UserService _preData1', owner);
+       return this.getUser();
    }
 
    @SipRestDef<UserModel>({
