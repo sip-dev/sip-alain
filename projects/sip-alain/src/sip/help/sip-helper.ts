@@ -169,7 +169,7 @@ let _pushNgEvent = function (target: any, eventName: string, newFn: Function) {
     }
 };
 
-let _getNgEventAfterName= function(eventName: string){
+let _getNgEventAfterName = function (eventName: string) {
     return [eventName, 'After'].join('_');
 };
 
@@ -320,9 +320,15 @@ export function SipInject(token: any, params?: ISipInjectParams) {
     if (params && params.singleton)
         params.autoDestroy = true;
     return function (target: any, propKey: string) {
-        if (token.$sipPreDatas){
-            _pushPrepareFn(target.constructor, function(){
-                return this[propKey].$loadPreDatas();
+        if (token._$sipPreDatas) {
+            let obs;
+            _pushPrepareFn(target, function (owner: any) {
+                if (obs) return obs;
+                obs = this[propKey].$loadPreDatas(owner).pipe(map(function (p) {
+                    obs = null;
+                    return p;
+                }));
+                return obs
             });
         }
         Object.defineProperty(target, propKey, {
@@ -844,49 +850,82 @@ export function SipFormGroup<T=object>(factory: (target: any) => ISipFormGroupPa
 
 //#endregion SipFormGroup
 
-function _pushPrepareFn(classFn:any, fn:any){
-    classFn.$sipPreDatas = (classFn.$sipPreDatas || []).concat(fn);
+/**静态属性数组添加内容 */
+function _pushStaticList(target: any, propKey: string, item: any): any[] {
+    let classFn = target.constructor;
+    return classFn[propKey] = (classFn[propKey] || []).concat(item);
 }
 
-/**准备数据 */
+function _getStaticList(target: any, propKey: string): any[] {
+    let classFn = target.constructor;
+    return classFn[propKey];
+}
+
+/**添加准备数据方法 */
+function _pushPrepareFn(target: any, fn: any): any[] {
+    return _pushStaticList(target, '_$sipPreDatas', fn);
+}
+
+/**准备数据， 服务或UI组件都可用 */
 export function SipPrepareData() {
     return function (target: any, propKey: string) {
         let obs: Observable<any>;
-        let fn = function () {
+        _pushPrepareFn(target, function () {
             if (obs) return obs;
             obs = target[propKey].apply(this, arguments);
-    
-            return obs.pipe(map((r) => { obs = null; return r }));
-        };
-        _pushPrepareFn(target.constructor, fn);
+
+            obs = obs.pipe(map((r) => { obs = null; return r }));
+            return obs;
+        });
     }
 }
 
-/**Sip初始化, 自动准备数据(SipPrepareData) */
+/**Sip初始化, 只能在UI组件使用, 自动准备数据(SipPrepareData) */
 export function SipInit() {
     return function (target: any, propKey: string) {
         let initFn = target[propKey];
-        _pushNgEventAfter(target, 'ngOnInit', function(){
-            this.$loadPreDatas().subscribe(() => initFn.call(this));
-        });
+        if (initFn) {
+            if (_pushStaticList(target, '_$sipInits', initFn).length == 1) {
+                /**如果第一个，在ngOnInit之后执行 */
+                _pushNgEventAfter(target, 'ngOnInit', function () {
+                    let initFns = _getStaticList(target, '_$sipInits');
+                    let doFns = () => {
+                        if (!this.$isDestroyed){
+                            Lib.each(initFns, function (fn) {
+                                fn.call(this);
+                            }, this);
+                        }
+                        subs && subs.unsubscribe();
+                    };
+                    let subs: Subscription = this.$loadPreDatas(this).subscribe(doFns, doFns);
+                });
+            }
+        }
     }
 }
 
 /**modal传参数时用 */
 let _$modalParams: any;
 
+let _preLoadKey = '$loadPreDatas__180918';
 /** Sip Parent 类 */
 export class SipParent {
-    static readonly $sipPreDatas: any[];
-    $loadPreDatas(): Observable<any> {
+    // static _$sipPreDatas: any[];
+    // static _$sipInits: any[];
+    $loadPreDatas(owner: any): Observable<any> {
+        if (this[_preLoadKey]) return this[_preLoadKey];
         let thisClass: any = this.constructor;
-        let dataFns: any[] = thisClass.$sipPreDatas;
+        let dataFns: any[] = thisClass._$sipPreDatas;
         if (dataFns && dataFns.length > 0) {
             let obs = [];
             Lib.each(dataFns, function (fn) {
-                obs.push(fn.call(this));
+                obs.push(fn.call(this, owner));
             }, this);
-            return zip(...obs);
+            let oz = this[_preLoadKey] = zip(...obs).pipe(map((r) => {
+                this[_preLoadKey] = null;
+                return r;
+            }));
+            return oz;
         }
         return of(null);
     }

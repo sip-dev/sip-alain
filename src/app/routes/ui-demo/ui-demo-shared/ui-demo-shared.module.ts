@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '@shared/shared.module';
 import { FormComponent } from './components/form/form.component';
+import { UserService } from './services/user.service';
 
 @NgModule({
     imports: [
@@ -11,7 +12,9 @@ import { FormComponent } from './components/form/form.component';
     declarations: [
         FormComponent
     ],
-    providers: [],
+    providers: [
+        UserService
+    ],
     exports:[
         FormComponent
     ],

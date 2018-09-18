@@ -1,5 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
-import { SipRestDef, SipRestFunction, SipRestMethod, SipRestSqlDef, SipRestSqlFunction, SipRestSqlType, SipService } from 'sip-alain';
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators';
+import { SipPrepareData, SipRestDef, SipRestFunction, SipRestMethod, SipRestSqlDef, SipRestSqlFunction, SipRestSqlType, SipService } from 'sip-alain';
 import { UserModel } from '../model/user.model';
 
 @Injectable()
@@ -11,6 +13,12 @@ export class UserService extends SipService {
     this.getUserList({content:'111'}).subscribe((rs)=>{
       console.log(rs.datas);
     })
+   }
+
+   @SipPrepareData()
+   private _preData(owner){
+       this.$logger.debug('UserService _preData', owner);
+       return of(null).pipe(delay(3000));
    }
 
    @SipRestDef<UserModel>({
