@@ -193,7 +193,7 @@ let _initNgEventItem = function (owner: any, eventName: string) {
     }
 }
 
-let _doNgEventItem = function(owner: any, eventName: string){
+let _doNgEventItem = function (owner: any, eventName: string) {
     let evFns = _getNgEvents(owner, eventName);
     let evAfterFns = _getNgEventAfters(owner, eventName);
     evFns && evFns.forEach((fn) => fn && fn.call(owner))
