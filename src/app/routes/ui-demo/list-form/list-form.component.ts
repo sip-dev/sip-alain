@@ -58,7 +58,7 @@ export class ListFormComponent extends SipModal {
 
     @SipNgDestroy()
     private _destroy() {
-        this.$logger.debug('_destroy');
+        this.$logger.debug('_destroy list from');
     }
 
     save() {

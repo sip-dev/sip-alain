@@ -97,7 +97,7 @@ let _pushWatch = function (target: any, args: any[], watchFn: Function) {
                     val || (val = []);
                     let isCLi = true;
                     Lib.each(item, function (item, idx) {
-                        newVal = item.call(this);
+                        newVal = item.call(this, this);
                         isCLi && (isCLi = !_equals(val[idx], newVal));
                         newValList.push(newVal);
                     }, this);
@@ -105,7 +105,7 @@ let _pushWatch = function (target: any, args: any[], watchFn: Function) {
                     res.push(newValList);
                 }
             } else {
-                newVal = item.call(this);
+                newVal = item.call(this, this);
                 isC || (isC = (!_equals(val, newVal)));
                 res.push(newVal);
             }
@@ -118,7 +118,7 @@ let _pushWatch = function (target: any, args: any[], watchFn: Function) {
 };
 /**
  * 观察，只能用于Component
- * @param args 观察对象，可以字串、数组和方法
+ * @param args 观察对象，可以字串、数组和方法:(target) => any，要先定义属性（报错）
  * @example SipWatch('this.title', ['this.title1', 'this.title2'])
  */
 export function SipWatch(...args: any[]) {
@@ -131,56 +131,74 @@ export function SipWatch(...args: any[]) {
 
 //#region component events
 
-/**_pushSipEvent(target, '$onShow', target[propKey]) */
-// let _pushSipEvent = function (target: any, eventName: string, newFn: Function) {
-
-//     _pushEvent(target, 'sipOnConstructor', function () {
-//         this[eventName] && this[eventName].subscribe(() => { newFn.call(this); });
-//     });
-
-// };
-
+let _getNgEventName = function (eventName: string) {
+    return ['_$sip_ng', eventName].join('_')
+};
 
 /**_pushNgEvent(target, 'ngOnInit', target[propKey]) */
-let _pushNgEvent = function (target: any, eventName: string, newFn: Function) {
-
-    let sipEventName = ['_$sip', eventName].join('_');
-    let sipFnBak = target[sipEventName];
-    target[sipEventName] = function () {
-        sipFnBak && sipFnBak.apply(this, arguments);
-        newFn && newFn.apply(this, arguments);
-    };
+let _pushNgEvent = function (target: any, eventName: string, newFn: Function): any[] {
 
     let oldFn = target[eventName];
-    let afterEventName = _getNgEventAfterName(eventName);
     if (!oldFn) {
         target[eventName] = function () {
-            this[sipEventName] && this[sipEventName].apply(this, arguments);
-            this[afterEventName] && this[afterEventName].apply(this, arguments);
+            if (this.$isDestroyed) return;
+            _doNgEventItem(this, eventName);
         };
         target[eventName].sipInject = true;
     } else if (!oldFn.sipInject) {
         target[eventName] = function () {
+            if (this.$isDestroyed) return;
             oldFn.apply(this, arguments);
-            this[sipEventName] && this[sipEventName].apply(this, arguments);
-            this[afterEventName] && this[afterEventName].apply(this, arguments);
+            _doNgEventItem(this, eventName);
         };
         target[eventName].sipInject = true;
     }
+
+    let ngEventName = _getNgEventName(eventName);
+    return _pushStaticList(target, ngEventName, newFn);
+
+};
+
+let _getNgEvents = function (target: any, eventName: string): any[] {
+    eventName = _getNgEventName(eventName);
+    return _getStaticList(target, eventName);
 };
 
 let _getNgEventAfterName = function (eventName: string) {
-    return [eventName, 'After'].join('_');
+    return [_getNgEventName(eventName), 'after'].join('_');
 };
 
-let _pushNgEventAfter = function (target: any, eventName: string, newFn: Function) {
+let _pushNgEventAfter = function (target: any, eventName: string, newFn: Function): any[] {
     eventName = _getNgEventAfterName(eventName);
-    let oldFn = target[eventName];
-    target[eventName] = function () {
-        oldFn && oldFn.apply(this, arguments);
-        newFn && newFn.apply(this, arguments);
-    };
+    return _pushStaticList(target, eventName, newFn);
+
 };
+
+let _getNgEventAfters = function (target: any, eventName: string): any[] {
+    eventName = _getNgEventAfterName(eventName);
+    return _getStaticList(target, eventName);
+};
+
+let _initNgEventItem = function (owner: any, eventName: string) {
+    let evFns = _getNgEvents(owner, eventName);
+    let evAfterFns = _getNgEventAfters(owner, eventName);
+    if (evFns || evAfterFns) {
+        let ngFn = owner[eventName];
+        owner[eventName] = function () {
+            if (this.$isDestroyed) return;
+            ngFn && ngFn.call(this);
+            evFns && evFns.forEach((fn) => fn && fn.call(this))
+            evAfterFns && evAfterFns.forEach((fn) => fn && fn.call(this))
+        };
+    }
+}
+
+let _doNgEventItem = function(owner: any, eventName: string){
+    let evFns = _getNgEvents(owner, eventName);
+    let evAfterFns = _getNgEventAfters(owner, eventName);
+    evFns && evFns.forEach((fn) => fn && fn.call(owner))
+    evAfterFns && evAfterFns.forEach((fn) => fn && fn.call(owner))
+}
 
 /**
  * 在Angular第一次显示数据绑定和设置指令/组件的输入属性之后，初始化指令/组件。在第一轮EventChange()完成之后调用，只调用一次。
@@ -890,7 +908,7 @@ export function SipInit() {
                 _pushNgEventAfter(target, 'ngOnInit', function () {
                     let initFns = _getStaticList(target, '_$sipInits');
                     let doFns = () => {
-                        if (!this.$isDestroyed){
+                        if (!this.$isDestroyed) {
                             Lib.each(initFns, function (fn) {
                                 fn.call(this);
                             }, this);
@@ -1163,9 +1181,9 @@ export class SipParent {
         return this._$isDestroyed;
     }
 
-    private _$onDestroy:EventEmitter<any>;
+    private _$onDestroy: EventEmitter<any>;
     /**销毁事件 */
-    public get $onDestroy():EventEmitter<any>{
+    public get $onDestroy(): EventEmitter<any> {
         return this._$onDestroy || (this._$onDestroy = new EventEmitter());
     }
 
@@ -1210,6 +1228,7 @@ export class SipUiBase extends SipParent implements OnInit, OnDestroy, OnChanges
 
     constructor(vcf: ViewContainerRef) {
         super(vcf.injector, vcf);
+        // _initNgEvent(this);
     }
 
     $showed = true;
