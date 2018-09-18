@@ -1,6 +1,10 @@
 
 # 更新
 
+## 0.7.1
+
+* Fix: sip-cache.content 重载问题
+
 ## 0.7.0
 
 * 优化：sip-cache.service

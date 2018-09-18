@@ -57,15 +57,15 @@ export class SipCacheService {
   /**
    * 获取内容
    * @param key 
-   * @param value 值，可选，如果没此参数为获取内容
    */
-  public content(key:string):any;
+  public content(key: string): any;
   /**
    * 设置内容
    * @param key 
    * @param value 值，可选，如果没此参数为获取内容
    */
-  public content(key:string, value?:any):any{
+  public content(key: string, value: any): any;
+  public content(key: any, value?: any): any {
     if (arguments.length == 1)
       return this._content[key];
     else
@@ -73,18 +73,18 @@ export class SipCacheService {
   }
 
   /**删除一个项 */
-  public remove(key:string){
+  public remove(key: string) {
     if (key in this._content)
       delete this._content[key];
   }
 
   /**是否存在 */
-  public exists(key:string){
+  public exists(key: string) {
     return (key in this._content);
   }
 
   /**删除所有 */
-  public removeAll(){
+  public removeAll() {
     this._content = {};
   }
 
