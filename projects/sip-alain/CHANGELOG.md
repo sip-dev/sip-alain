@@ -6,6 +6,7 @@
 * 优化：sip-cache.service
 * 优化：ng生命周期事件
 * 添加: SipPrepareData && SipInit
+* 添加：$onDestroy事件
 
 ## 0.6.0
 

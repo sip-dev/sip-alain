@@ -1,4 +1,4 @@
-import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, ChangeDetectorRef, ComponentFactoryResolver, ComponentRef, DoCheck, forwardRef, Injector, OnChanges, OnDestroy, OnInit, QueryList, ReflectiveInjector, TemplateRef, Type, ViewContainerRef, ViewRef } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, ChangeDetectorRef, ComponentFactoryResolver, ComponentRef, DoCheck, EventEmitter, forwardRef, Injector, OnChanges, OnDestroy, OnInit, QueryList, ReflectiveInjector, TemplateRef, Type, ViewContainerRef, ViewRef } from '@angular/core';
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from "@angular/router";
 import { ReuseTabService } from "@delon/abc";
@@ -1163,10 +1163,17 @@ export class SipParent {
         return this._$isDestroyed;
     }
 
+    private _$onDestroy:EventEmitter<any>;
+    /**销毁事件 */
+    public get $onDestroy():EventEmitter<any>{
+        return this._$onDestroy || (this._$onDestroy = new EventEmitter());
+    }
+
     /**销毁 */
     $destroy() {
         if (this._$isDestroyed) return;
         this._$isDestroyed = true;
+        if (this._$onDestroy) this._$onDestroy.emit();
         if (this._$navigateChildren) {
             let page = this.$config.page
             this._$navigateChildren.forEach((p) => {
