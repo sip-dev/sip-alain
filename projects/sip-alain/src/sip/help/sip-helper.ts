@@ -794,8 +794,18 @@ export function SipFormSubmit(...forms: (string | ISipFormSubmitOption)[]) {
     };
 }
 
+export interface ISipFormGroupWatchValue {
+    value: any; oldValue: any;
+}
+
 export interface ISipFormGroup<T=any> extends FormGroup {
     $model: T;
+    /**
+     * 观察
+     * @param propKey 属性名称，propKey为空表示任何属性变动都发布（订阅所有属性）
+     * @example $watch('id', 'name', ...)
+     */
+    $watch: (...propKeys: string[]) => Observable<ISipFormGroupWatchValue[]>;
     $toJSONObject: () => T
     [key: string]: any;
 }
@@ -804,6 +814,99 @@ export interface ISipFormGroupParams<T> {
     model: T;
     validators?: { [key: string]: any };
     extra?: { [key: string]: any };
+}
+
+function _createSipFormGropup<T=any>(params: ISipFormGroupParams<T>): ISipFormGroup<T> {
+    let valids = {};
+    let modelObj = {};
+    let watchObj = {};
+    let modelThis = params.model;
+    let validatorsTemp = params.validators;
+    Lib.eachProp(modelThis, function (item, name) {
+        if (validatorsTemp[name])
+            valids[name] = [item, validatorsTemp[name]];
+        else
+            valids[name] = [item];
+        Object.defineProperty(modelObj, name, {
+            enumerable: true, configurable: false,
+            get: function () {
+                let ctrl = formGroup.get(name);
+                return ctrl ? ctrl.value : modelThis[name];
+            },
+            set: function (value) {
+                let obj = {};
+                obj[name] = value;
+                formGroup.patchValue(obj, { onlySelf: true, emitEvent: hasWatch && !_equals(oldValueObj[name], value) });
+            }
+        });
+    }, this);
+    let extraTemp = params.extra;
+    let formGroup: ISipFormGroup = this.$formBuilder.group(valids, extraTemp);
+    Object.defineProperty(formGroup, '$model', {
+        enumerable: true, configurable: false,
+        get: function () {
+            return modelObj;
+        },
+        set: function (value) {
+            Object.assign(modelObj, value || {});
+        }
+    });
+    let oldValueObj = {};
+    let hasWatch = false;
+    let initValueChanges = function () {
+        if (hasWatch) return;
+        formGroup.valueChanges.subscribe((p) => {
+            Lib.eachProp(watchObj, function (item, name) {
+                let value = p[name];
+                let oldValue = oldValueObj[name];
+                //name为空表示任何属性变动都发布（订阅所有属性）
+                if (!_equals(oldValue, value)) {
+                    oldValueObj[name] = value;
+                    item.next([{ value: value, oldValue: oldValue }]);
+                }
+            });
+        });
+    };
+    let watchProp = function (name?: string) {
+        initValueChanges();
+        hasWatch = true;
+        let subject: Subject<any> = watchObj[name] || (watchObj[name] = new Subject());
+        oldValueObj[name] = modelObj[name];
+
+        return subject.asObservable();
+    };
+    let watchMerge = function (names: string[]) {
+        let subject = new Subject();
+        let values = [];
+        names.forEach((name: string, idx) => {
+            let defVal = modelObj[name];
+            values[idx] = { oldValue: defVal, value: defVal };
+            watchProp(name).subscribe(function (vals) {
+                values[idx] = vals[0];
+                subject.next(values);
+            });
+        });
+        return subject.asObservable();
+    };
+    Object.defineProperty(formGroup, '$watch', {
+        enumerable: true, configurable: false,
+        writable: false,
+        value: function (...names: string[]) {
+            if (names.length <= 1)
+                return watchProp(names[0]);
+            else
+                return watchMerge(names);
+        }
+    });
+    Object.defineProperty(formGroup, '$toJSONObject', {
+        enumerable: true, configurable: false,
+        writable: false,
+        value: function () {
+            let obj = Lib.extend({}, this.$model);
+            return obj;
+        }
+    });
+    return formGroup;
 }
 
 export function SipFormGroup<T=object>(factory: (target: any) => ISipFormGroupParams<T>) {
@@ -816,50 +919,10 @@ export function SipFormGroup<T=object>(factory: (target: any) => ISipFormGroupPa
                 if (key in this) return this[key];
                 this[key] = null;
                 let params = factory(this);
-                let valids = {};
-                let modelObj = {};
-                let modelThis = params.model;
-                let validatorsTemp = params.validators;
-                Lib.eachProp(modelThis, function (item, name) {
-                    if (validatorsTemp[name])
-                        valids[name] = [item, validatorsTemp[name]];
-                    else
-                        valids[name] = [item];
-                    Object.defineProperty(modelObj, name, {
-                        enumerable: true, configurable: false,
-                        get: function () {
-                            return formGroup.get(name).value;
-                        },
-                        set: function (value) {
-                            let obj = {};
-                            obj[name] = value;
-                            formGroup.patchValue(obj, { onlySelf: true, emitEvent: false });
-                        }
-                    });
-                }, this);
-                let extraTemp = params.extra;
-                let formGroup: FormGroup = this.$formBuilder.group(valids, extraTemp);
-                this[key] = formGroup;
-                Object.defineProperty(formGroup, '$model', {
-                    enumerable: true, configurable: false,
-                    get: function () {
-                        return modelObj;
-                    },
-                    set: function (value) {
-                        Object.assign(modelObj, value || {});
-                    }
-                });
-                Object.defineProperty(formGroup, '$toJSONObject', {
-                    enumerable: true, configurable: false,
-                    writable: false,
-                    value: function () {
-                        let obj = Lib.extend({}, this.$model);
-                        return obj;
-                    }
-                });
-                return formGroup;
+                return this[key] = _createSipFormGropup.call(this, params);
             }
         });
+
         _pushNgEvent(target, 'ngOnDestroy', function () {
             this[key] = null;
         });
@@ -1235,6 +1298,15 @@ export class SipUiBase extends SipParent implements OnInit, OnDestroy, OnChanges
     $loading = false;
 
     @SipInject(FormBuilder) $formBuilder: FormBuilder;
+
+    /**
+     * 创建一个新的FormGroup
+     * @param params 
+     */
+    $formGroup<T=any>(params: ISipFormGroupParams<T>): ISipFormGroup<T>{
+        return _createSipFormGropup.call(this, params);
+    }
+
 
     private _$menuItem: Menu;
     /**页面当前对象的Menu项 */

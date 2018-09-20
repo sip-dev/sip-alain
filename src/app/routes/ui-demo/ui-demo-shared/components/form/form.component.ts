@@ -12,6 +12,24 @@ export class FormComponent extends SipComponent {
 
     constructor(vcf: ViewContainerRef) {
         super(vcf);
+        this.form.$watch('num').subscribe((p) => {
+            this.$logger.debug('num', p);
+        });
+        this.form.$watch('region').subscribe((p) => {
+            this.$logger.debug('region', p);
+        });
+        this.form.$watch('num', 'region').subscribe((p) => {
+            this.$logger.debug('num or region', p);
+        });
+        this.form.valueChanges.subscribe((p) => {
+            this.$logger.debug('valuechange', p);
+        });
+        setTimeout(() => {
+            this.form.$model.num = "1111";
+        }, 1000);
+        setTimeout(() => {
+            this.form.$model.num = "1111";
+        }, 2000);
     }
 
     @SipFormGroup((target: FormComponent) => {

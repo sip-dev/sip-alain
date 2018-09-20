@@ -1,6 +1,11 @@
 
 # 更新
 
+## 0.7.2
+
+* 添加：$formGroup
+* 添加：$formGroup.$watch
+
 ## 0.7.1
 
 * Fix: sip-cache.content 重载问题
