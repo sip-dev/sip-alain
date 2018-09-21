@@ -11,21 +11,22 @@ export class PlayerService extends SipService {
   }
 
   @SipRestSqlDef<PlayerModel[]>({
-      url:'api/demo/loadGridData',
-      sqlType: SipRestSqlType.List,
-      sqlId: 'iaas.instlist', connstr: 'iaas',
-      sortName: 'name', sortOrder: 'asc',
-      pageSize: 10,
-        searchparam: { "content": "" },
-      cache: true,
-      map: function (rs, target) {
-          return rs.datas;
-      }
+    url: 'api/demo/loadGridData',
+    sqlType: SipRestSqlType.List,
+    sqlId: 'iaas.instlist', connstr: 'iaas',
+    sortName: 'name', sortOrder: 'asc',
+    pageSize: 10,
+    searchparam: { "content": "" },
+    cache: true,
+    model:PlayerModel,
+    map: function (rs, target) {
+      return rs.datas;
+    }
   })
   getPageList: SipRestSqlFunction<{
-      "content"?: string
+    "content"?: string
   }, PlayerModel[]>;
-  
+
   @SipRestDef<PlayerModel[]>({
     url: 'api/demo/data-table/players',
     method: SipRestMethod.GET,

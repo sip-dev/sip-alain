@@ -1,5 +1,5 @@
 //定义模型(model)
-export interface PlayerModel {
+export class PlayerModel {
 
     id?: number;
     name?: string;
@@ -35,5 +35,13 @@ export interface PlayerModel {
     bg_points?: number;
     personal_rating?: number;
     arena_points?: number;
+
+    constructor(p?:Partial<PlayerModel>){
+        if (p) Object.assign(this, p);
+    }
+
+    print(){
+        console.log(this.name);
+    }
 
 }

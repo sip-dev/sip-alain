@@ -131,12 +131,7 @@ export function SipWatch(...args: any[]) {
 
 //#region component events
 
-let _getNgEventName = function (eventName: string) {
-    return ['_$sip_ng', eventName].join('_')
-};
-
-/**_pushNgEvent(target, 'ngOnInit', target[propKey]) */
-let _pushNgEvent = function (target: any, eventName: string, newFn: Function): any[] {
+let _injectNgEvent = function (target: any, eventName: string) {
 
     let oldFn = target[eventName];
     if (!oldFn) {
@@ -153,6 +148,17 @@ let _pushNgEvent = function (target: any, eventName: string, newFn: Function): a
         };
         target[eventName].sipInject = true;
     }
+
+};
+
+let _getNgEventName = function (eventName: string) {
+    return ['_$sip_ng', eventName].join('_')
+};
+
+/**_pushNgEvent(target, 'ngOnInit', target[propKey]) */
+let _pushNgEvent = function (target: any, eventName: string, newFn: Function): any[] {
+
+    _injectNgEvent(target, eventName);
 
     let ngEventName = _getNgEventName(eventName);
     return _pushStaticList(target, ngEventName, newFn);
@@ -175,25 +181,16 @@ let _pushNgEventAfter = function (target: any, eventName: string, newFn: Functio
 };
 
 let _getNgEventAfters = function (target: any, eventName: string): any[] {
+    _injectNgEvent(target, eventName);
+
     eventName = _getNgEventAfterName(eventName);
     return _getStaticList(target, eventName);
 };
 
-let _initNgEventItem = function (owner: any, eventName: string) {
-    let evFns = _getNgEvents(owner, eventName);
-    let evAfterFns = _getNgEventAfters(owner, eventName);
-    if (evFns || evAfterFns) {
-        let ngFn = owner[eventName];
-        owner[eventName] = function () {
-            if (this.$isDestroyed) return;
-            ngFn && ngFn.call(this);
-            evFns && evFns.forEach((fn) => fn && fn.call(this))
-            evAfterFns && evAfterFns.forEach((fn) => fn && fn.call(this))
-        };
-    }
-}
-
 let _doNgEventItem = function (owner: any, eventName: string) {
+    let key = ['_$sip_ng_done_event', eventName].join('_')
+    if (owner[key]) return;
+    owner[key] = true;
     let evFns = _getNgEvents(owner, eventName);
     let evAfterFns = _getNgEventAfters(owner, eventName);
     evFns && evFns.forEach((fn) => fn && fn.call(owner))
@@ -621,6 +618,8 @@ export enum SipRestSqlType {
 export interface ISipRestDefParamsBase<T=any> extends SipRestParam {
     //改造数据
     map?: (rs: SipRestRet<T>, target?: any) => any;
+    //数据模型
+    model?: Type<any>;
 }
 
 export interface ISipRestDefParams<T=any> extends ISipRestDefParamsBase<T> {
@@ -660,10 +659,23 @@ export function SipRestDef<T=any>(params: ISipRestDefParams<T>) {
                             obs = httpSrv.get(url, tempParams);
                             break;
                     }
-                    if (tempParams.map)
-                        return obs.pipe(map((rs) => { rs.datas = tempParams.map(rs, this); return rs; }));
-                    else
-                        return obs;
+                    let model = tempParams.model;
+                    let mapFn = tempParams.map;
+                    if (mapFn || model) {
+                        obs = obs.pipe(map((rs) => {
+                            let datas = rs.datas;
+                            if (model && datas) {
+                                if (Lib.isArray(datas))
+                                    datas = datas.map(function (item) { return new model(item); });
+                                else
+                                    datas = new model(datas);
+                                rs.datas = datas;
+                            }
+                            mapFn && (rs.datas = mapFn(rs, this));
+                            return rs;
+                        }));
+                    }
+                    return obs;
                 }.bind(this);
             }
         });
@@ -712,10 +724,23 @@ export function SipRestSqlDef<T=any>(params: ISipRestSqlDefParams<T>) {
                             obs = httpSrv.sqlList(Lib.extend({ pageSize: 999 }, tempParams));
                             break;
                     }
-                    if (tempParams.map)
-                        return obs.pipe(map((rs) => { rs.datas = tempParams.map(rs, this); return rs; }));
-                    else
-                        return obs;
+                    let model = tempParams.model;
+                    let mapFn = tempParams.map;
+                    if (mapFn || model) {
+                        obs = obs.pipe(map((rs) => {
+                            let datas = rs.datas;
+                            if (model && datas) {
+                                if (Lib.isArray(datas))
+                                    datas = datas.map(function (item) { return new model(item); });
+                                else
+                                    datas = new model(datas);
+                                rs.datas = datas;
+                            }
+                            mapFn && (rs.datas = mapFn(rs, this));
+                            return rs;
+                        }));
+                    }
+                    return obs;
                 }.bind(this);
             }
         });
@@ -1303,7 +1328,7 @@ export class SipUiBase extends SipParent implements OnInit, OnDestroy, OnChanges
      * 创建一个新的FormGroup
      * @param params 
      */
-    $formGroup<T=any>(params: ISipFormGroupParams<T>): ISipFormGroup<T>{
+    $formGroup<T=any>(params: ISipFormGroupParams<T>): ISipFormGroup<T> {
         return _createSipFormGropup.call(this, params);
     }
 
