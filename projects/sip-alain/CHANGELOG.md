@@ -1,6 +1,10 @@
 
 # 更新
 
+## 0.7.4
+
+* Fix：SipInit不处理问题
+
 ## 0.7.3
 
 * 添加：rest def model属性，将rest数据转为class model实例

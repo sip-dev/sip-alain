@@ -175,14 +175,14 @@ let _getNgEventAfterName = function (eventName: string) {
 };
 
 let _pushNgEventAfter = function (target: any, eventName: string, newFn: Function): any[] {
+    _injectNgEvent(target, eventName);
+
     eventName = _getNgEventAfterName(eventName);
     return _pushStaticList(target, eventName, newFn);
 
 };
 
 let _getNgEventAfters = function (target: any, eventName: string): any[] {
-    _injectNgEvent(target, eventName);
-
     eventName = _getNgEventAfterName(eventName);
     return _getStaticList(target, eventName);
 };
@@ -986,15 +986,16 @@ export function SipPrepareData() {
     }
 }
 
+let _sipInitStKey = '_$sipInits';
 /**Sip初始化, 只能在UI组件使用, 自动准备数据(SipPrepareData) */
 export function SipInit() {
     return function (target: any, propKey: string) {
         let initFn = target[propKey];
         if (initFn) {
-            if (_pushStaticList(target, '_$sipInits', initFn).length == 1) {
+            if (_pushStaticList(target, _sipInitStKey, initFn).length == 1) {
                 /**如果第一个，在ngOnInit之后执行 */
                 _pushNgEventAfter(target, 'ngOnInit', function () {
-                    let initFns = _getStaticList(target, '_$sipInits');
+                    let initFns = _getStaticList(target, _sipInitStKey);
                     let doFns = () => {
                         if (!this.$isDestroyed) {
                             Lib.each(initFns, function (fn) {
