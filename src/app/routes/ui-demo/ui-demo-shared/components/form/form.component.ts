@@ -1,6 +1,6 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import { SipValidators } from '@core/sip/sip-validators';
-import { ISipFormGroup, SipComponent, SipFormGroup, SipFormSubmit } from 'sip-alain';
+import { ISipFormGroup, SipComponent, SipFormGroup, SipFormSubmit, SipFormWatch } from 'sip-alain';
 import { DemoModel } from '../../model/demo.model';
 
 @Component({
@@ -30,6 +30,16 @@ export class FormComponent extends SipComponent {
         setTimeout(() => {
             this.form.$model.num = "1111";
         }, 2000);
+    }
+
+    @SipFormWatch('this.form', 'num')
+    private _watchTest(p){
+        this.$logger.debug('_watchTest', p);
+    }
+
+    @SipFormWatch('this.form', 'num', 'region')
+    private _watchTest2(p){
+        this.$logger.debug('_watchTest2', p);
     }
 
     @SipFormGroup((target: FormComponent) => {

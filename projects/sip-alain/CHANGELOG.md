@@ -1,6 +1,10 @@
 
 # 更新
 
+## 0.7.5
+
+* 添加：SipFormWatch
+
 ## 0.7.4
 
 * Fix：SipInit不处理问题

@@ -954,6 +954,27 @@ export function SipFormGroup<T=object>(factory: (target: any) => ISipFormGroupPa
     };
 }
 
+/**
+ * 观察form属性变化
+ * @param form 
+ * @param props 
+ * @example SipFormWatch('this.form', 'id', 'name')
+ */
+export function SipFormWatch(form: string, ...props: string[]) {
+    let formFn = new Function('return ' + form);
+    return function (target: any, propKey: string) {
+        let oldFn = target[propKey];
+        if (oldFn) {
+            _pushNgEvent(target, 'ngOnInit', function () {
+                let formGroup: ISipFormGroup = formFn.call(this);
+                formGroup && formGroup.$watch(...props).subscribe(function () {
+                    return oldFn.apply(this, arguments);
+                }.bind(this));
+            });
+        }
+    };
+}
+
 //#endregion SipFormGroup
 
 /**静态属性数组添加内容 */
