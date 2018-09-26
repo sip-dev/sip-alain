@@ -1,6 +1,10 @@
 
 # 更新
 
+## 0.7.6
+
+* Fix: doNgEventItem
+
 ## 0.7.5
 
 * 添加：SipFormWatch
