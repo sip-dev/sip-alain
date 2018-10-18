@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpHandler, HttpRequest } from '@angula
 import { Type } from '@angular/core';
 import { AdPageHeaderConfig, ReuseTabMatchMode } from '@delon/abc';
 import { DelonAuthConfig } from '@delon/auth';
+import { Observable } from 'rxjs';
 import { SipTableSettings } from '../components/sip-table/sip-table/base/sip-table-settings';
 import { SipLoggerOptions } from './sip-logger-options';
 import { SipRestParam, SipRestRet, SipRestSqlRet, SipSqlParam } from './sip-rest-base';
@@ -25,8 +26,10 @@ export abstract class SipAlainConfig {
     };
 
     i18nLoader: (http: HttpClient) => any;
-    appDataPath: string;
+    /**app 数据 加载 */
+    loadAppData: () => Observable<any>;
     startup: () => Promise<any>;
+    /**http拦截 */
     intercept: (req: HttpRequest<any>, next: HttpHandler) => any;
 
     authOptions?: DelonAuthConfig;
@@ -35,11 +38,6 @@ export abstract class SipAlainConfig {
     reuseTab?: {
         use: boolean;
         mode: ReuseTabMatchMode;
-    };
-
-    site: {
-        loginUrl: string;
-        logoutUrl: string;
     };
 
     page: {

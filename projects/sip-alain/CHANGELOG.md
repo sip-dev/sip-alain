@@ -1,6 +1,13 @@
 
 # 更新
 
+## 0.8.0
+
+* update ng-alain 1.4.1
+* update ng-zorro-antd 1.6.0
+* 将 SipAlainConfig.appDataPath 更改为 SipAlainConfig.loadAppData
+* 删除  SipAlainConfig.site
+
 ## 0.7.6
 
 * Fix: doNgEventItem

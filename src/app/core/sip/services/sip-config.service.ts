@@ -33,7 +33,10 @@ export class SipConfigService implements SipAlainConfig {
         logoutUrl: ''
     };
 
-    appDataPath = 'assets/tmp/app-data.json';
+    loadAppData() {
+        let http = this.injector.get(_HttpClient);
+        return http.get('assets/tmp/app-data.json');
+    }
 
     authOptions = {
         // ignores: [ `\\/login`, `assets\\/` ],

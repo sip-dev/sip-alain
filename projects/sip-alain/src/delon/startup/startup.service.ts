@@ -35,7 +35,7 @@ export class StartupService {
         return new Promise((resolve, reject) => {
             zip(
                 this.httpClient.get(`${config.i18n.prefix}${this.i18n.defaultLang}${config.i18n.suffix}`),
-                this.httpClient.get(config.appDataPath)
+                config.loadAppData()
             ).pipe(
                 // 接收其他拦截器后产生的异常消息
                 catchError(([langData, appData]) => {
@@ -48,7 +48,7 @@ export class StartupService {
                 this.translate.setDefaultLang(this.i18n.defaultLang);
 
                 // application data
-                const res: any = appData.datas;
+                const res: any = appData;
                 // 应用信息：包括站点名、描述、年份
                 this.settingService.setApp(res.app);
                 // 用户信息：包括姓名、头像、邮箱地址
