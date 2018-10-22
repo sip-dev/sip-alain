@@ -186,9 +186,9 @@ export class SipConfigService implements SipAlainConfig {
             return _rmPathSplit(path);
         },
         /**
-         * 提交类型form | body
+         * 提交类型 form | payload | formdata
          */
-        postType: 'form',
+        postType: 'formdata',
         /**
          * 字典接口
          */

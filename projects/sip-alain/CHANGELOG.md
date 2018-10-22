@@ -1,6 +1,11 @@
 
 # 更新
 
+## 0.8.1
+
+* 添加：sip-rest.service postType: "formdata"
+* 优化：sip-rest.service
+
 ## 0.8.0
 
 * update ng-alain 1.4.1

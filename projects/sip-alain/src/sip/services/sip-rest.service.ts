@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -11,6 +11,10 @@ function _makeNoticeText(msg: string, conf: string | boolean, msgConfig: string 
     if (msgConfig === false || msgConfig === undefined) return '';
     if (!msg) msg = (msgConfig === true ? defText : msgConfig as string);
     return msg ? msg : (conf === true ? defText : conf);
+}
+
+function _makeNullValue(value) {
+    return value === null ? '' : value.toString();
 }
 
 @Injectable()
@@ -55,7 +59,7 @@ export class SipRestService {
             url = this.parseUrl(url);
             Lib.eachProp(Lib.extend(querys, params), (item, key) => {
                 if (!Lib.isUndefined(item))
-                    ret = ret.set(key, Lib.isObject(item) ? JSON.stringify(item) : item);
+                    ret = ret.set(key, Lib.isObject(item) ? JSON.stringify(item) : _makeNullValue(item));
             });
             return url + '?' + ret.toString();
         }
@@ -206,9 +210,29 @@ export class SipRestService {
         if (postType == 'form') {
             formData = new FormData();
             Lib.eachProp(params, (item, n) => {
-                formData.append(n, Lib.isObject(item) ? JSON.stringify(item) : item);
+                if (item === undefined) return;
+                formData.append(n, Lib.isObject(item) || Lib.isArray(item) ? JSON.stringify(item) : _makeNullValue(item));
             });
-
+        }
+        if (postType == 'formdata') {
+            let formDataList = [];
+            if (Lib.isObject(formData)) {
+                Lib.eachProp(formData, function (item, name) {
+                    if (item === undefined) return;
+                    formDataList.push(encodeURIComponent(name) + '=' + encodeURIComponent(Lib.isObject(item) || Lib.isArray(item) ? JSON.stringify(item) : _makeNullValue(item)));
+                });
+                formData = formDataList.join('&').replace(/%20/g, '+');
+            }
+            let httpOptions = p.httpOptions || {};
+            let header = httpOptions.headers || {};
+            if (header instanceof HttpHeaders) {
+                header.has('Accept') || header.set('Accept', 'application/json, text/javascript, */*');
+                header.has('Content-Type') || header.set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+            } else {
+                header = Object.assign({ "Accept": 'application/json, text/javascript, */*', 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }, header);
+            }
+            httpOptions.headers = header;
+            p.httpOptions = httpOptions;
         }
         return this.getHttp(this._http.post(url, formData, p.httpOptions), url, 'post', p)
             .pipe(

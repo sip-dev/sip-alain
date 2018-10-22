@@ -6,5 +6,7 @@ export interface UserModel {
     role?: string;
     loginId?: string;
     password?: string;
+    test?:boolean;
+    testO?:any;
 
 }

@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
@@ -18,13 +19,27 @@ export class UserService extends SipService {
    }
    @SipPrepareData()
    private _preData1(owner){
+            let httpParams = new HttpParams({
+                fromObject:{
+                    a:'aaa',
+                    b:null,
+                    c:'false',
+                    d:'a b'
+                }
+            });
+       httpParams.set('bbb', '1111');
+    //    httpParams.set('aaa', null);
+       httpParams.set('bbb', '1111');
+       httpParams.set('ccc', 'true');
+       httpParams.set('ccc', 'false');
+       this.$logger.debug('httpParams', httpParams.toString());
        this.$logger.debug('UserService _preData1', owner);
-       return this.getUser();
+       return this.getUser({id:'111', test:true, role:null, testO:{a:1111}});
    }
 
    @SipRestDef<UserModel>({
        url: 'api/getuser',
-       method: SipRestMethod.GET,
+       method: SipRestMethod.POST,
        cache: true,
        map: function (rs, target: UserService) {
            return rs.datas;

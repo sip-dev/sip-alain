@@ -63,7 +63,7 @@ export abstract class SipAlainConfig {
          */
         mapPath: (path: string) => string;
         /**
-         * 提交类型form | body
+         * 提交类型form | body | formdata
          */
         postType: string;
         /**

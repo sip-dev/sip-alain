@@ -16,7 +16,7 @@ export interface SipHttpOptions {
 export interface SipRestParam {
     url?: string;
     params?: any;
-    postType?: '' | 'form' | 'body';
+    postType?: '' | 'form' | 'payload' | 'formdata';
     httpOptions?: SipHttpOptions;
     /**拥有者，一般是UI，处理释放问题 */
     owner?: any;
