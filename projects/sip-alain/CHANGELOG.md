@@ -1,6 +1,10 @@
 
 # 更新
 
+## 0.8.2
+
+* 优化：SipFormGroup参数{extra:{}}, 支持updateOn, 默认为blur
+
 ## 0.8.1
 
 * 添加：sip-rest.service postType: "formdata"

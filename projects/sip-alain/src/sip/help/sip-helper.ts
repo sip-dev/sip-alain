@@ -838,7 +838,9 @@ export interface ISipFormGroup<T=any> extends FormGroup {
 export interface ISipFormGroupParams<T> {
     model: T;
     validators?: { [key: string]: any };
-    extra?: { [key: string]: any };
+    extra?: {
+        updateOn: 'change' | 'blur' | 'submit',
+    };
 }
 
 function _createSipFormGropup<T=any>(params: ISipFormGroupParams<T>): ISipFormGroup<T> {
@@ -865,8 +867,8 @@ function _createSipFormGropup<T=any>(params: ISipFormGroupParams<T>): ISipFormGr
             }
         });
     }, this);
-    let extraTemp = params.extra;
-    let formGroup: ISipFormGroup = this.$formBuilder.group(valids, extraTemp);
+    let extraTemp = Object.assign({ updateOn: 'blur' }, params.extra);
+    let formGroup: ISipFormGroup = <ISipFormGroup>(new FormGroup(this.$formBuilder.group(valids).controls, extraTemp));
     Object.defineProperty(formGroup, '$model', {
         enumerable: true, configurable: false,
         get: function () {

@@ -3,6 +3,7 @@
         <nz-form-label nzXs="24" nzSm="4" nzRequired>编号</nz-form-label>
         <nz-form-control nzXs="24" nzSm="18">
             <input nz-input formControlName="num" placeholder="给目标起个编号">
+            {{form.$model.num}}
             <nz-form-explain *ngIf="form.get('num').dirty && form.get('num').errors">请输入编号</nz-form-explain>
         </nz-form-control>
     </nz-form-item>
